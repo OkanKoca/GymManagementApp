@@ -1,0 +1,32 @@
+﻿@model GymApp.Models.Gym
+@{
+ ViewData["Title"] = "Spor Salonu Düzenle";
+}
+<h2>@ViewData["Title"]</h2>
+<hr />
+<form asp-action="Edit" method="post">
+ @Html.AntiForgeryToken()
+ <input type="hidden" asp-for="Id" />
+ <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+ <div class="mb-3">
+ <label asp-for="Name" class="form-label"></label>
+ <input asp-for="Name" class="form-control" />
+ <span asp-validation-for="Name" class="text-danger"></span>
+ </div>
+ <div class="mb-3">
+ <label asp-for="Address" class="form-label"></label>
+ <input asp-for="Address" class="form-control" />
+ <span asp-validation-for="Address" class="text-danger"></span>
+ </div>
+ <div class="mb-3">
+ <label asp-for="WorkingHours" class="form-label"></label>
+ <input asp-for="WorkingHours" class="form-control" />
+ <span asp-validation-for="WorkingHours" class="text-danger"></span>
+ </div>
+ <button type="submit" class="btn btn-success">Kaydet</button>
+ <a asp-action="Index" class="btn btn-secondary ms-2">İptal</a>
+</form>
+
+@section Scripts {
+ <partial name="_ValidationScriptsPartial" />
+}

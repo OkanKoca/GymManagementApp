@@ -1,0 +1,28 @@
+﻿@model List<Gym>
+
+<h2>Spor Salonları</h2>
+<a class="btn btn-primary" href="/Gym/Create">Yeni Salon</a>
+
+<table class="table mt-3">
+    <tr>
+        <th>Id</th>
+        <th>Ad</th>
+        <th>Adres</th>
+        <th>Çalışma Saatleri</th>
+        <th></th>
+    </tr>
+
+    @foreach (var g in Model)
+    {
+        <tr>
+            <td>@g.Id</td>
+            <td>@g.Name</td>
+            <td>@g.Address</td>
+            <td>@g.WorkingHours</td>
+            <td>
+                <a href="/Gym/Edit/@g.Id">Düzenle</a> |
+                <a href="/Gym/Delete/@g.Id">Sil</a>
+            </td>
+        </tr>
+    }
+</table>

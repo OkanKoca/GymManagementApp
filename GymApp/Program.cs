@@ -11,9 +11,17 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<GymDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<Member, IdentityRole>()
-    .AddEntityFrameworkStores<GymDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<Member, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 3;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredUniqueChars = 0;
+})
+.AddEntityFrameworkStores<GymDbContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -36,5 +44,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    await SeedData.InitializeAsync(scope.ServiceProvider);
+}
+
 
 app.Run();
