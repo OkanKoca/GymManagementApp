@@ -1,5 +1,6 @@
 using GymApp.Data;
 using GymApp.Models;
+using GymApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// API Controller desteði için
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddDbContext<GymDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+  options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<Member, IdentityRole>(options =>
 {
@@ -22,6 +26,20 @@ builder.Services.AddIdentity<Member, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<GymDbContext>()
 .AddDefaultTokenProviders();
+
+// Cookie ayarlarý
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
+
+// HttpClient factory
+builder.Services.AddHttpClient();
+
+// AI Service
+builder.Services.AddScoped<IAIService, OpenAIService>();
 
 var app = builder.Build();
 
@@ -41,14 +59,17 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// MVC routes
 app.MapControllerRoute(
-    name: "default",
+  name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// API routes
+app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
     await SeedData.InitializeAsync(scope.ServiceProvider);
 }
-
 
 app.Run();

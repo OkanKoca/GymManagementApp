@@ -3,6 +3,7 @@ using System;
 using GymApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GymApp.Migrations
 {
     [DbContext(typeof(GymDbContext))]
-    partial class GymDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251211122058_AddAppointmentNewFields")]
+    partial class AddAppointmentNewFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,26 +85,10 @@ namespace GymApp.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("PhotoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("WorkingHours")
                         .IsRequired()
@@ -121,19 +108,9 @@ namespace GymApp.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("BodyType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -142,18 +119,10 @@ namespace GymApp.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("FitnessGoal")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Gender")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
 
                     b.Property<double?>("Height")
                         .HasColumnType("double precision");
@@ -180,10 +149,6 @@ namespace GymApp.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("ProfilePhotoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -218,15 +183,8 @@ namespace GymApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<int>("DurationMinutes")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -235,11 +193,6 @@ namespace GymApp.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
-
-                    b.Property<string>("ServiceType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -254,17 +207,6 @@ namespace GymApp.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Bio")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<int?>("ExperienceYears")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Expertise")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -277,14 +219,6 @@ namespace GymApp.Migrations
 
                     b.Property<int>("GymId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("PhotoUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -318,29 +252,6 @@ namespace GymApp.Migrations
                     b.HasIndex("TrainerId");
 
                     b.ToTable("TrainerAvailabilities");
-                });
-
-            modelBuilder.Entity("GymApp.Models.TrainerService", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("TrainerServices");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -480,19 +391,19 @@ namespace GymApp.Migrations
                     b.HasOne("GymApp.Models.Member", "Member")
                         .WithMany("Appointments")
                         .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GymApp.Models.Service", "Service")
                         .WithMany("Appointments")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GymApp.Models.Trainer", "Trainer")
                         .WithMany("Appointments")
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Member");
@@ -507,7 +418,7 @@ namespace GymApp.Migrations
                     b.HasOne("GymApp.Models.Gym", "Gym")
                         .WithMany("Trainers")
                         .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Gym");
@@ -520,25 +431,6 @@ namespace GymApp.Migrations
                         .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("GymApp.Models.TrainerService", b =>
-                {
-                    b.HasOne("GymApp.Models.Service", "Service")
-                        .WithMany("TrainerServices")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GymApp.Models.Trainer", "Trainer")
-                        .WithMany("TrainerServices")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
 
                     b.Navigation("Trainer");
                 });
@@ -607,8 +499,6 @@ namespace GymApp.Migrations
             modelBuilder.Entity("GymApp.Models.Service", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("TrainerServices");
                 });
 
             modelBuilder.Entity("GymApp.Models.Trainer", b =>
@@ -616,8 +506,6 @@ namespace GymApp.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("Availabilities");
-
-                    b.Navigation("TrainerServices");
                 });
 #pragma warning restore 612, 618
         }

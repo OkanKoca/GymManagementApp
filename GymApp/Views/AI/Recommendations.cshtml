@@ -1,0 +1,320 @@
+@model GymApp.ViewModels.AIRecommendationViewModel
+@{
+    ViewData["Title"] = "Yapay Zeka Fitness Önerileri";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <!-- Baþlýk -->
+      <div class="text-center mb-4">
+    <h2 class="fw-bold"><i class="bi bi-robot text-success me-2"></i>Yapay Zeka Fitness Asistaný</h2>
+            <p class="text-muted">Kiþiselleþtirilmiþ egzersiz ve beslenme önerileri alýn</p>
+  </div>
+
+        @if (TempData["Success"] != null)
+   {
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+     <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+<!-- Form Kartý -->
+        <div class="card border-0 shadow-lg mb-4">
+            <div class="card-header bg-gradient bg-success text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-clipboard-data me-2"></i>Bilgilerinizi Girin</h5>
+   </div>
+   <div class="card-body p-4">
+       <form asp-action="Recommendations" method="post" enctype="multipart/form-data">
+    <div class="row g-3">
+  <!-- Kiþisel Bilgiler -->
+    <div class="col-md-6 col-lg-3">
+            <label asp-for="Height" class="form-label fw-semibold">
+         <i class="bi bi-rulers text-primary me-1"></i>Boy
+           </label>
+         <div class="input-group">
+  <input asp-for="Height" class="form-control" type="number" step="0.1" placeholder="175" />
+        <span class="input-group-text">cm</span>
+    </div>
+  <span asp-validation-for="Height" class="text-danger small"></span>
+ </div>
+          <div class="col-md-6 col-lg-3">
+    <label asp-for="Weight" class="form-label fw-semibold">
+            <i class="bi bi-speedometer text-primary me-1"></i>Kilo
+       </label>
+       <div class="input-group">
+        <input asp-for="Weight" class="form-control" type="number" step="0.1" placeholder="70" />
+          <span class="input-group-text">kg</span>
+            </div>
+              <span asp-validation-for="Weight" class="text-danger small"></span>
+        </div>
+    <div class="col-md-6 col-lg-3">
+          <label asp-for="Age" class="form-label fw-semibold">
+           <i class="bi bi-calendar-event text-primary me-1"></i>Yaþ
+            </label>
+  <input asp-for="Age" class="form-control" type="number" placeholder="25" />
+             <span asp-validation-for="Age" class="text-danger small"></span>
+        </div>
+        <div class="col-md-6 col-lg-3">
+         <label asp-for="Gender" class="form-label fw-semibold">
+              <i class="bi bi-gender-ambiguous text-primary me-1"></i>Cinsiyet
+                </label>
+   <select asp-for="Gender" class="form-select">
+         <option value="">Seçin...</option>
+       <option value="Erkek">Erkek</option>
+    <option value="Kadýn">Kadýn</option>
+          </select>
+         </div>
+              </div>
+
+   <div class="row g-3 mt-2">
+      <div class="col-md-6 col-lg-4">
+  <label asp-for="Goal" class="form-label fw-semibold">
+     <i class="bi bi-bullseye text-success me-1"></i>Hedefiniz
+    </label>
+        <select asp-for="Goal" class="form-select">
+   <option value="">Hedef Seçin...</option>
+                 <option value="Kilo vermek">?? Kilo vermek</option>
+        <option value="Kas yapmak">?? Kas yapmak</option>
+     <option value="Fit kalmak">?? Fit kalmak</option>
+     <option value="Güçlenmek">??? Güçlenmek</option>
+           <option value="Esneklik kazanmak">?? Esneklik kazanmak</option>
+           <option value="Kilo almak">?? Kilo almak</option>
+        </select>
+   </div>
+    <div class="col-md-6 col-lg-4">
+          <label asp-for="ActivityLevel" class="form-label fw-semibold">
+      <i class="bi bi-activity text-warning me-1"></i>Aktivite Seviyesi
+   </label>
+      <select asp-for="ActivityLevel" class="form-select">
+         <option value="">Seçin...</option>
+     <option value="Sedanter">??? Sedanter (Hareketsiz)</option>
+      <option value="Hafif Aktif">?? Hafif Aktif (Haftada 1-2 gün)</option>
+           <option value="Aktif">?? Aktif (Haftada 3-5 gün)</option>
+     <option value="Çok Aktif">?? Çok Aktif (Her gün)</option>
+         </select>
+     </div>
+      <div class="col-md-6 col-lg-4">
+    <label asp-for="BodyType" class="form-label fw-semibold">
+           <i class="bi bi-person-bounding-box text-info me-1"></i>Vücut Tipi (Opsiyonel)
+   </label>
+                <select asp-for="BodyType" class="form-select">
+          <option value="">Otomatik Tahmin</option>
+   <option value="Ektomorf">Ektomorf (Ýnce yapýlý)</option>
+     <option value="Mezomorf">Mezomorf (Atletik)</option>
+           <option value="Endomorf">Endomorf (Geniþ yapýlý)</option>
+           </select>
+         </div>
+     </div>
+
+ <div class="row g-3 mt-2">
+                 <div class="col-md-8">
+        <label asp-for="HealthConditions" class="form-label fw-semibold">
+    <i class="bi bi-heart-pulse text-danger me-1"></i>Saðlýk Durumu / Kýsýtlamalar
+      </label>
+           <textarea asp-for="HealthConditions" class="form-control" rows="2" 
+         placeholder="Varsa saðlýk durumunuz veya kýsýtlamalarýnýz (Örn: Diz problemi, diyabet, bel fýtýðý vb.)"></textarea>
+      <span asp-validation-for="HealthConditions" class="text-danger small"></span>
+             </div>
+       <div class="col-md-4">
+      <label asp-for="Photo" class="form-label fw-semibold">
+            <i class="bi bi-camera text-secondary me-1"></i>Fotoðraf (Opsiyonel)
+           </label>
+<input asp-for="Photo" class="form-control" type="file" accept="image/*" />
+       <small class="text-muted">Vücut tipi analizi için (max 5MB)</small>
+        <span asp-validation-for="Photo" class="text-danger small"></span>
+  </div>
+         </div>
+
+                 <div class="mt-4 d-flex justify-content-center gap-3">
+         <button type="submit" class="btn btn-success btn-lg px-5">
+ <i class="bi bi-magic me-2"></i>Öneri Al
+   </button>
+     <button type="reset" class="btn btn-outline-secondary btn-lg">
+           <i class="bi bi-arrow-counterclockwise me-1"></i>Temizle
+          </button>
+       </div>
+        </form>
+   </div>
+  </div>
+
+        @if (Model.BMI.HasValue)
+        {
+        var bmiColor = Model.BMI.Value < 18.5 ? "warning" : Model.BMI.Value < 25 ? "success" : Model.BMI.Value < 30 ? "warning" : "danger";
+            
+          <!-- Sonuçlar Bölümü -->
+      <div class="row g-4 mb-4">
+   <!-- BMI Kartý -->
+      <div class="col-md-6 col-lg-3">
+    <div class="card h-100 border-0 shadow text-center bg-@bmiColor bg-opacity-10">
+         <div class="card-body">
+ <i class="bi bi-speedometer2 text-@bmiColor" style="font-size: 2.5rem;"></i>
+              <h6 class="text-muted mt-2 mb-1">BMI</h6>
+   <h2 class="fw-bold text-@bmiColor mb-1">@Model.BMI.Value.ToString("F1")</h2>
+            <span class="badge bg-@bmiColor">@Model.BMICategory</span>
+   </div>
+             </div>
+         </div>
+
+        @if (Model.BodyType != null)
+     {
+           <div class="col-md-6 col-lg-3">
+     <div class="card h-100 border-0 shadow text-center bg-info bg-opacity-10">
+  <div class="card-body">
+             <i class="bi bi-person-bounding-box text-info" style="font-size: 2.5rem;"></i>
+         <h6 class="text-muted mt-2 mb-1">Vücut Tipi</h6>
+             <h3 class="fw-bold text-info mb-0">@Model.BodyType</h3>
+     </div>
+       </div>
+           </div>
+      }
+
+         @if (Model.BMR.HasValue)
+        {
+    <div class="col-md-6 col-lg-3">
+                   <div class="card h-100 border-0 shadow text-center bg-primary bg-opacity-10">
+     <div class="card-body">
+       <i class="bi bi-fire text-primary" style="font-size: 2.5rem;"></i>
+             <h6 class="text-muted mt-2 mb-1">BMR</h6>
+               <h3 class="fw-bold text-primary mb-0">@Model.BMR.Value.ToString("N0")</h3>
+    <small class="text-muted">kcal/gün</small>
+        </div>
+      </div>
+         </div>
+         }
+
+       @if (Model.TDEE.HasValue)
+    {
+            <div class="col-md-6 col-lg-3">
+         <div class="card h-100 border-0 shadow text-center bg-success bg-opacity-10">
+     <div class="card-body">
+        <i class="bi bi-lightning-charge text-success" style="font-size: 2.5rem;"></i>
+       <h6 class="text-muted mt-2 mb-1">Günlük Kalori</h6>
+  <h3 class="fw-bold text-success mb-0">@Model.TDEE.Value.ToString("N0")</h3>
+   <small class="text-muted">kcal/gün</small>
+    @if (Model.TargetCalories.HasValue && Model.TargetCalories != Model.TDEE)
+       {
+             <div class="mt-1">
+     <small class="text-primary">Hedef: @Model.TargetCalories.Value.ToString("N0") kcal</small>
+          </div>
+  }
+          </div>
+            </div>
+           </div>
+      }
+  </div>
+
+   <!-- Öneriler Kartlarý -->
+         <div class="row g-4">
+    @if (!string.IsNullOrEmpty(Model.ExerciseRecommendation))
+           {
+          <div class="col-lg-4">
+     <div class="card h-100 border-0 shadow">
+   <div class="card-header bg-primary text-white py-3">
+                 <h5 class="mb-0"><i class="bi bi-activity me-2"></i>Egzersiz Önerileri</h5>
+         </div>
+      <div class="card-body">
+  <div style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.7;">@Model.ExerciseRecommendation</div>
+         </div>
+      </div>
+        </div>
+   }
+  @if (!string.IsNullOrEmpty(Model.DietRecommendation))
+       {
+      <div class="col-lg-4">
+    <div class="card h-100 border-0 shadow">
+            <div class="card-header bg-success text-white py-3">
+        <h5 class="mb-0"><i class="bi bi-egg-fried me-2"></i>Beslenme Önerileri</h5>
+        </div>
+   <div class="card-body">
+        <div style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.7;">@Model.DietRecommendation</div>
+       </div>
+          </div>
+  </div>
+      }
+                @if (!string.IsNullOrEmpty(Model.GeneralAdvice))
+ {
+      <div class="col-lg-4">
+  <div class="card h-100 border-0 shadow">
+     <div class="card-header bg-info text-white py-3">
+    <h5 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Genel Tavsiyeler</h5>
+      </div>
+          <div class="card-body">
+     <div style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.7;">@Model.GeneralAdvice</div>
+         </div>
+     </div>
+ </div>
+         }
+   </div>
+
+      <!-- Profil Kaydet Butonu -->
+            <div class="text-center mt-4">
+         <form asp-action="SaveToProfile" method="post" class="d-inline">
+            <input type="hidden" asp-for="Height" />
+           <input type="hidden" asp-for="Weight" />
+   <input type="hidden" asp-for="Age" />
+            <input type="hidden" asp-for="Gender" />
+     <input type="hidden" asp-for="BodyType" />
+         <input type="hidden" asp-for="Goal" />
+          <button type="submit" class="btn btn-outline-primary">
+        <i class="bi bi-person-check me-1"></i>Bilgilerimi Profilime Kaydet
+    </button>
+            </form>
+         <a asp-controller="Appointment" asp-action="Create" class="btn btn-success ms-2">
+      <i class="bi bi-calendar-plus me-1"></i>Randevu Al
+                </a>
+        </div>
+}
+        else
+        {
+          <!-- Boþ Durum -->
+    <div class="text-center py-5">
+   <div class="mb-4">
+ <i class="bi bi-lightbulb text-warning" style="font-size: 5rem;"></i>
+         </div>
+  <h4 class="text-muted">Kiþiselleþtirilmiþ Öneriler Alýn</h4>
+      <p class="text-muted mb-0">
+      Boy, kilo ve diðer bilgilerinizi girerek size özel fitness ve beslenme önerileri alabilirsiniz.
+     </p>
+       <p class="text-muted">
+              <small>Yapay zeka destekli sistemimiz, verilerinizi analiz ederek en uygun programý oluþturur.</small>
+          </p>
+        </div>
+        }
+
+        <!-- Bilgi Kartlarý -->
+    <div class="row g-4 mt-4">
+            <div class="col-md-4">
+        <div class="card border-0 bg-light h-100">
+  <div class="card-body text-center">
+<i class="bi bi-shield-check text-success" style="font-size: 2rem;"></i>
+    <h6 class="mt-2">Güvenli</h6>
+    <small class="text-muted">Verileriniz güvende, sadece size öneri sunmak için kullanýlýr.</small>
+    </div>
+  </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 bg-light h-100">
+      <div class="card-body text-center">
+      <i class="bi bi-graph-up-arrow text-primary" style="font-size: 2rem;"></i>
+          <h6 class="mt-2">Bilimsel</h6>
+            <small class="text-muted">Mifflin-St Jeor formülü ile doðru kalori hesaplamasý.</small>
+  </div>
+              </div>
+    </div>
+            <div class="col-md-4">
+       <div class="card border-0 bg-light h-100">
+  <div class="card-body text-center">
+     <i class="bi bi-person-gear text-info" style="font-size: 2rem;"></i>
+         <h6 class="mt-2">Kiþiselleþtirilmiþ</h6>
+            <small class="text-muted">Hedeflerinize ve vücut tipinize göre özel öneriler.</small>
+         </div>
+    </div>
+      </div>
+   </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

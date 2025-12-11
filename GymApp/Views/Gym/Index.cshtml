@@ -1,28 +1,73 @@
 ﻿@model List<Gym>
+@{
+    ViewData["Title"] = "Spor Salonları";
+}
 
-<h2>Spor Salonları</h2>
-<a class="btn btn-primary" href="/Gym/Create">Yeni Salon</a>
-
-<table class="table mt-3">
-    <tr>
-        <th>Id</th>
-        <th>Ad</th>
-        <th>Adres</th>
-        <th>Çalışma Saatleri</th>
-        <th></th>
-    </tr>
-
-    @foreach (var g in Model)
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-building me-2"></i>Spor Salonları</h2>
+    @if (User.IsInRole("Admin"))
     {
-        <tr>
-            <td>@g.Id</td>
-            <td>@g.Name</td>
-            <td>@g.Address</td>
-            <td>@g.WorkingHours</td>
-            <td>
-                <a href="/Gym/Edit/@g.Id">Düzenle</a> |
-                <a href="/Gym/Delete/@g.Id">Sil</a>
-            </td>
-        </tr>
+        <a class="btn btn-primary" asp-action="Create">
+        <i class="bi bi-plus-circle me-1"></i> Yeni Salon
+</a>
     }
-</table>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+  <div class="alert alert-info">
+ <i class="bi bi-info-circle me-2"></i>Henüz kayıtlı spor salonu bulunmamaktadır.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+  @foreach (var g in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm">
+           <div class="card-body">
+  <div class="d-flex align-items-center mb-3">
+             <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+          <i class="bi bi-building text-primary" style="font-size: 1.5rem;"></i>
+            </div>
+     <div>
+     <h5 class="card-title mb-0">@g.Name</h5>
+             <small class="text-muted">ID: @g.Id</small>
+ </div>
+            </div>
+      <p class="card-text">
+        <i class="bi bi-geo-alt text-muted me-2"></i>@g.Address
+        </p>
+    <p class="card-text">
+          <i class="bi bi-clock text-muted me-2"></i>@g.WorkingHours
+  </p>
+     <p class="card-text">
+                 <i class="bi bi-people text-muted me-2"></i>
+  <span class="badge bg-secondary">@g.Trainers.Count Eğitmen</span>
+              </p>
+         </div>
+      @if (User.IsInRole("Admin"))
+         {
+     <div class="card-footer bg-transparent border-0">
+            <a asp-action="Edit" asp-route-id="@g.Id" class="btn btn-sm btn-outline-primary">
+    <i class="bi bi-pencil"></i> Düzenle
+</a>
+               <a asp-action="Delete" asp-route-id="@g.Id" class="btn btn-sm btn-outline-danger">
+  <i class="bi bi-trash"></i> Sil
+      </a>
+        </div>
+    }
+                </div>
+            </div>
+        }
+    </div>
+}

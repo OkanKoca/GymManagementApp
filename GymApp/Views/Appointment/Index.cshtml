@@ -1,0 +1,92 @@
+@model IEnumerable<GymApp.Models.Appointment>
+@{
+    ViewData["Title"] = "Randevularým";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-calendar-check"></i> Randevularým</h2>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Yeni Randevu
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Henüz randevunuz bulunmamaktadýr.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+      <table class="table table-hover">
+            <thead class="table-dark">
+ <tr>
+  <th>Tarih/Saat</th>
+ <th>Eðitmen</th>
+           <th>Hizmet</th>
+                    <th>Süre</th>
+         <th>Ücret</th>
+                <th>Durum</th>
+      <th>Ýþlemler</th>
+     </tr>
+       </thead>
+    <tbody>
+    @foreach (var item in Model)
+        {
+   var statusBadge = item.Status switch
+       {
+     "Pending" => "warning",
+             "Approved" => "success",
+         "Rejected" => "danger",
+           "Completed" => "info",
+   "Canceled" => "secondary",
+          _ => "secondary"
+   };
+            var statusText = item.Status switch
+           {
+         "Pending" => "Onay Bekliyor",
+ "Approved" => "Onaylandý",
+    "Rejected" => "Reddedildi",
+        "Completed" => "Tamamlandý",
+   "Canceled" => "Ýptal Edildi",
+      _ => item.Status
+         };
+           <tr>
+      <td>
+             <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
+        <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
+       </td>
+         <td>@item.Trainer?.FullName</td>
+         <td>@item.Service?.Name</td>
+      <td>@item.Service?.DurationMinutes dk</td>
+    <td>@item.Service?.Price.ToString("C")</td>
+          <td><span class="badge bg-@statusBadge">@statusText</span></td>
+     <td>
+        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
+<i class="bi bi-eye"></i>
+      </a>
+        @if (item.Status == "Pending" || item.Status == "Approved")
+     {
+          <form asp-action="Cancel" asp-route-id="@item.Id" method="post" class="d-inline"
+      onsubmit="return confirm('Randevuyu iptal etmek istediðinize emin misiniz?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">
+    <i class="bi bi-x-circle"></i>
+    </button>
+          </form>
+         }
+                </td>
+        </tr>
+        }
+            </tbody>
+        </table>
+    </div>
+}
