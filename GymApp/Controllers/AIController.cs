@@ -48,29 +48,6 @@ namespace GymApp.Controllers
                 return View(model);
             }
 
-            // Fotoðraf yüklenmiþ mi kontrol et
-            if (model.Photo != null && model.Photo.Length > 0)
-            {
-                // Dosya boyutu kontrolü (max 5MB)
-                if (model.Photo.Length > 5 * 1024 * 1024)
-                {
-                    ModelState.AddModelError("Photo", "Fotoðraf boyutu 5MB'dan küçük olmalýdýr.");
-                    return View(model);
-                }
-
-                // Dosya türü kontrolü
-                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
-                var extension = Path.GetExtension(model.Photo.FileName).ToLower();
-                if (!allowedExtensions.Contains(extension))
-                {
-                    ModelState.AddModelError("Photo", "Sadece JPG, PNG ve GIF dosyalarý yüklenebilir.");
-                    return View(model);
-                }
-
-                var photoUrl = await _aiService.SavePhotoAsync(model.Photo);
-                model.UploadedPhotoUrl = photoUrl;
-            }
-
             var result = await _aiService.GetRecommendationsAsync(model);
             return View(result);
         }

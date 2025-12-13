@@ -20,6 +20,10 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Service s)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Appointments");
+            ModelState.Remove("TrainerServices");
+
             if (!ModelState.IsValid) return View(s);
             _db.Services.Add(s);
             _db.SaveChanges();
@@ -40,6 +44,10 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Service s)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Appointments");
+            ModelState.Remove("TrainerServices");
+
             if (!ModelState.IsValid) return View(s);
             _db.Services.Update(s);
             _db.SaveChanges();
@@ -62,6 +70,15 @@ namespace GymApp.Controllers
         {
             var s = _db.Services.Find(id);
             if (s == null) return NotFound();
+
+            // İlişkili randevu kontrolü
+            var hasAppointments = _db.Appointments.Any(a => a.ServiceId == id);
+            if (hasAppointments)
+            {
+                TempData["Error"] = "Bu hizmete ait randevular bulunduğu için silinemez.";
+                return RedirectToAction("Index");
+            }
+
             _db.Services.Remove(s);
             _db.SaveChanges();
             TempData["Success"] = "Hizmet başarıyla silindi.";

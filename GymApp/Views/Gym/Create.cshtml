@@ -4,35 +4,62 @@
 }
 
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card border-0 shadow">
-            <div class="card-header bg-primary text-white">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-primary text-white py-3">
                 <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>@ViewData["Title"]</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form asp-action="Create" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control" placeholder="Salon adı" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label fw-semibold"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Salon adı" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="WorkingHours" class="form-label fw-semibold"></label>
+                            <input asp-for="WorkingHours" class="form-control" placeholder="Örn: 08:00 - 22:00" />
+                            <span asp-validation-for="WorkingHours" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label asp-for="Address" class="form-label fw-semibold"></label>
+                        <input asp-for="Address" class="form-control" placeholder="Tam adres" />
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label fw-semibold"></label>
+                            <input asp-for="Phone" class="form-control" type="tel" placeholder="0555 555 5555" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" type="email" placeholder="salon@email.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label asp-for="Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Salon hakkında kısa bilgi..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Address" class="form-label"></label>
-                        <input asp-for="Address" class="form-control" placeholder="Adres" />
-                        <span asp-validation-for="Address" class="text-danger"></span>
+                        <label asp-for="PhotoUrl" class="form-label fw-semibold"></label>
+                        <input asp-for="PhotoUrl" class="form-control" placeholder="https://example.com/photo.jpg" />
+                        <small class="text-muted">Fotoğraf URL'si (opsiyonel)</small>
+                        <span asp-validation-for="PhotoUrl" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="WorkingHours" class="form-label"></label>
-                        <input asp-for="WorkingHours" class="form-control" placeholder="Örn: 08:00 - 22:00" />
-                        <span asp-validation-for="WorkingHours" class="text-danger"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a asp-action="Index" class="btn btn-secondary">
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left me-1"></i> Geri
                         </a>
                         <button type="submit" class="btn btn-primary">

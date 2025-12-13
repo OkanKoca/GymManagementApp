@@ -7,7 +7,7 @@ namespace GymApp.Models
         public int Id { get; set; }
 
         [Required]
- public int TrainerId { get; set; }
+        public int TrainerId { get; set; }
         public Trainer Trainer { get; set; }
 
         [Required]

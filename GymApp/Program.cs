@@ -38,8 +38,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 // HttpClient factory
 builder.Services.AddHttpClient();
 
-// AI Service
-builder.Services.AddScoped<IAIService, OpenAIService>();
+// AI Service - Google Gemini
+builder.Services.AddScoped<IAIService, GeminiService>();
 
 var app = builder.Build();
 

@@ -5,130 +5,130 @@
 <!-- Hero Section -->
 <div class="bg-gradient bg-primary text-white py-5 mb-5 rounded-4 shadow" style="margin-top: -24px; margin-left: -12px; margin-right: -12px;">
     <div class="container">
-     <div class="row align-items-center py-4">
-    <div class="col-lg-7">
- <h1 class="display-3 fw-bold mb-3">
-   <i class="bi bi-heart-pulse"></i> GymApp
- </h1>
-   <p class="lead mb-4 opacity-90">
-    Spor salonlarını keşfedin, uzman eğitmenlerle tanışın ve kolayca randevu oluşturun.
-    <strong>Yapay zeka destekli</strong> kişiselleştirilmiş fitness önerileri ile hedeflerinize ulaşın!
- </p>
-     <div class="d-flex flex-wrap gap-3">
-        @if (User.Identity?.IsAuthenticated != true)
-        {
-          <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-4 shadow-sm">
-     <i class="bi bi-person-plus me-2"></i>Ücretsiz Üye Ol
-         </a>
-  <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg px-4">
-       <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
-  </a>
-  }
- else
-  {
-    <a asp-controller="Appointment" asp-action="Create" class="btn btn-light btn-lg px-4 shadow-sm">
-   <i class="bi bi-calendar-plus me-2"></i>Randevu Al
-    </a>
-   <a asp-controller="AI" asp-action="Recommendations" class="btn btn-warning btn-lg px-4 shadow-sm">
-    <i class="bi bi-robot me-2"></i>AI Öneriler
-       </a>
-    }
-  </div>
-     </div>
-      <div class="col-lg-5 text-center d-none d-lg-block">
-     <div class="position-relative">
- <i class="bi bi-activity text-white opacity-25" style="font-size: 18rem;"></i>
-<div class="position-absolute top-50 start-50 translate-middle">
-  <div class="bg-white bg-opacity-10 rounded-circle p-5">
-              <i class="bi bi-trophy text-warning" style="font-size: 4rem;"></i>
- </div>
+        <div class="row align-items-center py-4">
+            <div class="col-lg-7">
+                <h1 class="display-3 fw-bold mb-3">
+                    <i class="bi bi-heart-pulse"></i> GymApp
+                </h1>
+                <p class="lead mb-4 opacity-90">
+                    Spor salonlarını keşfedin, uzman eğitmenlerle tanışın ve kolayca randevu oluşturun.
+                    <strong>Yapay zeka destekli</strong> kişiselleştirilmiş fitness önerileri ile hedeflerinize ulaşın!
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    @if (User.Identity?.IsAuthenticated != true)
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-4 shadow-sm">
+                            <i class="bi bi-person-plus me-2"></i>Ücretsiz Üye Ol
+                        </a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Giriş Yap
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Appointment" asp-action="Create" class="btn btn-light btn-lg px-4 shadow-sm">
+                            <i class="bi bi-calendar-plus me-2"></i>Randevu Al
+                        </a>
+                        <a asp-controller="AI" asp-action="Recommendations" class="btn btn-warning btn-lg px-4 shadow-sm">
+                            <i class="bi bi-robot me-2"></i>AI Öneriler
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <div class="position-relative">
+                    <i class="bi bi-activity text-white opacity-25" style="font-size: 18rem;"></i>
+                    <div class="position-absolute top-50 start-50 translate-middle">
+                        <div class="bg-white bg-opacity-10 rounded-circle p-5">
+                            <i class="bi bi-trophy text-warning" style="font-size: 4rem;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-     </div>
-     </div>
-     </div>
     </div>
 </div>
 
 <!-- Özellikler -->
 <div class="container mb-5">
     <div class="text-center mb-5">
-   <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mb-3">ÖZELLİKLER</span>
-   <h2 class="fw-bold display-6">Neden GymApp?</h2>
-     <p class="text-muted lead">Fitness yolculuğunuzda size yardımcı olacak özellikler</p>
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mb-3">ÖZELLİKLER</span>
+        <h2 class="fw-bold display-6">Neden GymApp?</h2>
+        <p class="text-muted lead">Fitness yolculuğunuzda size yardımcı olacak özellikler</p>
     </div>
     <div class="row g-4">
- <div class="col-md-6 col-lg-3">
-  <div class="card h-100 border-0 shadow-sm text-center feature-card">
-      <div class="card-body p-4">
-  <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
- <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
-       </div>
-      <h5 class="card-title fw-bold">Spor Salonları</h5>
-    <p class="card-text text-muted small">
-      Farklı spor salonlarını keşfedin, çalışma saatlerini ve sunulan hizmetleri inceleyin.
-      </p>
-  <a asp-controller="Gym" asp-action="Index" class="btn btn-sm btn-outline-primary">
-      <i class="bi bi-arrow-right"></i> Keşfet
-        </a>
-   </div>
-      </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center feature-card">
+                <div class="card-body p-4">
+                    <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
+                        <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Spor Salonları</h5>
+                    <p class="card-text text-muted small">
+                        Farklı spor salonlarını keşfedin, çalışma saatlerini ve sunulan hizmetleri inceleyin.
+                    </p>
+                    <a asp-controller="Gym" asp-action="Index" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-arrow-right"></i> Keşfet
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="col-md-6 col-lg-3">
-    <div class="card h-100 border-0 shadow-sm text-center feature-card">
-  <div class="card-body p-4">
-  <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-   <i class="bi bi-person-badge text-success" style="font-size: 2rem;"></i>
- </div>
-        <h5 class="card-title fw-bold">Uzman Eğitmenler</h5>
-        <p class="card-text text-muted small">
-       Alanında uzman eğitmenlerle tanışın ve müsaitlik durumlarına göre randevu alın.
-           </p>
-     <a asp-controller="Trainer" asp-action="Index" class="btn btn-sm btn-outline-success">
-<i class="bi bi-arrow-right"></i> Keşfet
-  </a>
-   </div>
-     </div>
+            <div class="card h-100 border-0 shadow-sm text-center feature-card">
+                <div class="card-body p-4">
+                    <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
+                        <i class="bi bi-person-badge text-success" style="font-size: 2rem;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Uzman Eğitmenler</h5>
+                    <p class="card-text text-muted small">
+                        Alanında uzman eğitmenlerle tanışın ve müsaitlik durumlarına göre randevu alın.
+                    </p>
+                    <a asp-controller="Trainer" asp-action="Index" class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-arrow-right"></i> Keşfet
+                    </a>
+                </div>
+            </div>
         </div>
         <div class="col-md-6 col-lg-3">
-   <div class="card h-100 border-0 shadow-sm text-center feature-card">
-          <div class="card-body p-4">
-    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-      <i class="bi bi-robot text-warning" style="font-size: 2rem;"></i>
-     </div>
-       <h5 class="card-title fw-bold">AI Desteği</h5>
-               <p class="card-text text-muted small">
-    Boy, kilo ve hedeflerinize göre kişiselleştirilmiş egzersiz ve diyet önerileri alın.
-   </p>
-       <a asp-controller="AI" asp-action="Recommendations" class="btn btn-sm btn-outline-warning">
-    <i class="bi bi-arrow-right"></i> Dene
-    </a>
-   </div>
-     </div>
- </div>
-    <div class="col-md-6 col-lg-3">
-     <div class="card h-100 border-0 shadow-sm text-center feature-card">
-     <div class="card-body p-4">
-         <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
-<i class="bi bi-calendar-check text-info" style="font-size: 2rem;"></i>
-      </div>
-        <h5 class="card-title fw-bold">Kolay Randevu</h5>
-   <p class="card-text text-muted small">
-       Online randevu sistemi ile istediğiniz eğitmenden kolayca randevu alın.
-   </p>
-  @if (User.Identity?.IsAuthenticated == true)
-           {
-<a asp-controller="Appointment" asp-action="Create" class="btn btn-sm btn-outline-info">
- <i class="bi bi-arrow-right"></i> Randevu Al
-     </a>
-     }
- else
-    {
-    <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-outline-info">
-       <i class="bi bi-arrow-right"></i> Üye Ol
-   </a>
-   }
-    </div>
-</div>
+            <div class="card h-100 border-0 shadow-sm text-center feature-card">
+                <div class="card-body p-4">
+                    <div class="bg-warning bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
+                        <i class="bi bi-robot text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">AI Desteği</h5>
+                    <p class="card-text text-muted small">
+                        Boy, kilo ve hedeflerinize göre kişiselleştirilmiş egzersiz ve diyet önerileri alın.
+                    </p>
+                    <a asp-controller="AI" asp-action="Recommendations" class="btn btn-sm btn-outline-warning">
+                        <i class="bi bi-arrow-right"></i> Dene
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center feature-card">
+                <div class="card-body p-4">
+                    <div class="bg-info bg-opacity-10 rounded-circle d-inline-flex p-4 mb-3">
+                        <i class="bi bi-calendar-check text-info" style="font-size: 2rem;"></i>
+                    </div>
+                    <h5 class="card-title fw-bold">Kolay Randevu</h5>
+                    <p class="card-text text-muted small">
+                        Online randevu sistemi ile istediğiniz eğitmenden kolayca randevu alın.
+                    </p>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-controller="Appointment" asp-action="Create" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-arrow-right"></i> Randevu Al
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-arrow-right"></i> Üye Ol
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -136,39 +136,39 @@
 <!-- Nasıl Çalışır -->
 <div class="bg-light py-5 mb-5 rounded-4" style="margin-left: -12px; margin-right: -12px;">
     <div class="container">
-      <div class="text-center mb-5">
-<span class="badge bg-success bg-opacity-10 text-success px-3 py-2 mb-3">ADIMLAR</span>
-     <h2 class="fw-bold display-6">Nasıl Çalışır?</h2>
-      <p class="text-muted">3 basit adımda fitness yolculuğunuza başlayın</p>
-  </div>
-        <div class="row g-4">
-    <div class="col-md-4">
- <div class="text-center">
-     <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
- <span class="fs-4 fw-bold">1</span>
-       </div>
-  <h5 class="fw-bold">Üye Olun</h5>
-   <p class="text-muted">Ücretsiz kayıt olun ve profilinizi oluşturun. Boy, kilo ve hedeflerinizi girin.</p>
- </div>
-            </div>
-    <div class="col-md-4">
-       <div class="text-center">
-     <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-      <span class="fs-4 fw-bold">2</span>
-   </div>
-   <h5 class="fw-bold">Eğitmen Seçin</h5>
-     <p class="text-muted">Uzman eğitmenlerimizi inceleyin ve size uygun olanı seçin.</p>
-     </div>
-          </div>
-   <div class="col-md-4">
-       <div class="text-center">
-  <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-       <span class="fs-4 fw-bold">3</span>
+        <div class="text-center mb-5">
+            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 mb-3">ADIMLAR</span>
+            <h2 class="fw-bold display-6">Nasıl Çalışır?</h2>
+            <p class="text-muted">3 basit adımda fitness yolculuğunuza başlayın</p>
         </div>
-       <h5 class="fw-bold">Randevu Alın</h5>
-       <p class="text-muted">Uygun tarih ve saati seçerek randevunuzu oluşturun.</p>
-             </div>
-       </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fs-4 fw-bold">1</span>
+                    </div>
+                    <h5 class="fw-bold">Üye Olun</h5>
+                    <p class="text-muted">Ücretsiz kayıt olun ve profilinizi oluşturun. Boy, kilo ve hedeflerinizi girin.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fs-4 fw-bold">2</span>
+                    </div>
+                    <h5 class="fw-bold">Eğitmen Seçin</h5>
+                    <p class="text-muted">Uzman eğitmenlerimizi inceleyin ve size uygun olanı seçin.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fs-4 fw-bold">3</span>
+                    </div>
+                    <h5 class="fw-bold">Randevu Alın</h5>
+                    <p class="text-muted">Uygun tarih ve saati seçerek randevunuzu oluşturun.</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -176,55 +176,55 @@
 <!-- Hizmetler -->
 <div class="container mb-5">
     <div class="text-center mb-5">
- <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-3">HİZMETLER</span>
+        <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-3">HİZMETLER</span>
         <h2 class="fw-bold display-6">Sunduğumuz Hizmetler</h2>
-      <p class="text-muted">Profesyonel eğitmenlerimizle birlikte</p>
-  </div>
+        <p class="text-muted">Profesyonel eğitmenlerimizle birlikte</p>
+    </div>
     <div class="row g-4 justify-content-center">
-   <div class="col-6 col-md-2">
-        <div class="text-center p-3">
-          <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
-  <i class="bi bi-person-arms-up text-primary" style="font-size: 2.5rem;"></i>
-      </div>
-              <h6 class="fw-semibold">Personal Training</h6>
-  </div>
-     </div>
-  <div class="col-6 col-md-2">
-      <div class="text-center p-3">
-    <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
-            <i class="bi bi-heart-pulse text-danger" style="font-size: 2.5rem;"></i>
-  </div>
- <h6 class="fw-semibold">Fitness</h6>
-       </div>
-        </div>
-      <div class="col-6 col-md-2">
- <div class="text-center p-3">
-    <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
-   <i class="bi bi-yin-yang text-success" style="font-size: 2.5rem;"></i>
-   </div>
-   <h6 class="fw-semibold">Yoga</h6>
-            </div>
-      </div>
         <div class="col-6 col-md-2">
-    <div class="text-center p-3">
-            <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
-      <i class="bi bi-lightning text-warning" style="font-size: 2.5rem;"></i>
-  </div>
-     <h6 class="fw-semibold">Pilates</h6>
+            <div class="text-center p-3">
+                <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
+                    <i class="bi bi-person-arms-up text-primary" style="font-size: 2.5rem;"></i>
+                </div>
+                <h6 class="fw-semibold">Personal Training</h6>
             </div>
- </div>
-  <div class="col-6 col-md-2">
-   <div class="text-center p-3">
-         <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
-        <i class="bi bi-people text-info" style="font-size: 2.5rem;"></i>
-   </div>
-     <h6 class="fw-semibold">Grup Dersleri</h6>
-       </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="text-center p-3">
+                <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
+                    <i class="bi bi-heart-pulse text-danger" style="font-size: 2.5rem;"></i>
+                </div>
+                <h6 class="fw-semibold">Fitness</h6>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="text-center p-3">
+                <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
+                    <i class="bi bi-yin-yang text-success" style="font-size: 2.5rem;"></i>
+                </div>
+                <h6 class="fw-semibold">Yoga</h6>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="text-center p-3">
+                <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
+                    <i class="bi bi-lightning text-warning" style="font-size: 2.5rem;"></i>
+                </div>
+                <h6 class="fw-semibold">Pilates</h6>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="text-center p-3">
+                <div class="bg-white rounded-4 shadow-sm p-4 mb-2 service-icon">
+                    <i class="bi bi-people text-info" style="font-size: 2.5rem;"></i>
+                </div>
+                <h6 class="fw-semibold">Grup Dersleri</h6>
+            </div>
+        </div>
     </div>
-    </div>
-  <div class="text-center mt-4">
+    <div class="text-center mt-4">
         <a asp-controller="Service" asp-action="Index" class="btn btn-primary">
- <i class="bi bi-list-check me-2"></i>Tüm Hizmetleri Gör
+            <i class="bi bi-list-check me-2"></i>Tüm Hizmetleri Gör
         </a>
     </div>
 </div>
@@ -232,68 +232,68 @@
 <!-- İstatistikler -->
 <div class="bg-gradient bg-dark text-white py-5 rounded-4 mb-5" style="margin-left: -12px; margin-right: -12px;">
     <div class="container">
-   <div class="row text-center g-4">
-      <div class="col-6 col-md-3">
-<div class="p-3">
- <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
-       <h2 class="fw-bold mb-0 mt-2 counter">10+</h2>
-        <p class="text-white-50 mb-0">Spor Salonu</p>
-         </div>
-        </div>
+        <div class="row text-center g-4">
             <div class="col-6 col-md-3">
- <div class="p-3">
-     <i class="bi bi-person-badge text-success" style="font-size: 2rem;"></i>
-  <h2 class="fw-bold mb-0 mt-2 counter">25+</h2>
-        <p class="text-white-50 mb-0">Uzman Eğitmen</p>
-     </div>
-  </div>
-     <div class="col-6 col-md-3">
-             <div class="p-3">
-     <i class="bi bi-people text-info" style="font-size: 2rem;"></i>
-  <h2 class="fw-bold mb-0 mt-2 counter">500+</h2>
-      <p class="text-white-50 mb-0">Mutlu Üye</p>
-     </div>
-      </div>
-    <div class="col-6 col-md-3">
-       <div class="p-3">
-       <i class="bi bi-calendar-check text-warning" style="font-size: 2rem;"></i>
-          <h2 class="fw-bold mb-0 mt-2 counter">1000+</h2>
-      <p class="text-white-50 mb-0">Tamamlanan Randevu</p>
-     </div>
-        </div>
+                <div class="p-3">
+                    <i class="bi bi-building text-primary" style="font-size: 2rem;"></i>
+                    <h2 class="fw-bold mb-0 mt-2 counter">10+</h2>
+                    <p class="text-white-50 mb-0">Spor Salonu</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3">
+                    <i class="bi bi-person-badge text-success" style="font-size: 2rem;"></i>
+                    <h2 class="fw-bold mb-0 mt-2 counter">25+</h2>
+                    <p class="text-white-50 mb-0">Uzman Eğitmen</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3">
+                    <i class="bi bi-people text-info" style="font-size: 2rem;"></i>
+                    <h2 class="fw-bold mb-0 mt-2 counter">500+</h2>
+                    <p class="text-white-50 mb-0">Mutlu Üye</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3">
+                    <i class="bi bi-calendar-check text-warning" style="font-size: 2rem;"></i>
+                    <h2 class="fw-bold mb-0 mt-2 counter">1000+</h2>
+                    <p class="text-white-50 mb-0">Tamamlanan Randevu</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- AI Önerileri Tanıtım -->
 <div class="container mb-5">
- <div class="row align-items-center g-5">
+    <div class="row align-items-center g-5">
         <div class="col-lg-6">
             <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 mb-3">YENİ ÖZELLİK</span>
-   <h2 class="fw-bold display-6">Yapay Zeka Destekli Fitness Önerileri</h2>
-       <p class="text-muted lead">
-  Kişisel verilerinize göre özelleştirilmiş egzersiz ve beslenme programları alın.
-   BMI hesaplama, kalori ihtiyacı ve vücut tipinize göre akıllı öneriler.
- </p>
-     <ul class="list-unstyled">
-       <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>BMI ve vücut analizi</li>
-            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kalori ihtiyacı hesaplama</li>
-     <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kişiselleştirilmiş egzersiz önerileri</li>
-         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Beslenme tavsiyeleri</li>
-   </ul>
+            <h2 class="fw-bold display-6">Yapay Zeka Destekli Fitness Önerileri</h2>
+            <p class="text-muted lead">
+                Kişisel verilerinize göre özelleştirilmiş egzersiz ve beslenme programları alın.
+                BMI hesaplama, kalori ihtiyacı ve vücut tipinize göre akıllı öneriler.
+            </p>
+            <ul class="list-unstyled">
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>BMI ve vücut analizi</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kalori ihtiyacı hesaplama</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Kişiselleştirilmiş egzersiz önerileri</li>
+                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Beslenme tavsiyeleri</li>
+            </ul>
             <a asp-controller="AI" asp-action="Recommendations" class="btn btn-warning btn-lg">
-    <i class="bi bi-robot me-2"></i>Hemen Dene
-        </a>
+                <i class="bi bi-robot me-2"></i>Hemen Dene
+            </a>
         </div>
-     <div class="col-lg-6">
- <div class="position-relative">
-       <div class="bg-warning bg-opacity-10 rounded-4 p-5 text-center">
-       <i class="bi bi-robot text-warning" style="font-size: 10rem; opacity: 0.8;"></i>
-        <div class="position-absolute top-0 end-0 m-4">
-   <span class="badge bg-success p-2">Ücretsiz</span>
-          </div>
+        <div class="col-lg-6">
+            <div class="position-relative">
+                <div class="bg-warning bg-opacity-10 rounded-4 p-5 text-center">
+                    <i class="bi bi-robot text-warning" style="font-size: 10rem; opacity: 0.8;"></i>
+                    <div class="position-absolute top-0 end-0 m-4">
+                        <span class="badge bg-success p-2">Ücretsiz</span>
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>
@@ -302,28 +302,31 @@
 @if (User.Identity?.IsAuthenticated != true)
 {
     <div class="bg-gradient bg-primary text-white py-5 text-center rounded-4" style="margin-left: -12px; margin-right: -12px; margin-bottom: -16px;">
-  <div class="container py-4">
-       <h3 class="fw-bold display-6 mb-3">Hemen Başlayın!</h3>
-       <p class="lead mb-4 opacity-90">Ücretsiz üye olun ve fitness yolculuğunuza bugün başlayın.</p>
- <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-5 shadow">
-  <i class="bi bi-person-plus me-2"></i>Ücretsiz Kayıt Ol
-  </a>
-      </div>
+        <div class="container py-4">
+            <h3 class="fw-bold display-6 mb-3">Hemen Başlayın!</h3>
+            <p class="lead mb-4 opacity-90">Ücretsiz üye olun ve fitness yolculuğunuza bugün başlayın.</p>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-5 shadow">
+                <i class="bi bi-person-plus me-2"></i>Ücretsiz Kayıt Ol
+            </a>
+        </div>
     </div>
 }
 
 <style>
-.feature-card {
-     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-    .feature-card:hover {
-     transform: translateY(-10px);
-        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
-  }
-.service-icon {
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .service-icon {
         transition: transform 0.3s ease;
     }
-    .service-icon:hover {
-        transform: scale(1.1);
-    }
+
+        .service-icon:hover {
+            transform: scale(1.1);
+        }
 </style>

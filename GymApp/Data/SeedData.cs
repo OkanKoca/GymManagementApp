@@ -23,7 +23,8 @@ namespace GymApp.Data
                 {
                     UserName = email,
                     Email = email,
-                    FullName = "Admin Kullanıcı"
+                    FullName = "Admin Kullanıcı",
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 await userMgr.CreateAsync(admin, "sau");

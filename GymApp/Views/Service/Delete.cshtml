@@ -7,34 +7,34 @@
     <div class="col-md-6">
         <div class="card border-danger">
             <div class="card-header bg-danger text-white">
- <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Silme Onayý</h5>
-    </div>
-    <div class="card-body">
-          <p>Aþaðýdaki hizmeti silmek istediðinize emin misiniz?</p>
-  <hr />
-      <dl class="row">
-    <dt class="col-sm-4">Hizmet Adý</dt>
- <dd class="col-sm-8">@Model.Name</dd>
-    <dt class="col-sm-4">Süre</dt>
-     <dd class="col-sm-8">@Model.DurationMinutes dakika</dd>
-    <dt class="col-sm-4">Fiyat</dt>
-    <dd class="col-sm-8">@Model.Price.ToString("C")</dd>
-   </dl>
-  <div class="alert alert-warning">
-     <i class="bi bi-info-circle me-2"></i>Bu iþlem geri alýnamaz!
-       </div>
-      </div>
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Silme Onayý</h5>
+            </div>
+            <div class="card-body">
+                <p>Aþaðýdaki hizmeti silmek istediðinize emin misiniz?</p>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4">Hizmet Adý</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+                    <dt class="col-sm-4">Süre</dt>
+                    <dd class="col-sm-8">@Model.DurationMinutes dakika</dd>
+                    <dt class="col-sm-4">Fiyat</dt>
+                    <dd class="col-sm-8">@Model.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</dd>
+                </dl>
+                <div class="alert alert-warning">
+                    <i class="bi bi-info-circle me-2"></i>Bu iþlem geri alýnamaz!
+                </div>
+            </div>
             <div class="card-footer">
-       <form asp-action="Delete" method="post">
-   <input type="hidden" asp-for="Id" />
-           <button type="submit" class="btn btn-danger">
-     <i class="bi bi-trash me-1"></i> Evet, Sil
-     </button>
-   <a asp-action="Index" class="btn btn-secondary">
-       <i class="bi bi-x-circle me-1"></i> Ýptal
-    </a>
-        </form>
-</div>
-</div>
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-1"></i> Evet, Sil
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i> Ýptal
+                    </a>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

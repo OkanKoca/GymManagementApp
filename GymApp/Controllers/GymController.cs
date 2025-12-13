@@ -25,6 +25,9 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Gym gym)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Trainers");
+            
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Add(gym);
             _db.SaveChanges();
@@ -45,6 +48,9 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Gym gym)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Trainers");
+    
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Update(gym);
             _db.SaveChanges();
@@ -55,7 +61,7 @@ namespace GymApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-            var gym = _db.Gyms.Find(id);
+            var gym = _db.Gyms.Include(g => g.Trainers).FirstOrDefault(g => g.Id == id);
             if (gym == null) return NotFound();
             return View(gym);
         }
@@ -67,6 +73,15 @@ namespace GymApp.Controllers
         {
             var gym = _db.Gyms.Find(id);
             if (gym == null) return NotFound();
+            
+            // İlişkili eğitmen kontrolü
+            var hasTrainers = _db.Trainers.Any(t => t.GymId == id);
+            if (hasTrainers)
+            {
+                TempData["Error"] = "Bu salonda kayıtlı eğitmenler bulunduğu için silinemez.";
+                return RedirectToAction(nameof(Index));
+            }
+     
             _db.Gyms.Remove(gym);
             _db.SaveChanges();
             TempData["Success"] = "Spor salonu başarıyla silindi.";

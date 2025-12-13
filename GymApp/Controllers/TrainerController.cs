@@ -36,6 +36,9 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Trainer t)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Gym");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Gyms = _db.Gyms.ToList();
@@ -63,6 +66,9 @@ namespace GymApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Trainer t)
         {
+            // Navigation property'leri ModelState'den çıkar
+            ModelState.Remove("Gym");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Gyms = _db.Gyms.ToList();
@@ -90,6 +96,14 @@ namespace GymApp.Controllers
         {
             var t = _db.Trainers.Find(id);
             if (t == null) return NotFound();
+
+            // İlişkili verileri kontrol et
+            var hasAppointments = _db.Appointments.Any(a => a.TrainerId == id);
+            if (hasAppointments)
+            {
+                TempData["Error"] = "Bu eğitmenin randevuları bulunduğu için silinemez.";
+                return RedirectToAction("Index");
+            }
 
             _db.Trainers.Remove(t);
             _db.SaveChanges();

@@ -7,19 +7,19 @@
     <div>
         <h2 class="fw-bold"><i class="bi bi-clipboard-check me-2 text-primary"></i>Hizmetler</h2>
         <p class="text-muted mb-0">Sunduðumuz profesyonel fitness hizmetleri</p>
- </div>
+    </div>
     @if (User.IsInRole("Admin"))
     {
         <a class="btn btn-primary" asp-action="Create">
             <i class="bi bi-plus-circle me-1"></i> Yeni Hizmet
-</a>
+        </a>
     }
 </div>
 
 @if (TempData["Success"] != null)
 {
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-   <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
@@ -27,94 +27,94 @@
 @if (!Model.Any())
 {
     <div class="alert alert-info">
-      <i class="bi bi-info-circle me-2"></i>Henüz kayýtlý hizmet bulunmamaktadýr.
+        <i class="bi bi-info-circle me-2"></i>Henüz kayýtlý hizmet bulunmamaktadýr.
     </div>
 }
 else
 {
     <!-- Hizmet Türlerine Göre Grupla -->
     var groupedServices = Model.GroupBy(s => s.ServiceType ?? "Diðer").OrderBy(g => g.Key);
-  
+
     @foreach (var group in groupedServices)
     {
         <h5 class="mt-4 mb-3 text-muted">
             @switch (group.Key.ToLower())
- {
-       case "fitness":
-         <i class="bi bi-heart-pulse text-danger me-2"></i>
-         break;
-        case "yoga":
-       <i class="bi bi-yin-yang text-success me-2"></i>
-             break;
-      case "pilates":
-          <i class="bi bi-lightning text-warning me-2"></i>
-     break;
+            {
+                case "fitness":
+                    <i class="bi bi-heart-pulse text-danger me-2"></i>
+                    break;
+                case "yoga":
+                    <i class="bi bi-yin-yang text-success me-2"></i>
+                    break;
+                case "pilates":
+                    <i class="bi bi-lightning text-warning me-2"></i>
+                    break;
                 case "personal training":
-  <i class="bi bi-person-arms-up text-primary me-2"></i>
-             break;
-    default:
-           <i class="bi bi-activity text-info me-2"></i>
-  break;
+                    <i class="bi bi-person-arms-up text-primary me-2"></i>
+                    break;
+                default:
+                    <i class="bi bi-activity text-info me-2"></i>
+                    break;
             }
             @group.Key
             <span class="badge bg-secondary ms-2">@group.Count()</span>
         </h5>
-        
+
         <div class="row g-4 mb-4">
-   @foreach (var s in group)
+            @foreach (var s in group)
             {
                 <div class="col-md-6 col-lg-4">
-          <div class="card h-100 border-0 shadow-sm hover-card">
-   <div class="card-body text-center p-4">
-   <div class="@GetServiceColorClass(s.ServiceType) rounded-circle d-inline-flex p-3 mb-3">
-         <i class="@GetServiceIcon(s.ServiceType)" style="font-size: 2rem;"></i>
-         </div>
-      <h5 class="card-title fw-bold">@s.Name</h5>
-     
-   @if (!string.IsNullOrEmpty(s.Description))
-         {
- <p class="card-text text-muted small mb-3">@s.Description</p>
-}
-                 
-     <div class="d-flex justify-content-center gap-3 my-3">
-        <div class="text-center">
-         <i class="bi bi-clock text-muted"></i>
-            <span class="fw-bold d-block">@s.DurationMinutes</span>
-        <small class="text-muted">dakika</small>
-       </div>
-<div class="vr"></div>
-      <div class="text-center">
-      <i class="bi bi-tag text-muted"></i>
-          <span class="fw-bold text-success fs-5 d-block">@s.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</span>
-  </div>
-             </div>
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-body text-center p-4">
+                            <div class="@GetServiceColorClass(s.ServiceType) rounded-circle d-inline-flex p-3 mb-3">
+                                <i class="@GetServiceIcon(s.ServiceType)" style="font-size: 2rem;"></i>
+                            </div>
+                            <h5 class="card-title fw-bold">@s.Name</h5>
 
-         @if (!s.IsActive)
-  {
-        <span class="badge bg-secondary">Pasif</span>
-                    }
-                   </div>
-    @if (User.IsInRole("Admin"))
-          {
-         <div class="card-footer bg-transparent border-0 text-center pb-3">
-             <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">
-  <i class="bi bi-pencil"></i> Düzenle
-                 </a>
-      <a asp-action="Delete" asp-route-id="@s.Id" class="btn btn-sm btn-outline-danger">
-         <i class="bi bi-trash"></i> Sil
-    </a>
-       </div>
-       }
-              @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
-   {
-      <div class="card-footer bg-transparent border-0 text-center pb-3">
-   <a asp-controller="Appointment" asp-action="Create" class="btn btn-sm btn-success">
-   <i class="bi bi-calendar-plus me-1"></i> Randevu Al
-         </a>
-     </div>
-      }
-    </div>
-</div>
+                            @if (!string.IsNullOrEmpty(s.Description))
+                            {
+                                <p class="card-text text-muted small mb-3">@s.Description</p>
+                            }
+
+                            <div class="d-flex justify-content-center gap-3 my-3">
+                                <div class="text-center">
+                                    <i class="bi bi-clock text-muted"></i>
+                                    <span class="fw-bold d-block">@s.DurationMinutes</span>
+                                    <small class="text-muted">dakika</small>
+                                </div>
+                                <div class="vr"></div>
+                                <div class="text-center">
+                                    <i class="bi bi-tag text-muted"></i>
+                                    <span class="fw-bold text-success fs-5 d-block">@s.Price.ToString("C", new System.Globalization.CultureInfo("tr-TR"))</span>
+                                </div>
+                            </div>
+
+                            @if (!s.IsActive)
+                            {
+                                <span class="badge bg-secondary">Pasif</span>
+                            }
+                        </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="card-footer bg-transparent border-0 text-center pb-3">
+                                <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i> Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@s.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Sil
+                                </a>
+                            </div>
+                        }
+                        @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
+                        {
+                            <div class="card-footer bg-transparent border-0 text-center pb-3">
+                                <a asp-controller="Appointment" asp-action="Create" class="btn btn-sm btn-success">
+                                    <i class="bi bi-calendar-plus me-1"></i> Randevu Al
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
         </div>
     }
@@ -125,33 +125,34 @@ else
     {
         return (serviceType?.ToLower()) switch
         {
-       "fitness" => "bi bi-heart-pulse text-danger",
-    "yoga" => "bi bi-yin-yang text-success",
-"pilates" => "bi bi-lightning text-warning",
+            "fitness" => "bi bi-heart-pulse text-danger",
+            "yoga" => "bi bi-yin-yang text-success",
+            "pilates" => "bi bi-lightning text-warning",
             "personal training" => "bi bi-person-arms-up text-primary",
-        _ => "bi bi-activity text-info"
+            _ => "bi bi-activity text-info"
         };
     }
-    
+
     string GetServiceColorClass(string? serviceType)
     {
-return (serviceType?.ToLower()) switch
+        return (serviceType?.ToLower()) switch
         {
             "fitness" => "bg-danger bg-opacity-10",
-   "yoga" => "bg-success bg-opacity-10",
-       "pilates" => "bg-warning bg-opacity-10",
-    "personal training" => "bg-primary bg-opacity-10",
-  _ => "bg-info bg-opacity-10"
+            "yoga" => "bg-success bg-opacity-10",
+            "pilates" => "bg-warning bg-opacity-10",
+            "personal training" => "bg-primary bg-opacity-10",
+            _ => "bg-info bg-opacity-10"
         };
     }
 }
 
 <style>
-  .hover-card {
+    .hover-card {
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .hover-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
 </style>

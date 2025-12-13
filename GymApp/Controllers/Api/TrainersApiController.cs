@@ -9,101 +9,101 @@ namespace GymApp.Controllers.Api
     [ApiController]
     public class TrainersApiController : ControllerBase
     {
-    private readonly GymDbContext _context;
+        private readonly GymDbContext _context;
 
-  public TrainersApiController(GymDbContext context)
+        public TrainersApiController(GymDbContext context)
         {
-         _context = context;
-   }
-
-        // GET: api/TrainersApi - Tüm antrenörleri listele
-     [HttpGet]
-     public async Task<ActionResult<IEnumerable<object>>> GetTrainers()
-        {
-var trainers = await _context.Trainers
-  .Include(t => t.Gym)
-       .Include(t => t.Availabilities)
-    .Select(t => new
-          {
-      t.Id,
-        t.FullName,
-           t.Expertise,
-GymName = t.Gym.Name,
-       GymAddress = t.Gym.Address,
-   Availabilities = t.Availabilities.Select(a => new
-      {
-       Day = a.Day.ToString(),
-     From = a.From.ToString(@"hh\:mm"),
-      To = a.To.ToString(@"hh\:mm")
-            })
-      })
-     .ToListAsync();
-
- return Ok(trainers);
-      }
-
-   // GET: api/TrainersApi/5 - Belirli bir antrenörü getir
-  [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetTrainer(int id)
-        {
-     var trainer = await _context.Trainers
-     .Include(t => t.Gym)
- .Include(t => t.Availabilities)
-      .Where(t => t.Id == id)
- .Select(t => new
-         {
-          t.Id,
-t.FullName,
-          t.Expertise,
-     Gym = new
-     {
-               t.Gym.Id,
-t.Gym.Name,
-     t.Gym.Address,
-  t.Gym.WorkingHours
-     },
- Availabilities = t.Availabilities.Select(a => new
-          {
- Day = a.Day.ToString(),
-           From = a.From.ToString(@"hh\:mm"),
-         To = a.To.ToString(@"hh\:mm")
-         })
- })
-  .FirstOrDefaultAsync();
-
-         if (trainer == null)
-  {
-    return NotFound(new { message = "Antrenör bulunamadý." });
-  }
-
-       return Ok(trainer);
+            _context = context;
         }
 
-  // GET: api/TrainersApi/bydate?date=2024-01-15 - Belirli bir tarihte uygun antrenörler
-   [HttpGet("bydate")]
-      public async Task<ActionResult<IEnumerable<object>>> GetTrainersByDate([FromQuery] DateTime date)
+        // GET: api/TrainersApi - Tüm antrenörleri listele
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<object>>> GetTrainers()
         {
-       var dayOfWeek = date.DayOfWeek;
+            var trainers = await _context.Trainers
+              .Include(t => t.Gym)
+                   .Include(t => t.Availabilities)
+                .Select(t => new
+                {
+                    t.Id,
+                    t.FullName,
+                    t.Expertise,
+                    GymName = t.Gym.Name,
+                    GymAddress = t.Gym.Address,
+                    Availabilities = t.Availabilities.Select(a => new
+                    {
+                        Day = a.Day.ToString(),
+                        From = a.From.ToString(@"hh\:mm"),
+                        To = a.To.ToString(@"hh\:mm")
+                    })
+                })
+                 .ToListAsync();
 
-    var trainers = await _context.Trainers
-         .Include(t => t.Gym)
-         .Include(t => t.Availabilities)
-     .Where(t => t.Availabilities.Any(a => a.Day == dayOfWeek))
+            return Ok(trainers);
+        }
+
+        // GET: api/TrainersApi/5 - Belirli bir antrenörü getir
+        [HttpGet("{id}")]
+        public async Task<ActionResult<object>> GetTrainer(int id)
+        {
+            var trainer = await _context.Trainers
+            .Include(t => t.Gym)
+        .Include(t => t.Availabilities)
+             .Where(t => t.Id == id)
         .Select(t => new
         {
-    t.Id,
-     t.FullName,
- t.Expertise,
-       GymName = t.Gym.Name,
-        AvailableHours = t.Availabilities
-       .Where(a => a.Day == dayOfWeek)
-               .Select(a => new
-{
-         From = a.From.ToString(@"hh\:mm"),
-      To = a.To.ToString(@"hh\:mm")
+            t.Id,
+            t.FullName,
+            t.Expertise,
+            Gym = new
+            {
+                t.Gym.Id,
+                t.Gym.Name,
+                t.Gym.Address,
+                t.Gym.WorkingHours
+            },
+            Availabilities = t.Availabilities.Select(a => new
+            {
+                Day = a.Day.ToString(),
+                From = a.From.ToString(@"hh\:mm"),
+                To = a.To.ToString(@"hh\:mm")
+            })
         })
-             })
-       .ToListAsync();
+         .FirstOrDefaultAsync();
+
+            if (trainer == null)
+            {
+                return NotFound(new { message = "Antrenör bulunamadý." });
+            }
+
+            return Ok(trainer);
+        }
+
+        // GET: api/TrainersApi/bydate?date=2024-01-15 - Belirli bir tarihte uygun antrenörler
+        [HttpGet("bydate")]
+        public async Task<ActionResult<IEnumerable<object>>> GetTrainersByDate([FromQuery] DateTime date)
+        {
+            var dayOfWeek = date.DayOfWeek;
+
+            var trainers = await _context.Trainers
+                 .Include(t => t.Gym)
+                 .Include(t => t.Availabilities)
+             .Where(t => t.Availabilities.Any(a => a.Day == dayOfWeek))
+                .Select(t => new
+                {
+                    t.Id,
+                    t.FullName,
+                    t.Expertise,
+                    GymName = t.Gym.Name,
+                    AvailableHours = t.Availabilities
+               .Where(a => a.Day == dayOfWeek)
+                       .Select(a => new
+                       {
+                           From = a.From.ToString(@"hh\:mm"),
+                           To = a.To.ToString(@"hh\:mm")
+                       })
+                })
+               .ToListAsync();
 
             return Ok(trainers);
         }

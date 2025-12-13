@@ -7,45 +7,45 @@
 
 @if (TempData["Success"] != null)
 {
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-     @TempData["Success"]
-   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
 <!-- Filtreleme Formu -->
 <div class="card mb-4">
-<div class="card-body">
+    <div class="card-body">
         <form method="get" class="row g-3">
-    <div class="col-md-3">
- <label class="form-label">Eðitmen</label>
-       <select name="trainerId" asp-items="@ViewBag.Trainers" class="form-select">
-      <option value="">Tümü</option>
-      </select>
-  </div>
-        <div class="col-md-3">
-     <label class="form-label">Tarih</label>
- <input type="date" name="date" value="@ViewBag.SelectedDate" class="form-control" />
-      </div>
-<div class="col-md-3">
-   <label class="form-label">Durum</label>
-    <select name="status" class="form-select">
-        <option value="">Tümü</option>
-           <option value="Pending" selected="@(ViewBag.SelectedStatus == "Pending")">Onay Bekliyor</option>
-                 <option value="Approved" selected="@(ViewBag.SelectedStatus == "Approved")">Onaylandý</option>
-  <option value="Rejected" selected="@(ViewBag.SelectedStatus == "Rejected")">Reddedildi</option>
-             <option value="Completed" selected="@(ViewBag.SelectedStatus == "Completed")">Tamamlandý</option>
-          <option value="Canceled" selected="@(ViewBag.SelectedStatus == "Canceled")">Ýptal Edildi</option>
-       </select>
-</div>
-  <div class="col-md-3 d-flex align-items-end">
-       <button type="submit" class="btn btn-primary me-2">
-    <i class="bi bi-filter"></i> Filtrele
-    </button>
- <a asp-action="All" class="btn btn-outline-secondary">
-    <i class="bi bi-x-circle"></i> Temizle
-     </a>
-</div>
+            <div class="col-md-3">
+                <label class="form-label">Eðitmen</label>
+                <select name="trainerId" asp-items="@ViewBag.Trainers" class="form-select">
+                    <option value="">Tümü</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Tarih</label>
+                <input type="date" name="date" value="@ViewBag.SelectedDate" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Durum</label>
+                <select name="status" class="form-select">
+                    <option value="">Tümü</option>
+                    <option value="Pending" selected="@(ViewBag.SelectedStatus == "Pending")">Onay Bekliyor</option>
+                    <option value="Approved" selected="@(ViewBag.SelectedStatus == "Approved")">Onaylandý</option>
+                    <option value="Rejected" selected="@(ViewBag.SelectedStatus == "Rejected")">Reddedildi</option>
+                    <option value="Completed" selected="@(ViewBag.SelectedStatus == "Completed")">Tamamlandý</option>
+                    <option value="Canceled" selected="@(ViewBag.SelectedStatus == "Canceled")">Ýptal Edildi</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-filter"></i> Filtrele
+                </button>
+                <a asp-action="All" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Temizle
+                </a>
+            </div>
         </form>
     </div>
 </div>
@@ -58,82 +58,82 @@
 }
 else
 {
- <div class="table-responsive">
-  <table class="table table-hover">
+    <div class="table-responsive">
+        <table class="table table-hover">
             <thead class="table-dark">
-   <tr>
-     <th>Tarih/Saat</th>
-      <th>Üye</th>
-     <th>Eðitmen</th>
-<th>Hizmet</th>
-     <th>Durum</th>
-     <th>Ýþlemler</th>
-   </tr>
-       </thead>
-    <tbody>
-       @foreach (var item in Model)
-   {
-       var statusBadge = item.Status switch
-     {
-    "Pending" => "warning",
-    "Approved" => "success",
-       "Rejected" => "danger",
-     "Completed" => "info",
-      "Canceled" => "secondary",
-     _ => "secondary"
-       };
-      var statusText = item.Status switch
-     {
-        "Pending" => "Onay Bekliyor",
- "Approved" => "Onaylandý",
-    "Rejected" => "Reddedildi",
-    "Completed" => "Tamamlandý",
-   "Canceled" => "Ýptal Edildi",
-    _ => item.Status
-   };
-        <tr>
-        <td>
-            <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
-              <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
-      </td>
-<td>
-    @item.Member?.FullName<br />
-           <small class="text-muted">@item.Member?.Email</small>
-   </td>
-<td>@item.Trainer?.FullName</td>
-         <td>@item.Service?.Name</td>
-    <td><span class="badge bg-@statusBadge">@statusText</span></td>
-        <td>
-         <div class="btn-group btn-group-sm">
-        @if (item.Status == "Pending")
-      {
-       <form asp-action="Approve" asp-route-id="@item.Id" method="post" class="d-inline">
- <button type="submit" class="btn btn-success" title="Onayla">
-       <i class="bi bi-check-lg"></i>
- </button>
-          </form>
-     <form asp-action="Reject" asp-route-id="@item.Id" method="post" class="d-inline">
-    <button type="submit" class="btn btn-danger" title="Reddet">
-          <i class="bi bi-x-lg"></i>
-      </button>
-        </form>
-    }
-  @if (item.Status == "Approved")
-         {
-     <form asp-action="Complete" asp-route-id="@item.Id" method="post" class="d-inline">
-      <button type="submit" class="btn btn-info" title="Tamamlandý">
-           <i class="bi bi-check-circle"></i>
-    </button>
-    </form>
-     }
-           <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary" title="Detay">
-     <i class="bi bi-eye"></i>
- </a>
-  </div>
-   </td>
-   </tr>
-       }
-       </tbody>
+                <tr>
+                    <th>Tarih/Saat</th>
+                    <th>Üye</th>
+                    <th>Eðitmen</th>
+                    <th>Hizmet</th>
+                    <th>Durum</th>
+                    <th>Ýþlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var statusBadge = item.Status switch
+                    {
+                        "Pending" => "warning",
+                        "Approved" => "success",
+                        "Rejected" => "danger",
+                        "Completed" => "info",
+                        "Canceled" => "secondary",
+                        _ => "secondary"
+                    };
+                    var statusText = item.Status switch
+                    {
+                        "Pending" => "Onay Bekliyor",
+                        "Approved" => "Onaylandý",
+                        "Rejected" => "Reddedildi",
+                        "Completed" => "Tamamlandý",
+                        "Canceled" => "Ýptal Edildi",
+                        _ => item.Status
+                    };
+                    <tr>
+                        <td>
+                            <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
+                            <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
+                        </td>
+                        <td>
+                            @item.Member?.FullName<br />
+                            <small class="text-muted">@item.Member?.Email</small>
+                        </td>
+                        <td>@item.Trainer?.FullName</td>
+                        <td>@item.Service?.Name</td>
+                        <td><span class="badge bg-@statusBadge">@statusText</span></td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                @if (item.Status == "Pending")
+                                {
+                                    <form asp-action="Approve" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-success" title="Onayla">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-action="Reject" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-danger" title="Reddet">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                }
+                                @if (item.Status == "Approved")
+                                {
+                                    <form asp-action="Complete" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-info" title="Tamamlandý">
+                                            <i class="bi bi-check-circle"></i>
+                                        </button>
+                                    </form>
+                                }
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-secondary" title="Detay">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
 }

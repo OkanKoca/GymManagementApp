@@ -27,65 +27,65 @@
 else
 {
     <div class="table-responsive">
-      <table class="table table-hover">
+        <table class="table table-hover">
             <thead class="table-dark">
- <tr>
-  <th>Tarih/Saat</th>
- <th>Eðitmen</th>
-           <th>Hizmet</th>
+                <tr>
+                    <th>Tarih/Saat</th>
+                    <th>Eðitmen</th>
+                    <th>Hizmet</th>
                     <th>Süre</th>
-         <th>Ücret</th>
-                <th>Durum</th>
-      <th>Ýþlemler</th>
-     </tr>
-       </thead>
-    <tbody>
-    @foreach (var item in Model)
-        {
-   var statusBadge = item.Status switch
-       {
-     "Pending" => "warning",
-             "Approved" => "success",
-         "Rejected" => "danger",
-           "Completed" => "info",
-   "Canceled" => "secondary",
-          _ => "secondary"
-   };
-            var statusText = item.Status switch
-           {
-         "Pending" => "Onay Bekliyor",
- "Approved" => "Onaylandý",
-    "Rejected" => "Reddedildi",
-        "Completed" => "Tamamlandý",
-   "Canceled" => "Ýptal Edildi",
-      _ => item.Status
-         };
-           <tr>
-      <td>
-             <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
-        <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
-       </td>
-         <td>@item.Trainer?.FullName</td>
-         <td>@item.Service?.Name</td>
-      <td>@item.Service?.DurationMinutes dk</td>
-    <td>@item.Service?.Price.ToString("C")</td>
-          <td><span class="badge bg-@statusBadge">@statusText</span></td>
-     <td>
-        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
-<i class="bi bi-eye"></i>
-      </a>
-        @if (item.Status == "Pending" || item.Status == "Approved")
-     {
-          <form asp-action="Cancel" asp-route-id="@item.Id" method="post" class="d-inline"
-      onsubmit="return confirm('Randevuyu iptal etmek istediðinize emin misiniz?')">
-            <button type="submit" class="btn btn-sm btn-outline-danger">
-    <i class="bi bi-x-circle"></i>
-    </button>
-          </form>
-         }
-                </td>
-        </tr>
-        }
+                    <th>Ücret</th>
+                    <th>Durum</th>
+                    <th>Ýþlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var statusBadge = item.Status switch
+                    {
+                        "Pending" => "warning",
+                        "Approved" => "success",
+                        "Rejected" => "danger",
+                        "Completed" => "info",
+                        "Canceled" => "secondary",
+                        _ => "secondary"
+                    };
+                    var statusText = item.Status switch
+                    {
+                        "Pending" => "Onay Bekliyor",
+                        "Approved" => "Onaylandý",
+                        "Rejected" => "Reddedildi",
+                        "Completed" => "Tamamlandý",
+                        "Canceled" => "Ýptal Edildi",
+                        _ => item.Status
+                    };
+                    <tr>
+                        <td>
+                            <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
+                            <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
+                        </td>
+                        <td>@item.Trainer?.FullName</td>
+                        <td>@item.Service?.Name</td>
+                        <td>@item.Service?.DurationMinutes dk</td>
+                        <td>@item.Service?.Price.ToString("C")</td>
+                        <td><span class="badge bg-@statusBadge">@statusText</span></td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            @if (item.Status == "Pending" || item.Status == "Approved")
+                            {
+                                <form asp-action="Cancel" asp-route-id="@item.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('Randevuyu iptal etmek istediðinize emin misiniz?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
