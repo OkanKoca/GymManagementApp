@@ -51,6 +51,7 @@ namespace GymApp.Controllers
             return RedirectToAction("Index");
         }
 
+
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
