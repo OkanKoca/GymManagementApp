@@ -40,5 +40,6 @@ namespace GymApp.Models
         public string? PhotoUrl { get; set; }
 
         public ICollection<Trainer> Trainers { get; set; } = new List<Trainer>();
+        public ICollection<GymService> GymServices { get; set; } = new List<GymService>();
     }
 }

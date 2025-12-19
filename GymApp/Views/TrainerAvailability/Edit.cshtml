@@ -6,62 +6,62 @@
 
 <div class="row justify-content-center">
     <div class="col-md-6">
- <div class="card border-0 shadow">
-   <div class="card-header bg-primary text-white">
-  <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>@ViewData["Title"]</h5>
-  </div>
-         <div class="card-body">
-   <form asp-action="Edit" method="post">
-       <input type="hidden" asp-for="Id" />
-       <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+     <div class="card border-0 shadow">
+ <div class="card-header bg-primary text-white">
+       <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>@ViewData["Title"]</h5>
+ </div>
+ <div class="card-body">
+      <form asp-action="Edit" method="post">
+ <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
 
- <div class="mb-3">
-        <label asp-for="TrainerId" class="form-label fw-semibold">Eðitmen</label>
+    <div class="mb-3">
+     <label asp-for="TrainerId" class="form-label fw-semibold">Eðitmen</label>
      <select asp-for="TrainerId" class="form-select" asp-items="@(new SelectList(trainers, "Id", "FullName"))">
-             <option value="">-- Seçiniz --</option>
-  </select>
-       <span asp-validation-for="TrainerId" class="text-danger"></span>
-    </div>
-
- <div class="mb-3">
-     <label asp-for="Day" class="form-label fw-semibold">Gün</label>
-  <select asp-for="Day" class="form-select">
-  <option value="">-- Seçiniz --</option>
-      <option value="@DayOfWeek.Monday">Pazartesi</option>
-     <option value="@DayOfWeek.Tuesday">Salý</option>
-          <option value="@DayOfWeek.Wednesday">Çarþamba</option>
- <option value="@DayOfWeek.Thursday">Perþembe</option>
- <option value="@DayOfWeek.Friday">Cuma</option>
- <option value="@DayOfWeek.Saturday">Cumartesi</option>
-   <option value="@DayOfWeek.Sunday">Pazar</option>
-     </select>
-    <span asp-validation-for="Day" class="text-danger"></span>
+ <option value="">-- Seçiniz --</option>
+      </select>
+         <span asp-validation-for="TrainerId" class="text-danger"></span>
         </div>
 
-       <div class="row">
- <div class="col-md-6 mb-3">
-        <label asp-for="From" class="form-label fw-semibold">Baþlangýç Saati</label>
-   <input asp-for="From" type="time" class="form-control" />
-  <span asp-validation-for="From" class="text-danger"></span>
+      <div class="mb-3">
+        <label asp-for="Day" class="form-label fw-semibold">Gün</label>
+  <select asp-for="Day" class="form-select">
+       <option value="">-- Seçiniz --</option>
+          <option value="@DayOfWeek.Monday">Pazartesi</option>
+       <option value="@DayOfWeek.Tuesday">Salý</option>
+    <option value="@DayOfWeek.Wednesday">Çarþamba</option>
+      <option value="@DayOfWeek.Thursday">Perþembe</option>
+     <option value="@DayOfWeek.Friday">Cuma</option>
+  <option value="@DayOfWeek.Saturday">Cumartesi</option>
+        <option value="@DayOfWeek.Sunday">Pazar</option>
+    </select>
+   <span asp-validation-for="Day" class="text-danger"></span>
      </div>
-     <div class="col-md-6 mb-3">
-        <label asp-for="To" class="form-label fw-semibold">Bitiþ Saati</label>
-  <input asp-for="To" type="time" class="form-control" />
-       <span asp-validation-for="To" class="text-danger"></span>
-     </div>
-       </div>
 
- <div class="d-flex justify-content-between pt-3 border-top">
-  <a asp-action="Index" class="btn btn-outline-secondary">
-     <i class="bi bi-arrow-left me-1"></i> Ýptal
-       </a>
-   <button type="submit" class="btn btn-success">
-          <i class="bi bi-save me-1"></i> Kaydet
-   </button>
-      </div>
-    </form>
+        <div class="row">
+  <div class="col-md-6 mb-3">
+       <label asp-for="From" class="form-label fw-semibold">Baþlangýç Saati</label>
+      <input asp-for="From" type="time" class="form-control" />
+    <span asp-validation-for="From" class="text-danger"></span>
    </div>
- </div>
+        <div class="col-md-6 mb-3">
+      <label asp-for="To" class="form-label fw-semibold">Bitiþ Saati</label>
+ <input asp-for="To" type="time" class="form-control" />
+     <span asp-validation-for="To" class="text-danger"></span>
+      </div>
+      </div>
+
+    <div class="d-flex justify-content-between pt-3 border-top">
+<a asp-action="Index" class="btn btn-outline-secondary">
+          <i class="bi bi-arrow-left me-1"></i> Ýptal
+    </a>
+     <button type="submit" class="btn btn-success">
+     <i class="bi bi-save me-1"></i> Kaydet
+          </button>
+        </div>
+     </form>
+      </div>
+      </div>
     </div>
 </div>
 

@@ -1,0 +1,208 @@
+@model IEnumerable<GymApp.Models.GymService>
+@{
+    var gym = ViewBag.Gym as GymApp.Models.Gym;
+    ViewData["Title"] = $"{gym?.Name} - Hizmetler";
+    var availableServices = ViewBag.AvailableServices as List<GymApp.Models.Service>;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2><i class="bi bi-clipboard-check"></i> @gym?.Name - Hizmetler</h2>
+   <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Gym" asp-action="Index">Salonlar</a></li>
+      <li class="breadcrumb-item active">@gym?.Name Hizmetleri</li>
+</ol>
+        </nav>
+    </div>
+    <a asp-controller="Gym" asp-action="Index" class="btn btn-outline-secondary">
+   <i class="bi bi-arrow-left"></i> Salonlara Dön
+  </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Hizmet Ekleme Kartý -->
+@if (availableServices != null && availableServices.Any())
+{
+    <div class="card mb-4">
+     <div class="card-header bg-primary text-white">
+  <i class="bi bi-plus-circle"></i> Yeni Hizmet Ekle
+        </div>
+      <div class="card-body">
+      <form asp-action="Add" method="post" class="row g-3 align-items-end">
+          <input type="hidden" name="gymId" value="@gym?.Id" />
+           <div class="col-md-5">
+       <label class="form-label">Hizmet Seçin</label>
+     <select name="serviceId" class="form-select" required>
+          <option value="">-- Hizmet Seçin --</option>
+          @foreach (var service in availableServices)
+          {
+          <option value="@service.Id">
+    @service.Name (@service.ServiceType) - @service.Price.ToString("C") / @service.DurationMinutes dk
+      </option>
+              }
+         </select>
+     </div>
+      <div class="col-md-4">
+       <label class="form-label">Özel Fiyat (Opsiyonel)</label>
+           <div class="input-group">
+  <span class="input-group-text">?</span>
+        <input type="number" name="customPrice" class="form-control" step="0.01" min="0" 
+       placeholder="Varsayýlan fiyat kullanýlacak">
+         </div>
+                </div>
+           <div class="col-md-3">
+      <button type="submit" class="btn btn-primary w-100">
+          <i class="bi bi-plus-circle"></i> Ekle
+            </button>
+             </div>
+         </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info mb-4">
+     <i class="bi bi-info-circle"></i> Tüm hizmetler bu salona eklenmiþ durumda.
+    </div>
+}
+
+<!-- Mevcut Hizmetler -->
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Bu salona henüz hizmet eklenmemiþ.
+    </div>
+}
+else
+{
+    <div class="card">
+     <div class="card-header">
+          <i class="bi bi-list-check"></i> Mevcut Hizmetler (@Model.Count())
+        </div>
+   <div class="card-body p-0">
+         <div class="table-responsive">
+     <table class="table table-hover mb-0">
+        <thead class="table-light">
+       <tr>
+         <th>Hizmet Adý</th>
+    <th>Tür</th>
+         <th>Süre</th>
+            <th>Standart Fiyat</th>
+     <th>Özel Fiyat</th>
+      <th>Durum</th>
+       <th>Ýþlemler</th>
+            </tr>
+            </thead>
+         <tbody>
+           @foreach (var item in Model)
+            {
+           <tr class="@(!item.IsActive ? "table-secondary" : "")">
+        <td>
+             <strong>@item.Service?.Name</strong>
+   @if (!string.IsNullOrEmpty(item.Service?.Description))
+                  {
+    <br /><small class="text-muted">@item.Service.Description</small>
+}
+   </td>
+    <td><span class="badge bg-info">@item.Service?.ServiceType</span></td>
+           <td>@item.Service?.DurationMinutes dk</td>
+             <td>@item.Service?.Price.ToString("C")</td>
+     <td>
+      @if (item.CustomPrice.HasValue)
+       {
+   <strong class="text-success">@item.CustomPrice.Value.ToString("C")</strong>
+          }
+               else
+      {
+         <span class="text-muted">-</span>
+         }
+ </td>
+  <td>
+    @if (item.IsActive)
+             {
+           <span class="badge bg-success">Aktif</span>
+                }
+     else
+     {
+           <span class="badge bg-secondary">Pasif</span>
+ }
+           </td>
+       <td>
+    <div class="btn-group btn-group-sm">
+     <!-- Fiyat Güncelle Modal Trigger -->
+    <button type="button" class="btn btn-outline-primary" 
+    data-bs-toggle="modal" 
+              data-bs-target="#priceModal-@item.Id">
+   <i class="bi bi-currency-dollar"></i>
+                 </button>
+   
+           <!-- Aktif/Pasif Toggle -->
+        <form asp-action="ToggleStatus" asp-route-id="@item.Id" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-@(item.IsActive ? "warning" : "success")" 
+    title="@(item.IsActive ? "Pasif Yap" : "Aktif Yap")">
+            <i class="bi bi-@(item.IsActive ? "pause" : "play")"></i>
+           </button>
+  </form>
+       
+          <!-- Kaldýr -->
+ <form asp-action="Remove" asp-route-id="@item.Id" method="post" class="d-inline"
+       onsubmit="return confirm('Bu hizmeti salondan kaldýrmak istediðinize emin misiniz?')">
+      <button type="submit" class="btn btn-outline-danger">
+     <i class="bi bi-trash"></i>
+       </button>
+      </form>
+   </div>
+           
+            <!-- Fiyat Güncelleme Modal -->
+         <div class="modal fade" id="priceModal-@item.Id" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <form asp-action="UpdatePrice" asp-route-id="@item.Id" method="post">
+      <div class="modal-header">
+   <h5 class="modal-title">Özel Fiyat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+             </div>
+     <div class="modal-body">
+    <label class="form-label">@item.Service?.Name</label>
+              <div class="input-group">
+            <span class="input-group-text">?</span>
+                   <input type="number" name="customPrice" class="form-control" 
+        step="0.01" min="0" 
+    value="@item.CustomPrice"
+         placeholder="Boþ býrakýrsanýz standart fiyat kullanýlýr">
+          </div>
+   <small class="text-muted">Standart fiyat: @item.Service?.Price.ToString("C")</small>
+                </div>
+            <div class="modal-footer">
+ <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ýptal</button>
+     <button type="submit" class="btn btn-primary">Kaydet</button>
+  </div>
+           </form>
+          </div>
+        </div>
+  </div>
+       </td>
+         </tr>
+              }
+ </tbody>
+           </table>
+  </div>
+        </div>
+    </div>
+}

@@ -14,6 +14,7 @@ namespace GymApp.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<TrainerAvailability> TrainerAvailabilities { get; set; }
         public DbSet<TrainerService> TrainerServices { get; set; }
+        public DbSet<GymService> GymServices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,19 @@ namespace GymApp.Data
                 .HasOne(ts => ts.Service)
                 .WithMany(s => s.TrainerServices)
                 .HasForeignKey(ts => ts.ServiceId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // GymService - Many to Many ilişki (Salon-Hizmet)
+            modelBuilder.Entity<GymService>()
+                .HasOne(gs => gs.Gym)
+                .WithMany(g => g.GymServices)
+                .HasForeignKey(gs => gs.GymId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GymService>()
+                .HasOne(gs => gs.Service)
+                .WithMany(s => s.GymServices)
+                .HasForeignKey(gs => gs.ServiceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Trainer - Gym ilişkisi

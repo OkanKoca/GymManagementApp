@@ -45,10 +45,16 @@
                         </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Appointment" asp-action="Index">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-calendar-check"></i> Randevularım
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" asp-controller="Appointment" asp-action="Index"><i class="bi bi-calendar-check me-2"></i>Aktif Randevularım</a></li>
+                                <li><a class="dropdown-item" asp-controller="Appointment" asp-action="History"><i class="bi bi-clock-history me-2"></i>Geçmiş Randevularım</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" asp-controller="Appointment" asp-action="Create"><i class="bi bi-plus-circle me-2"></i>Yeni Randevu</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="AI" asp-action="Recommendations">

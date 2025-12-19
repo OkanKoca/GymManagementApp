@@ -36,5 +36,6 @@ namespace GymApp.Models
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
         public ICollection<TrainerService> TrainerServices { get; set; } = new List<TrainerService>();
+        public ICollection<GymService> GymServices { get; set; } = new List<GymService>();
     }
 }

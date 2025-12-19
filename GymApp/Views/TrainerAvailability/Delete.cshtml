@@ -16,7 +16,22 @@
                     <dt class="col-sm-4">Eðitmen</dt>
                     <dd class="col-sm-8">@Model.Trainer?.FullName</dd>
                     <dt class="col-sm-4">Gün</dt>
-                    <dd class="col-sm-8">@Model.Day</dd>
+                    <dd class="col-sm-8">
+                        @{
+                            var dayName = Model.Day switch
+                            {
+                                DayOfWeek.Monday => "Pazartesi",
+                                DayOfWeek.Tuesday => "Salý",
+                                DayOfWeek.Wednesday => "Çarþamba",
+                                DayOfWeek.Thursday => "Perþembe",
+                                DayOfWeek.Friday => "Cuma",
+                                DayOfWeek.Saturday => "Cumartesi",
+                                DayOfWeek.Sunday => "Pazar",
+                                _ => Model.Day.ToString()
+                            };
+                        }
+                        @dayName
+                    </dd>
                     <dt class="col-sm-4">Saat Aralýðý</dt>
                     <dd class="col-sm-8">@Model.From.ToString(@"hh\:mm") - @Model.To.ToString(@"hh\:mm")</dd>
                 </dl>

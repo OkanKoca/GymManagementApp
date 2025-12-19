@@ -1,6 +1,8 @@
 @model IEnumerable<GymApp.Models.Appointment>
 @{
     ViewData["Title"] = "Tüm Randevular";
+    // Türkiye saat dilimi
+    var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
 }
 
 <h2 class="mb-4"><i class="bi bi-calendar-week"></i> Tüm Randevular (Admin)</h2>
@@ -73,6 +75,8 @@ else
             <tbody>
                 @foreach (var item in Model)
                 {
+                    var startTime = TimeZoneInfo.ConvertTimeFromUtc(item.StartAt, turkeyTimeZone);
+                    var endTime = TimeZoneInfo.ConvertTimeFromUtc(item.EndAt, turkeyTimeZone);
                     var statusBadge = item.Status switch
                     {
                         "Pending" => "warning",
@@ -93,8 +97,8 @@ else
                     };
                     <tr>
                         <td>
-                            <strong>@item.StartAt.ToLocalTime().ToString("dd.MM.yyyy")</strong><br />
-                            <small class="text-muted">@item.StartAt.ToLocalTime().ToString("HH:mm") - @item.EndAt.ToLocalTime().ToString("HH:mm")</small>
+                            <strong>@startTime.ToString("dd.MM.yyyy")</strong><br />
+                            <small class="text-muted">@startTime.ToString("HH:mm") - @endTime.ToString("HH:mm")</small>
                         </td>
                         <td>
                             @item.Member?.FullName<br />

@@ -13,7 +13,10 @@ namespace GymApp.Controllers
 
         public IActionResult Index()
         {
-            var gyms = _db.Gyms.Include(g => g.Trainers).ToList();
+            var gyms = _db.Gyms
+                .Include(g => g.Trainers)
+                .Include(g => g.GymServices)
+                .ToList();
             return View(gyms);
         }
 

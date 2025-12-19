@@ -24,18 +24,38 @@ namespace GymApp.Controllers
         // Üyenin kendi randevularýný görüntüleme
         public async Task<IActionResult> Index()
         {
-            var userId = _userManager.GetUserId(User);
+         var userId = _userManager.GetUserId(User);
 
+            // Sadece aktif randevularý göster (Pending ve Approved)
             var appointments = await _context.Appointments
-            .Include(a => a.Trainer)
-            .Include(a => a.Service)
-            .Include(a => a.Member)
-            .Where(a => a.MemberId == userId)
-            .OrderByDescending(a => a.StartAt)
+      .Include(a => a.Trainer)
+     .Include(a => a.Service)
+.Include(a => a.Member)
+            .Where(a => a.MemberId == userId && 
+           (a.Status == "Pending" || a.Status == "Approved"))
+        .OrderByDescending(a => a.StartAt)
             .ToListAsync();
 
-            return View(appointments);
+ return View(appointments);
         }
+
+        // Üyenin geçmiþ randevularýný görüntüleme
+        public async Task<IActionResult> History()
+    {
+            var userId = _userManager.GetUserId(User);
+
+            // Tamamlanmýþ, iptal edilmiþ ve reddedilmiþ randevularý göster
+          var pastAppointments = await _context.Appointments
+.Include(a => a.Trainer)
+           .Include(a => a.Service)
+      .Include(a => a.Member)
+       .Where(a => a.MemberId == userId && 
+         (a.Status == "Completed" || a.Status == "Canceled" || a.Status == "Rejected"))
+            .OrderByDescending(a => a.StartAt)
+           .ToListAsync();
+
+       return View(pastAppointments);
+     }
 
         // Admin için tüm randevularý görüntüleme
         [Authorize(Roles = "Admin")]
