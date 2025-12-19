@@ -11,15 +11,15 @@
     @if (User.IsInRole("Admin"))
     {
         <a class="btn btn-primary" asp-action="Create">
-            <i class="bi bi-plus-circle me-1"></i> Yeni Hizmet
-        </a>
+      <i class="bi bi-plus-circle me-1"></i> Yeni Hizmet
+   </a>
     }
 </div>
 
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+   <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
@@ -32,7 +32,7 @@
 }
 else
 {
-    <!-- Hizmet Türlerine Göre Grupla -->
+    // Hizmet Türlerine Göre Grupla
     var groupedServices = Model.GroupBy(s => s.ServiceType ?? "Diðer").OrderBy(g => g.Key);
 
     @foreach (var group in groupedServices)
@@ -95,16 +95,16 @@ else
                             }
                         </div>
                         @if (User.IsInRole("Admin"))
-                        {
-                            <div class="card-footer bg-transparent border-0 text-center pb-3">
-                                <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-pencil"></i> Düzenle
-                                </a>
-                                <a asp-action="Delete" asp-route-id="@s.Id" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Sil
-                                </a>
-                            </div>
-                        }
+ {
+        <div class="card-footer bg-transparent border-0 text-center pb-3">
+      <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">
+     <i class="bi bi-pencil"></i> Düzenle
+          </a>
+      <a asp-action="Delete" asp-route-id="@s.Id" class="btn btn-sm btn-outline-danger">
+         <i class="bi bi-trash"></i> Sil
+       </a>
+       </div>
+            }
                         @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
                         {
                             <div class="card-footer bg-transparent border-0 text-center pb-3">

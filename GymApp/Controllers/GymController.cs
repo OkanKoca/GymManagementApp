@@ -30,7 +30,7 @@ namespace GymApp.Controllers
         {
             // Navigation property'leri ModelState'den çıkar
             ModelState.Remove("Trainers");
-            
+
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Add(gym);
             _db.SaveChanges();
@@ -53,7 +53,7 @@ namespace GymApp.Controllers
         {
             // Navigation property'leri ModelState'den çıkar
             ModelState.Remove("Trainers");
-    
+
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Update(gym);
             _db.SaveChanges();
@@ -76,7 +76,7 @@ namespace GymApp.Controllers
         {
             var gym = _db.Gyms.Find(id);
             if (gym == null) return NotFound();
-            
+
             // İlişkili eğitmen kontrolü
             var hasTrainers = _db.Trainers.Any(t => t.GymId == id);
             if (hasTrainers)
@@ -84,7 +84,7 @@ namespace GymApp.Controllers
                 TempData["Error"] = "Bu salonda kayıtlı eğitmenler bulunduğu için silinemez.";
                 return RedirectToAction(nameof(Index));
             }
-     
+
             _db.Gyms.Remove(gym);
             _db.SaveChanges();
             TempData["Success"] = "Spor salonu başarıyla silindi.";

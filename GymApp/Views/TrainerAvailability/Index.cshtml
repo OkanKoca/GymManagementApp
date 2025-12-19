@@ -1,99 +1,100 @@
-@model List<GymApp.Models.TrainerAvailability>
+ï»¿@model List<GymApp.Models.TrainerAvailability>
 @{
-    ViewData["Title"] = "Eðitmen Müsaitlikleri";
+    ViewData["Title"] = "EÄŸitmen MÃ¼saitlikleri";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
- <div>
-    <h2 class="fw-bold"><i class="bi bi-clock me-2 text-warning"></i>Eðitmen Müsaitlikleri</h2>
-   <p class="text-muted mb-0">Eðitmenlerin çalýþma saatlerini yönetin</p>
-  </div>
+    <div>
+        <h2 class="fw-bold"><i class="bi bi-clock me-2 text-warning"></i>EÄŸitmen MÃ¼saitlikleri</h2>
+        <p class="text-muted mb-0">EÄŸitmenlerin Ã§alÄ±ÅŸma saatlerini yÃ¶netin</p>
+    </div>
     <div>
         <a class="btn btn-success me-2" asp-action="BulkCreate">
-     <i class="bi bi-calendar-plus me-1"></i> Toplu Ekle
+            <i class="bi bi-calendar-plus me-1"></i> Toplu Ekle
         </a>
         <a class="btn btn-primary" asp-action="Create">
-       <i class="bi bi-plus-circle me-1"></i> Tekli Ekle
-      </a>
+            <i class="bi bi-plus-circle me-1"></i> Tekli Ekle
+        </a>
     </div>
 </div>
 
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-     <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+        <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
- </div>
+    </div>
 }
 
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
- </div>
+        <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
 }
 
 @if (!Model.Any())
 {
     <div class="alert alert-info">
-     <i class="bi bi-info-circle me-2"></i>Henüz müsaitlik kaydý bulunmamaktadýr.
+        <i class="bi bi-info-circle me-2"></i>HenÃ¼z mÃ¼saitlik kaydÄ± bulunmamaktadÄ±r.
     </div>
 }
 else
 {
-    // Eðitmenlere göre grupla
+    // EÄŸitmenlere gÃ¶re grupla
     var groupedByTrainer = Model.GroupBy(a => a.Trainer?.FullName ?? "Bilinmiyor").OrderBy(g => g.Key);
 
- @foreach (var trainerGroup in groupedByTrainer)
-   {
-   <div class="card border-0 shadow mb-4">
-     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-    <span><i class="bi bi-person-badge me-2"></i>@trainerGroup.Key</span>
-     <span class="badge bg-light text-dark">@trainerGroup.Count() gün</span>
-  </div>
-      <div class="table-responsive">
-   <table class="table table-hover mb-0">
-<thead class="table-light">
-     <tr>
-       <th style="width: 30%">Gün</th>
-     <th style="width: 25%">Baþlangýç</th>
-    <th style="width: 25%">Bitiþ</th>
-<th style="width: 20%">Ýþlemler</th>
-      </tr>
-  </thead>
-     <tbody>
-          @foreach (var a in trainerGroup.OrderBy(x => x.Day))
- {
-    var dayName = a.Day switch
-      {
-    DayOfWeek.Monday => "Pazartesi",
-  DayOfWeek.Tuesday => "Salý",
-   DayOfWeek.Wednesday => "Çarþamba",
-      DayOfWeek.Thursday => "Perþembe",
-  DayOfWeek.Friday => "Cuma",
-   DayOfWeek.Saturday => "Cumartesi",
-    DayOfWeek.Sunday => "Pazar",
- _ => a.Day.ToString()
-        };
- var dayBadgeClass = a.Day == DayOfWeek.Saturday || a.Day == DayOfWeek.Sunday ? "bg-warning text-dark" : "bg-info";
-<tr>
-         <td><span class="badge @dayBadgeClass">@dayName</span></td>
-       <td><i class="bi bi-clock text-muted me-1"></i>@a.From.ToString(@"hh\:mm")</td>
-     <td><i class="bi bi-clock-fill text-muted me-1"></i>@a.To.ToString(@"hh\:mm")</td>
-    <td>
-     <a asp-action="Edit" asp-route-id="@a.Id" class="btn btn-sm btn-outline-primary">
-    <i class="bi bi-pencil"></i>
-   </a>
-           <a asp-action="Delete" asp-route-id="@a.Id" class="btn btn-sm btn-outline-danger">
-        <i class="bi bi-trash"></i>
-     </a>
-      </td>
-</tr>
-       }
-     </tbody>
-      </table>
-    </div>
-</div>
+    @foreach (var trainerGroup in groupedByTrainer)
+    {
+        <div class="card border-0 shadow mb-4">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-person-badge me-2"></i>@trainerGroup.Key</span>
+                <span class="badge bg-light text-dark">@trainerGroup.Count() gÃ¼n</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 30%">GÃ¼n</th>
+                            <th style="width: 25%">BaÅŸlangÄ±Ã§</th>
+                            <th style="width: 25%">BitiÅŸ</th>
+                            <th style="width: 20%">Ä°ÅŸlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in trainerGroup.OrderBy(x => x.Day))
+                        {
+                            var dayName = a.Day switch
+                            {
+                                DayOfWeek.Monday => "Pazartesi",
+                                DayOfWeek.Tuesday => "SalÄ±",
+                                DayOfWeek.Wednesday => "Ã‡arÅŸamba",
+                                DayOfWeek.Thursday => "PerÅŸembe",
+                                DayOfWeek.Friday => "Cuma",
+                                DayOfWeek.Saturday => "Cumartesi",
+                                DayOfWeek.Sunday => "Pazar",
+                                _ => a.Day.ToString()
+                            };
+                            var dayBadgeClass = a.Day == DayOfWeek.Saturday || a.Day == DayOfWeek.Sunday ? "bg-warning text-dark" : "bg-info";
+                            <tr>
+                                <td><span class="badge @dayBadgeClass">@dayName</span></td>
+                                <td><i class="bi bi-clock text-muted me-1"></i>@a.From.ToString(@"hh\:mm")</td>
+                                <td><i class="bi bi-clock-fill text-muted me-1"></i>@a.To.ToString(@"hh\:mm")</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@a.Id" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@a.Id" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
 }
+

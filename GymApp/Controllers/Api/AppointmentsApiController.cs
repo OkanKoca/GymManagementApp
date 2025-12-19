@@ -149,12 +149,12 @@ namespace GymApp.Controllers.Api
             .OrderByDescending(a => a.StartAt)
             .Select(a => new
             {
-            a.Id,
-            MemberName = a.Member.FullName,
-            ServiceName = a.Service.Name,
-            StartAt = a.StartAt.ToString("yyyy-MM-dd HH:mm"),
-            EndAt = a.EndAt.ToString("yyyy-MM-dd HH:mm"),
-            a.Status
+                a.Id,
+                MemberName = a.Member.FullName,
+                ServiceName = a.Service.Name,
+                StartAt = a.StartAt.ToString("yyyy-MM-dd HH:mm"),
+                EndAt = a.EndAt.ToString("yyyy-MM-dd HH:mm"),
+                a.Status
             })
             .ToListAsync();
 

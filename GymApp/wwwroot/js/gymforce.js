@@ -1,54 +1,54 @@
-// ???????????????????????????????????????????????????????
+﻿// ═══════════════════════════════════════════════════════
 // GymForce - Premium Dark Theme JavaScript
-// ???????????????????????????????????????????????????????
+// ═══════════════════════════════════════════════════════
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Active Navigation Link
     const currentPath = window.location.pathname;
     document.querySelectorAll('.nav-link').forEach(link => {
         if (link.getAttribute('href') === currentPath) {
- link.classList.add('active');
+            link.classList.add('active');
         }
     });
 
     // Alert Auto-dismiss
     document.querySelectorAll('.alert:not(.alert-permanent)').forEach(alert => {
         setTimeout(() => {
-    const bsAlert = new bootstrap.Alert(alert);
-   bsAlert.close();
-      }, 5000);
+            const bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        }, 5000);
     });
 
     // Animated Counter
     const animateCounter = (counter) => {
-     const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
-  const suffix = counter.textContent.replace(/[0-9]/g, '');
- const increment = target / 100;
+        const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
+        const suffix = counter.textContent.replace(/[0-9]/g, '');
+        const increment = target / 100;
         let current = 0;
-        
-const updateCounter = () => {
-      current += increment;
+
+        const updateCounter = () => {
+            current += increment;
             if (current < target) {
-    counter.textContent = Math.ceil(current) + suffix;
-       requestAnimationFrame(updateCounter);
+                counter.textContent = Math.ceil(current) + suffix;
+                requestAnimationFrame(updateCounter);
             } else {
-     counter.textContent = target + suffix;
-      }
+                counter.textContent = target + suffix;
+            }
         };
-      updateCounter();
+        updateCounter();
     };
 
     const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-          if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-         entry.target.classList.add('counted');
-  animateCounter(entry.target);
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                entry.target.classList.add('counted');
+                animateCounter(entry.target);
             }
         });
     }, { threshold: 0.5 });
 
     document.querySelectorAll('.counter').forEach(counter => {
-     counterObserver.observe(counter);
+        counterObserver.observe(counter);
     });
 
     // Back to Top Button
@@ -63,12 +63,12 @@ const updateCounter = () => {
     });
 
     backToTopBtn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // Tooltips
     [...document.querySelectorAll('[data-bs-toggle="tooltip"]')]
         .map(el => new bootstrap.Tooltip(el));
 
-    console.log('%c??? GymForce Premium ', 'background: linear-gradient(135deg, #00E676, #00C853); color: #0A0E27; font-size: 20px; padding: 10px; font-weight: bold;');
+    console.log('%c🏋️ GymForce Premium ', 'background: linear-gradient(135deg, #00E676, #00C853); color: #0A0E27; font-size: 20px; padding: 10px; font-weight: bold;');
 });

@@ -13,8 +13,6 @@ namespace GymApp.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Þifre")]
         public string Password { get; set; }
-
-        [Display(Name = "Beni Hatýrla")]
         public bool RememberMe { get; set; }
     }
 }

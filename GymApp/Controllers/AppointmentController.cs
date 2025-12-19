@@ -120,79 +120,82 @@ namespace GymApp.Controllers
             if (ModelState.IsValid)
             {
                 var userId = _userManager.GetUserId(User);
-                var service = await _context.Services.FindAsync(model.ServiceId);
+var service = await _context.Services.FindAsync(model.ServiceId);
 
                 if (service == null)
-                {
+   {
                     ModelState.AddModelError("ServiceId", "Geçersiz hizmet seçimi.");
-                    await LoadViewBags();
-                    return View(model);
+         await LoadViewBags();
+   return View(model);
                 }
 
-                var startAt = model.AppointmentDate.Date.Add(model.AppointmentTime);
-                var endAt = startAt.AddMinutes(service.DurationMinutes);
+                // Türkiye saat dilimi
+                var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
 
+                // Yerel saati oluþtur (Türkiye saati)
+                var localDateTime = model.AppointmentDate.Date.Add(model.AppointmentTime);
+  
                 // UTC'ye çevir
-                startAt = DateTime.SpecifyKind(startAt, DateTimeKind.Utc);
-                endAt = DateTime.SpecifyKind(endAt, DateTimeKind.Utc);
+                var startAt = TimeZoneInfo.ConvertTimeToUtc(localDateTime, turkeyTimeZone);
+                var endAt = startAt.AddMinutes(service.DurationMinutes);
 
                 // Çakýþma kontrolü - ayný saatte randevu var mý?
                 var hasConflict = await _context.Appointments
                 .AnyAsync(a => a.TrainerId == model.TrainerId &&
                     a.Status != "Canceled" &&
-                    a.Status != "Rejected" &&
-                    ((startAt >= a.StartAt && startAt < a.EndAt) ||
-                    (endAt > a.StartAt && endAt <= a.EndAt) ||
-                    (startAt <= a.StartAt && endAt >= a.EndAt))
-                );
+        a.Status != "Rejected" &&
+    ((startAt >= a.StartAt && startAt < a.EndAt) ||
+       (endAt > a.StartAt && endAt <= a.EndAt) ||
+        (startAt <= a.StartAt && endAt >= a.EndAt))
+        );
 
-                if (hasConflict)
-                {
-                    ModelState.AddModelError("", "Seçilen saatte eðitmenin baþka bir randevusu bulunmaktadýr.");
-                    await LoadViewBags();
-                    return View(model);
-                }
+        if (hasConflict)
+     {
+  ModelState.AddModelError("", "Seçilen saatte eðitmenin baþka bir randevusu bulunmaktadýr.");
+   await LoadViewBags();
+      return View(model);
+        }
 
-                // Eðitmen müsaitlik kontrolü
-                var dayOfWeek = startAt.DayOfWeek;
-                var timeOfDay = model.AppointmentTime;
-                var endTimeOfDay = timeOfDay.Add(TimeSpan.FromMinutes(service.DurationMinutes));
+        // Eðitmen müsaitlik kontrolü
+ var dayOfWeek = localDateTime.DayOfWeek;
+        var timeOfDay = model.AppointmentTime;
+   var endTimeOfDay = timeOfDay.Add(TimeSpan.FromMinutes(service.DurationMinutes));
 
-                var isAvailable = await _context.TrainerAvailabilities
-                         .AnyAsync(ta => ta.TrainerId == model.TrainerId &&
-                    ta.Day == dayOfWeek &&
-                    ta.From <= timeOfDay &&
-                               ta.To >= endTimeOfDay);
+        var isAvailable = await _context.TrainerAvailabilities
+   .AnyAsync(ta => ta.TrainerId == model.TrainerId &&
+     ta.Day == dayOfWeek &&
+            ta.From <= timeOfDay &&
+   ta.To >= endTimeOfDay);
 
-                if (!isAvailable)
-                {
-                    ModelState.AddModelError("", "Eðitmen seçilen gün ve saatte müsait deðildir.");
-                    await LoadViewBags();
-                    return View(model);
-                }
-
-                var appointment = new Appointment
-                {
-                    MemberId = userId!,
-                    TrainerId = model.TrainerId,
-                    ServiceId = model.ServiceId,
-                    StartAt = startAt,
-                    EndAt = endAt,
-                    Status = "Pending",
-                    Notes = model.Notes,
-                    CreatedAt = DateTime.UtcNow
-                };
-
-                _context.Appointments.Add(appointment);
-                await _context.SaveChangesAsync();
-
-                TempData["Success"] = "Randevu talebiniz oluþturuldu. Onay bekleniyor.";
-                return RedirectToAction(nameof(Index));
-            }
-
+        if (!isAvailable)
+        {
+    ModelState.AddModelError("", "Eðitmen seçilen gün ve saatte müsait deðildir.");
             await LoadViewBags();
             return View(model);
-        }
+    }
+
+        var appointment = new Appointment
+        {
+            MemberId = userId!,
+            TrainerId = model.TrainerId,
+            ServiceId = model.ServiceId,
+            StartAt = startAt,
+         EndAt = endAt,
+  Status = "Pending",
+            Notes = model.Notes,
+        CreatedAt = DateTime.UtcNow
+     };
+
+        _context.Appointments.Add(appointment);
+        await _context.SaveChangesAsync();
+
+  TempData["Success"] = "Randevu talebiniz oluþturuldu. Onay bekleniyor.";
+   return RedirectToAction(nameof(Index));
+    }
+
+    await LoadViewBags();
+    return View(model);
+}
 
         // Randevu Onaylama (Admin)
         [Authorize(Roles = "Admin")]

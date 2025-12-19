@@ -1,172 +1,172 @@
 @model GymApp.ViewModels.BulkAvailabilityViewModel
 @{
-  ViewData["Title"] = "Toplu Müsaitlik Ekle";
-  var trainers = ViewBag.Trainers as List<GymApp.Models.Trainer> ?? new List<GymApp.Models.Trainer>();
+    ViewData["Title"] = "Toplu Müsaitlik Ekle";
+    var trainers = ViewBag.Trainers as List<GymApp.Models.Trainer> ?? new List<GymApp.Models.Trainer>();
 }
 
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card border-0 shadow">
             <div class="card-header bg-success text-white">
-         <h5 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>@ViewData["Title"]</h5>
-   </div>
-  <div class="card-body">
-       <div class="alert alert-info mb-4">
-   <i class="bi bi-info-circle me-2"></i>
-    Bu form ile bir eðitmen için birden fazla günü ayný saat aralýðýnda tek seferde ekleyebilirsiniz.
-     </div>
+                <h5 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>@ViewData["Title"]</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Bu form ile bir eðitmen için birden fazla günü ayný saat aralýðýnda tek seferde ekleyebilirsiniz.
+                </div>
 
-        <form asp-action="BulkCreate" method="post">
-        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                <form asp-action="BulkCreate" method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-        <div class="mb-4">
-      <label asp-for="TrainerId" class="form-label fw-semibold">Eðitmen</label>
-         <select asp-for="TrainerId" class="form-select form-select-lg" asp-items="@(new SelectList(trainers, "Id", "FullName"))">
-       <option value="">-- Eðitmen Seçiniz --</option>
-  </select>
-       <span asp-validation-for="TrainerId" class="text-danger"></span>
-     </div>
+                    <div class="mb-4">
+                        <label asp-for="TrainerId" class="form-label fw-semibold">Eðitmen</label>
+                        <select asp-for="TrainerId" class="form-select form-select-lg" asp-items="@(new SelectList(trainers, "Id", "FullName"))">
+                            <option value="">-- Eðitmen Seçiniz --</option>
+                        </select>
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    </div>
 
-      <div class="mb-4">
-      <label class="form-label fw-semibold">Günler</label>
-   <span asp-validation-for="SelectedDays" class="text-danger d-block mb-2"></span>
-              <div class="row">
-       <div class="col-md-6">
-            <div class="form-check form-check-inline d-block mb-2">
-   <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Monday" class="form-check-input" id="day-monday">
-    <label class="form-check-label" for="day-monday">Pazartesi</label>
-      </div>
-          <div class="form-check form-check-inline d-block mb-2">
-  <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Tuesday" class="form-check-input" id="day-tuesday">
- <label class="form-check-label" for="day-tuesday">Salý</label>
-       </div>
-      <div class="form-check form-check-inline d-block mb-2">
-           <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Wednesday" class="form-check-input" id="day-wednesday">
-    <label class="form-check-label" for="day-wednesday">Çarþamba</label>
-       </div>
-       <div class="form-check form-check-inline d-block mb-2">
-         <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Thursday" class="form-check-input" id="day-thursday">
-  <label class="form-check-label" for="day-thursday">Perþembe</label>
-        </div>
-       </div>
-          <div class="col-md-6">
-   <div class="form-check form-check-inline d-block mb-2">
-  <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Friday" class="form-check-input" id="day-friday">
-          <label class="form-check-label" for="day-friday">Cuma</label>
-        </div>
-           <div class="form-check form-check-inline d-block mb-2">
-   <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Saturday" class="form-check-input" id="day-saturday">
-      <label class="form-check-label" for="day-saturday">Cumartesi</label>
-   </div>
-         <div class="form-check form-check-inline d-block mb-2">
-   <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Sunday" class="form-check-input" id="day-sunday">
-  <label class="form-check-label" for="day-sunday">Pazar</label>
- </div>
- </div>
-        </div>
-      <div class="mt-2">
-      <button type="button" class="btn btn-sm btn-outline-primary" id="select-weekdays">
-        <i class="bi bi-check-all"></i> Hafta Ýçi
- </button>
-        <button type="button" class="btn btn-sm btn-outline-secondary" id="select-weekend">
-       <i class="bi bi-check-all"></i> Hafta Sonu
-       </button>
-          <button type="button" class="btn btn-sm btn-outline-success" id="select-all">
-    <i class="bi bi-check-all"></i> Tümü
-        </button>
-              <button type="button" class="btn btn-sm btn-outline-danger" id="clear-all">
- <i class="bi bi-x-lg"></i> Temizle
-       </button>
-         </div>
-   </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Günler</label>
+                        <span asp-validation-for="SelectedDays" class="text-danger d-block mb-2"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Monday" class="form-check-input" id="day-monday">
+                                    <label class="form-check-label" for="day-monday">Pazartesi</label>
+                                </div>
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Tuesday" class="form-check-input" id="day-tuesday">
+                                    <label class="form-check-label" for="day-tuesday">Salý</label>
+                                </div>
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Wednesday" class="form-check-input" id="day-wednesday">
+                                    <label class="form-check-label" for="day-wednesday">Çarþamba</label>
+                                </div>
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Thursday" class="form-check-input" id="day-thursday">
+                                    <label class="form-check-label" for="day-thursday">Perþembe</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Friday" class="form-check-input" id="day-friday">
+                                    <label class="form-check-label" for="day-friday">Cuma</label>
+                                </div>
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Saturday" class="form-check-input" id="day-saturday">
+                                    <label class="form-check-label" for="day-saturday">Cumartesi</label>
+                                </div>
+                                <div class="form-check form-check-inline d-block mb-2">
+                                    <input type="checkbox" name="SelectedDays" value="@DayOfWeek.Sunday" class="form-check-input" id="day-sunday">
+                                    <label class="form-check-label" for="day-sunday">Pazar</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="select-weekdays">
+                                <i class="bi bi-check-all"></i> Hafta Ýçi
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="select-weekend">
+                                <i class="bi bi-check-all"></i> Hafta Sonu
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-success" id="select-all">
+                                <i class="bi bi-check-all"></i> Tümü
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="clear-all">
+                                <i class="bi bi-x-lg"></i> Temizle
+                            </button>
+                        </div>
+                    </div>
 
-          <div class="row mb-4">
- <div class="col-md-6">
-  <label asp-for="From" class="form-label fw-semibold">Baþlangýç Saati</label>
-     <input asp-for="From" type="time" class="form-control form-control-lg" />
-  <span asp-validation-for="From" class="text-danger"></span>
-        </div>
-     <div class="col-md-6">
-   <label asp-for="To" class="form-label fw-semibold">Bitiþ Saati</label>
-<input asp-for="To" type="time" class="form-control form-control-lg" />
-      <span asp-validation-for="To" class="text-danger"></span>
-     </div>
-</div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="From" class="form-label fw-semibold">Baþlangýç Saati</label>
+                            <input asp-for="From" type="time" class="form-control form-control-lg" />
+                            <span asp-validation-for="From" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="To" class="form-label fw-semibold">Bitiþ Saati</label>
+                            <input asp-for="To" type="time" class="form-control form-control-lg" />
+                            <span asp-validation-for="To" class="text-danger"></span>
+                        </div>
+                    </div>
 
-          <!-- Hazýr Saat Þablonlarý -->
-         <div class="mb-4">
-     <label class="form-label fw-semibold">Hýzlý Saat Seçimi</label>
-       <div class="btn-group d-flex flex-wrap gap-2" role="group">
-          <button type="button" class="btn btn-outline-info time-preset" data-from="09:00" data-to="18:00">
-       09:00 - 18:00
-       </button>
-       <button type="button" class="btn btn-outline-info time-preset" data-from="08:00" data-to="17:00">
-       08:00 - 17:00
-       </button>
-     <button type="button" class="btn btn-outline-info time-preset" data-from="10:00" data-to="20:00">
-   10:00 - 20:00
- </button>
-             <button type="button" class="btn btn-outline-info time-preset" data-from="06:00" data-to="22:00">
-        06:00 - 22:00
-    </button>
-           </div>
-   </div>
+                    <!-- Hazýr Saat Þablonlarý -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Hýzlý Saat Seçimi</label>
+                        <div class="btn-group d-flex flex-wrap gap-2" role="group">
+                            <button type="button" class="btn btn-outline-info time-preset" data-from="09:00" data-to="18:00">
+                                09:00 - 18:00
+                            </button>
+                            <button type="button" class="btn btn-outline-info time-preset" data-from="08:00" data-to="17:00">
+                                08:00 - 17:00
+                            </button>
+                            <button type="button" class="btn btn-outline-info time-preset" data-from="10:00" data-to="20:00">
+                                10:00 - 20:00
+                            </button>
+                            <button type="button" class="btn btn-outline-info time-preset" data-from="06:00" data-to="22:00">
+                                06:00 - 22:00
+                            </button>
+                        </div>
+                    </div>
 
-   <div class="d-flex justify-content-between pt-3 border-top">
-          <a asp-action="Index" class="btn btn-outline-secondary">
-  <i class="bi bi-arrow-left me-1"></i> Geri
-  </a>
-           <button type="submit" class="btn btn-success btn-lg">
-        <i class="bi bi-save me-1"></i> Toplu Ekle
-   </button>
-    </div>
-      </form>
-        </div>
+                    <div class="d-flex justify-content-between pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Geri
+                        </a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-save me-1"></i> Toplu Ekle
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
- <partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
     <script>
-     // Hafta içi seçimi
-        document.getElementById('select-weekdays').addEventListener('click', function() {
-   document.getElementById('day-monday').checked = true;
-      document.getElementById('day-tuesday').checked = true;
-    document.getElementById('day-wednesday').checked = true;
- document.getElementById('day-thursday').checked = true;
-     document.getElementById('day-friday').checked = true;
-     document.getElementById('day-saturday').checked = false;
-    document.getElementById('day-sunday').checked = false;
-        });
+            // Hafta içi seçimi
+               document.getElementById('select-weekdays').addEventListener('click', function() {
+          document.getElementById('day-monday').checked = true;
+             document.getElementById('day-tuesday').checked = true;
+           document.getElementById('day-wednesday').checked = true;
+        document.getElementById('day-thursday').checked = true;
+            document.getElementById('day-friday').checked = true;
+            document.getElementById('day-saturday').checked = false;
+           document.getElementById('day-sunday').checked = false;
+               });
 
-    // Hafta sonu seçimi
- document.getElementById('select-weekend').addEventListener('click', function() {
-   document.getElementById('day-monday').checked = false;
-   document.getElementById('day-tuesday').checked = false;
-            document.getElementById('day-wednesday').checked = false;
-   document.getElementById('day-thursday').checked = false;
-   document.getElementById('day-friday').checked = false;
-            document.getElementById('day-saturday').checked = true;
- document.getElementById('day-sunday').checked = true;
-        });
+           // Hafta sonu seçimi
+        document.getElementById('select-weekend').addEventListener('click', function() {
+          document.getElementById('day-monday').checked = false;
+          document.getElementById('day-tuesday').checked = false;
+                   document.getElementById('day-wednesday').checked = false;
+          document.getElementById('day-thursday').checked = false;
+          document.getElementById('day-friday').checked = false;
+                   document.getElementById('day-saturday').checked = true;
+        document.getElementById('day-sunday').checked = true;
+               });
 
-        // Tümünü seç
-     document.getElementById('select-all').addEventListener('click', function() {
-    document.querySelectorAll('input[name="SelectedDays"]').forEach(cb => cb.checked = true);
-        });
+               // Tümünü seç
+            document.getElementById('select-all').addEventListener('click', function() {
+           document.querySelectorAll('input[name="SelectedDays"]').forEach(cb => cb.checked = true);
+               });
 
-        // Tümünü temizle
-  document.getElementById('clear-all').addEventListener('click', function() {
-     document.querySelectorAll('input[name="SelectedDays"]').forEach(cb => cb.checked = false);
-        });
+               // Tümünü temizle
+         document.getElementById('clear-all').addEventListener('click', function() {
+            document.querySelectorAll('input[name="SelectedDays"]').forEach(cb => cb.checked = false);
+               });
 
-        // Hazýr saat þablonlarý
-    document.querySelectorAll('.time-preset').forEach(btn => {
-        btn.addEventListener('click', function() {
-   document.getElementById('From').value = this.dataset.from;
-     document.getElementById('To').value = this.dataset.to;
-      });
-        });
+               // Hazýr saat þablonlarý
+           document.querySelectorAll('.time-preset').forEach(btn => {
+               btn.addEventListener('click', function() {
+          document.getElementById('From').value = this.dataset.from;
+            document.getElementById('To').value = this.dataset.to;
+             });
+               });
     </script>
 }

@@ -6,13 +6,13 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold"><i class="bi bi-building me-2" style="color: var(--gym-accent);"></i>Spor Salonları</h2>
-     <p class="text-muted mb-0">Anlaşmalı premium spor salonlarımız</p>
+        <p class="text-muted mb-0">Anlaşmalı premium spor salonlarımız</p>
     </div>
     @if (User.IsInRole("Admin"))
     {
         <a class="btn btn-success" asp-action="Create">
             <i class="bi bi-plus-circle me-1"></i> Yeni Salon
-     </a>
+        </a>
     }
 </div>
 
@@ -27,15 +27,15 @@
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-     <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
 @if (!Model.Any())
 {
     <div class="alert alert-info">
-  <i class="bi bi-info-circle me-2"></i>Henüz kayıtlı spor salonu bulunmamaktadır.
+        <i class="bi bi-info-circle me-2"></i>Henüz kayıtlı spor salonu bulunmamaktadır.
     </div>
 }
 else
@@ -43,78 +43,78 @@ else
     <div class="row g-4">
         @foreach (var g in Model)
         {
-          <div class="col-md-6 col-lg-4">
-         <div class="card h-100 hover-card">
-      @if (!string.IsNullOrEmpty(g.PhotoUrl))
-   {
-<img src="@g.PhotoUrl" class="card-img-top" alt="@g.Name" style="height: 220px; object-fit: cover;" />
-        }
-   else
-        {
-        <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 220px; background: linear-gradient(135deg, rgba(0, 230, 118, 0.1), rgba(33, 150, 243, 0.1));">
-         <i class="bi bi-building" style="font-size: 4rem; color: var(--gym-accent);"></i>
-                 </div>
-       }
-        <div class="card-body">
-  <h5 class="card-title fw-bold mb-3">@g.Name</h5>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 hover-card">
+                    @if (!string.IsNullOrEmpty(g.PhotoUrl))
+                    {
+                        <img src="@g.PhotoUrl" class="card-img-top" alt="@g.Name" style="height: 220px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 220px; background: linear-gradient(135deg, rgba(0, 230, 118, 0.1), rgba(33, 150, 243, 0.1));">
+                            <i class="bi bi-building" style="font-size: 4rem; color: var(--gym-accent);"></i>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-3">@g.Name</h5>
 
-          @if (!string.IsNullOrEmpty(g.Description))
-      {
-           <p class="card-text text-muted small mb-3">@(g.Description?.Length > 100 ? g.Description.Substring(0, 100) + "..." : g.Description)</p>
-          }
+                        @if (!string.IsNullOrEmpty(g.Description))
+                        {
+                            <p class="card-text text-muted small mb-3">@(g.Description?.Length > 100 ? g.Description.Substring(0, 100) + "..." : g.Description)</p>
+                        }
 
-           <div class="mb-2 d-flex align-items-start">
-             <i class="bi bi-geo-alt me-2 mt-1" style="color: var(--gym-danger);"></i>
-                <span class="small">@g.Address</span>
-      </div>
-   <div class="mb-2 d-flex align-items-center">
-   <i class="bi bi-clock me-2" style="color: var(--gym-info);"></i>
-       <span class="small">@g.WorkingHours</span>
-       </div>
-         @if (!string.IsNullOrEmpty(g.Phone))
-       {
-        <div class="mb-2 d-flex align-items-center">
-           <i class="bi bi-telephone me-2" style="color: var(--gym-accent);"></i>
-     <span class="small">@g.Phone</span>
-       </div>
-      }
-             @if (!string.IsNullOrEmpty(g.Email))
-        {
-     <div class="mb-2 d-flex align-items-center">
-            <i class="bi bi-envelope me-2" style="color: var(--gym-warning);"></i>
-           <span class="small">@g.Email</span>
-     </div>
-     }
-          <div class="mt-3 d-flex flex-wrap gap-2">
-          <span class="badge bg-primary">
-              <i class="bi bi-people me-1"></i>@g.Trainers.Count Eğitmen
- </span>
-             @if (g.GymServices?.Any() == true)
-       {
-        <span class="badge bg-success">
-<i class="bi bi-clipboard-check me-1"></i>@g.GymServices.Count(gs => gs.IsActive) Hizmet
-  </span>
-        }
-             </div>
-        </div>
-           @if (User.IsInRole("Admin"))
-      {
-      <div class="card-footer bg-transparent border-0 text-center pb-3">
-         <div class="btn-group" role="group">
-     <a asp-controller="GymService" asp-action="Index" asp-route-gymId="@g.Id" class="btn btn-sm btn-outline-success">
-    <i class="bi bi-clipboard-check"></i> Hizmetler
-      </a>
-         <a asp-action="Edit" asp-route-id="@g.Id" class="btn btn-sm btn-outline-primary">
-     <i class="bi bi-pencil"></i> Düzenle
-     </a>
-     <a asp-action="Delete" asp-route-id="@g.Id" class="btn btn-sm btn-outline-danger">
-         <i class="bi bi-trash"></i> Sil
-    </a>
-     </div>
-         </div>
-    }
-      </div>
-    </div>
+                        <div class="mb-2 d-flex align-items-start">
+                            <i class="bi bi-geo-alt me-2 mt-1" style="color: var(--gym-danger);"></i>
+                            <span class="small">@g.Address</span>
+                        </div>
+                        <div class="mb-2 d-flex align-items-center">
+                            <i class="bi bi-clock me-2" style="color: var(--gym-info);"></i>
+                            <span class="small">@g.WorkingHours</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(g.Phone))
+                        {
+                            <div class="mb-2 d-flex align-items-center">
+                                <i class="bi bi-telephone me-2" style="color: var(--gym-accent);"></i>
+                                <span class="small">@g.Phone</span>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(g.Email))
+                        {
+                            <div class="mb-2 d-flex align-items-center">
+                                <i class="bi bi-envelope me-2" style="color: var(--gym-warning);"></i>
+                                <span class="small">@g.Email</span>
+                            </div>
+                        }
+                        <div class="mt-3 d-flex flex-wrap gap-2">
+                            <span class="badge bg-primary">
+                                <i class="bi bi-people me-1"></i>@g.Trainers.Count Eğitmen
+                            </span>
+                            @if (g.GymServices?.Any() == true)
+                            {
+                                <span class="badge bg-success">
+                                    <i class="bi bi-clipboard-check me-1"></i>@g.GymServices.Count(gs => gs.IsActive) Hizmet
+                                </span>
+                            }
+                        </div>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="card-footer bg-transparent border-0 text-center pb-3">
+                            <div class="btn-group" role="group">
+                                <a asp-controller="GymService" asp-action="Index" asp-route-gymId="@g.Id" class="btn btn-sm btn-outline-success">
+                                    <i class="bi bi-clipboard-check"></i> Hizmetler
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@g.Id" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i> Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@g.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Sil
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
         }
     </div>
 }
