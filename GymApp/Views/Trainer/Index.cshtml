@@ -4,31 +4,31 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="fw-bold"><i class="bi bi-person-badge me-2 text-success"></i>Eðitmenler</h2>
+ <div>
+      <h2 class="fw-bold"><i class="bi bi-person-badge me-2" style="color: var(--gym-accent);"></i>Eðitmenler</h2>
         <p class="text-muted mb-0">Uzman eðitmenlerimizle tanýþýn</p>
     </div>
     @if (User.IsInRole("Admin"))
     {
-        <a class="btn btn-primary" asp-action="Create">
+        <a class="btn btn-success" asp-action="Create">
             <i class="bi bi-plus-circle me-1"></i> Yeni Eðitmen
-        </a>
+     </a>
     }
 </div>
 
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+     <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
@@ -41,139 +41,134 @@
 else
 {
     <div class="row g-4">
-        @foreach (var t in Model)
+@foreach (var t in Model)
         {
-         <div class="col-md-6 col-lg-4">
-        <div class="card h-100 border-0 shadow-sm hover-card">
-        <div class="card-body p-4">
-    <div class="text-center mb-3">
-        @if (!string.IsNullOrEmpty(t.PhotoUrl))
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 hover-card">
+             <div class="card-body p-4">
+         <div class="text-center mb-3">
+           @if (!string.IsNullOrEmpty(t.PhotoUrl))
+       {
+       <div class="position-relative d-inline-block">
+       <img src="@t.PhotoUrl" alt="@t.FullName" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 4px solid var(--gym-accent); box-shadow: var(--gym-shadow-accent);" />
+      <div class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2" style="width: 35px; height: 35px;">
+             <i class="bi bi-check-lg text-white"></i>
+            </div>
+     </div>
+                 }
+         else
             {
-     <img src="@t.PhotoUrl" alt="@t.FullName" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
-       }
-       else
-      {
-       <div class="bg-success bg-opacity-10 rounded-circle d-inline-flex p-4">
-     <i class="bi bi-person-badge text-success" style="font-size: 2.5rem;"></i>
-      </div>
+       <div class="d-inline-flex rounded-circle p-4" style="background: linear-gradient(135deg, var(--gym-accent), var(--gym-accent-dark)); box-shadow: var(--gym-shadow-accent);">
+               <i class="bi bi-person-badge" style="font-size: 3rem; color: var(--gym-bg);"></i>
+         </div>
           }
-      </div>
-  <h5 class="card-title text-center fw-bold">@t.FullName</h5>
-      <p class="text-center mb-2">
- <span class="badge bg-primary bg-opacity-75">@t.Expertise</span>
-     </p>
+          </div>
+  <h5 class="card-title text-center fw-bold mb-2">@t.FullName</h5>
+         <p class="text-center mb-3">
+    <span class="badge" style="background: linear-gradient(135deg, var(--gym-primary), var(--gym-primary-dark));">@t.Expertise</span>
+            </p>
 
              @if (t.ExperienceYears.HasValue)
-      {
-         <p class="text-center text-muted small mb-2">
+    {
+        <div class="text-center mb-3">
+       <span class="badge bg-warning text-dark">
      <i class="bi bi-award me-1"></i>@t.ExperienceYears yýl deneyim
-  </p>
-      }
+         </span>
+ </div>
+          }
 
-            @if (!string.IsNullOrEmpty(t.Bio))
- {
-           <p class="card-text text-muted small text-center mb-3">@(t.Bio?.Length > 100 ? t.Bio.Substring(0, 100) + "..." : t.Bio)</p>
-   }
+        @if (!string.IsNullOrEmpty(t.Bio))
+       {
+     <p class="card-text text-muted small text-center mb-3 px-2">@(t.Bio?.Length > 80 ? t.Bio.Substring(0, 80) + "..." : t.Bio)</p>
+}
 
-    <hr />
+       <hr style="border-color: rgba(255, 255, 255, 0.1);" />
 
             <div class="small">
-        <p class="card-text mb-2">
-   <i class="bi bi-building text-primary me-2"></i>
-   <strong>Salon:</strong> @(t.Gym?.Name ?? "Belirtilmemiþ")
-        </p>
+           <div class="d-flex align-items-center mb-2">
+             <i class="bi bi-building me-2" style="color: var(--gym-primary); font-size: 1.1rem;"></i>
+           <span>@(t.Gym?.Name ?? "Belirtilmemiþ")</span>
+    </div>
 
-       @if (!string.IsNullOrEmpty(t.Email))
-      {
-    <p class="card-text mb-2">
-        <i class="bi bi-envelope text-info me-2"></i>
-     @t.Email
-    </p>
-               }
+          @if (!string.IsNullOrEmpty(t.Email))
+        {
+      <div class="d-flex align-items-center mb-2">
+ <i class="bi bi-envelope me-2" style="color: var(--gym-info); font-size: 1.1rem;"></i>
+   <span class="text-truncate">@t.Email</span>
+      </div>
+         }
 
- @if (!string.IsNullOrEmpty(t.Phone))
-      {
-            <p class="card-text mb-2">
-         <i class="bi bi-telephone text-success me-2"></i>
-  @t.Phone
-            </p>
-     }
-
-<p class="card-text mb-0">
-  <i class="bi bi-calendar-check text-warning me-2"></i>
-          <strong>Müsaitlik:</strong>
-                @if (t.Availabilities != null && t.Availabilities.Any())
-          {
-  <span class="badge bg-success">@t.Availabilities.Count gün</span>
-foreach (var av in t.Availabilities.Take(3))
-          {
-  <span class="badge bg-light text-dark ms-1">@GetDayName(av.Day)</span>
-    }
-        @if (t.Availabilities.Count > 3)
-{
-    <span class="badge bg-secondary">+@(t.Availabilities.Count - 3)</span>
-       }
-            }
-           else
-       {
-        <span class="badge bg-secondary">Belirlenmedi</span>
-        }
-     </p>
-           </div>
-         </div>
-
-         <!-- Admin Butonlarý -->
-        @if (User.IsInRole("Admin"))
- {
-      <div class="card-footer bg-transparent border-0 text-center py-3">
-       <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-sm btn-outline-primary">
-   <i class="bi bi-pencil"></i> Düzenle
-           </a>
-         <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-sm btn-outline-danger">
-                <i class="bi bi-trash"></i> Sil
-  </a>
+                   @if (!string.IsNullOrEmpty(t.Phone))
+    {
+    <div class="d-flex align-items-center mb-2">
+    <i class="bi bi-telephone me-2" style="color: var(--gym-accent); font-size: 1.1rem;"></i>
+       <span>@t.Phone</span>
               </div>
+        }
+
+     <div class="d-flex align-items-start mt-3">
+          <i class="bi bi-calendar-check me-2 mt-1" style="color: var(--gym-warning); font-size: 1.1rem;"></i>
+    <div class="flex-grow-1">
+       <strong class="d-block mb-1">Müsaitlik:</strong>
+     @if (t.Availabilities != null && t.Availabilities.Any())
+         {
+    <div class="d-flex flex-wrap gap-1">
+    @foreach (var av in t.Availabilities.Take(7))
+   {
+      <span class="badge bg-success">@GetDayName(av.Day)</span>
+   }
+      </div>
+  }
+        else
+     {
+        <span class="badge bg-secondary">Belirlenmedi</span>
+          }
+            </div>
+     </div>
+    </div>
+       </div>
+
+                    @if (User.IsInRole("Admin"))
+        {
+        <div class="card-footer bg-transparent border-0 text-center py-3">
+        <div class="btn-group" role="group">
+      <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-pencil"></i> Düzenle
+     </a>
+          <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash"></i> Sil
+           </a>
+           </div>
+             </div>
      }
 
-    <!-- Üye Randevu Butonu -->
-        @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
-       {
-              <div class="card-footer bg-transparent border-top-0 text-center pb-3">
-     <a asp-controller="Appointment" asp-action="Create" class="btn btn-success">
+     @if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Admin"))
+           {
+               <div class="card-footer bg-transparent border-0 text-center pb-3">
+         <a asp-controller="Appointment" asp-action="Create" class="btn btn-success w-100">
   <i class="bi bi-calendar-plus me-1"></i> Randevu Al
       </a>
-      </div>
-}
-         </div>
-     </div>
-        }
+               </div>
+      }
+          </div>
+</div>
+   }
     </div>
 }
 
 @functions {
-  string GetDayName(DayOfWeek day)
+    string GetDayName(DayOfWeek day)
     {
-        return day switch
+      return day switch
       {
-         DayOfWeek.Monday => "Pzt",
+            DayOfWeek.Monday => "Pzt",
             DayOfWeek.Tuesday => "Sal",
-            DayOfWeek.Wednesday => "Çar",
-          DayOfWeek.Thursday => "Per",
-         DayOfWeek.Friday => "Cum",
-DayOfWeek.Saturday => "Cmt",
-          DayOfWeek.Sunday => "Paz",
+   DayOfWeek.Wednesday => "Çar",
+      DayOfWeek.Thursday => "Per",
+          DayOfWeek.Friday => "Cum",
+            DayOfWeek.Saturday => "Cmt",
+        DayOfWeek.Sunday => "Paz",
             _ => ""
         };
-  }
-}
-
-<style>
-    .hover-card {
-   transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-
-        .hover-card:hover {
-     transform: translateY(-5px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-        }
-</style>
+}

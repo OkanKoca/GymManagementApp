@@ -6,91 +6,150 @@
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="bi bi-calendar-check"></i> Randevularým</h2>
- <div>
-     <a asp-action="History" class="btn btn-outline-secondary">
-     <i class="bi bi-clock-history"></i> Geçmiþ Randevularým
-        </a>
-        <a asp-action="Create" class="btn btn-primary">
-       <i class="bi bi-plus-circle"></i> Yeni Randevu
-      </a>
+    <div>
+      <h2 class="fw-bold"><i class="bi bi-calendar-check me-2" style="color: var(--gym-accent);"></i>Randevularým</h2>
+        <p class="text-muted mb-0">Aktif randevularýnýzý yönetin</p>
     </div>
+<div>
+        <a asp-action="History" class="btn btn-outline-primary">
+   <i class="bi bi-clock-history me-1"></i> Geçmiþ
+        </a>
+        <a asp-action="Create" class="btn btn-success">
+      <i class="bi bi-plus-circle me-1"></i> Yeni Randevu
+        </a>
+ </div>
 </div>
 
 @if (TempData["Success"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["Success"]
- <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+     <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
 
 @if (!Model.Any())
 {
-    <div class="alert alert-info">
-        <i class="bi bi-info-circle"></i> Henüz aktif randevunuz bulunmamaktadýr.
-        <a asp-action="History" class="alert-link">Geçmiþ randevularýnýzý</a> görüntüleyebilirsiniz.
+    <div class="card text-center py-5">
+        <div class="card-body">
+        <div class="icon-box mx-auto mb-3">
+     <i class="bi bi-calendar-x"></i>
+    </div>
+     <h4 class="mb-3">Henüz Aktif Randevunuz Yok</h4>
+     <p class="text-muted mb-4">Hemen bir randevu oluþturarak eðitmenlerimizle buluþun!</p>
+            <div>
+    <a asp-action="Create" class="btn btn-success me-2">
+<i class="bi bi-plus-circle me-1"></i> Yeni Randevu Oluþtur
+           </a>
+          <a asp-action="History" class="btn btn-outline-primary">
+        <i class="bi bi-clock-history me-1"></i> Geçmiþ Randevular
+        </a>
   </div>
+ </div>
+    </div>
 }
 else
 {
-  <div class="table-responsive">
-     <table class="table table-hover">
-            <thead class="table-dark">
-      <tr>
-         <th>Tarih/Saat</th>
-  <th>Eðitmen</th>
-  <th>Hizmet</th>
-       <th>Süre</th>
-       <th>Ücret</th>
-    <th>Durum</th>
-   <th>Ýþlemler</th>
-          </tr>
-     </thead>
-     <tbody>
-       @foreach (var item in Model)
-        {
-         var startTime = TimeZoneInfo.ConvertTimeFromUtc(item.StartAt, turkeyTimeZone);
+ <div class="row g-4">
+    @foreach (var item in Model)
+  {
+      var startTime = TimeZoneInfo.ConvertTimeFromUtc(item.StartAt, turkeyTimeZone);
             var endTime = TimeZoneInfo.ConvertTimeFromUtc(item.EndAt, turkeyTimeZone);
-   var statusBadge = item.Status switch
-       {
-               "Pending" => "warning",
-"Approved" => "success",
-       _ => "secondary"
-                 };
-        var statusText = item.Status switch
-           {
-            "Pending" => "Onay Bekliyor",
- "Approved" => "Onaylandý",
-    _ => item.Status
-  };
-        <tr>
-    <td>
-             <strong>@startTime.ToString("dd.MM.yyyy")</strong><br />
-     <small class="text-muted">@startTime.ToString("HH:mm") - @endTime.ToString("HH:mm")</small>
-    </td>
-     <td>@item.Trainer?.FullName</td>
-       <td>@item.Service?.Name</td>
-              <td>@item.Service?.DurationMinutes dk</td>
-  <td>@item.Service?.Price.ToString("C")</td>
-  <td><span class="badge bg-@statusBadge">@statusText</span></td>
-            <td>
-               <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">
-       <i class="bi bi-eye"></i>
-</a>
-      @if (item.Status == "Pending" || item.Status == "Approved")
-        {
-     <form asp-action="Cancel" asp-route-id="@item.Id" method="post" class="d-inline"
-             onsubmit="return confirm('Randevuyu iptal etmek istediðinize emin misiniz?')">
-     <button type="submit" class="btn btn-sm btn-outline-danger">
-              <i class="bi bi-x-circle"></i>
-   </button>
-     </form>
-           }
-</td>
-     </tr>
+  var statusStyle = item.Status switch
+         {
+        "Pending" => "warning",
+             "Approved" => "accent",
+             _ => "secondary"
+          };
+            var statusText = item.Status switch
+         {
+       "Pending" => "Onay Bekliyor",
+     "Approved" => "Onaylandý",
+        _ => item.Status
+    };
+    var statusIcon = item.Status switch
+            {
+          "Pending" => "clock",
+                "Approved" => "check-circle",
+  _ => "info-circle"
+            };
+
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 hover-card @(item.Status == "Approved" ? "border-success" : "")">
+   @if (item.Status == "Approved")
+         {
+       <div class="position-absolute top-0 end-0 m-3">
+        <span class="badge bg-success pulse">
+         <i class="bi bi-check-circle me-1"></i>Onaylandý
+           </span>
+       </div>
          }
-      </tbody>
-        </table>
+     else if (item.Status == "Pending")
+  {
+           <div class="position-absolute top-0 end-0 m-3">
+           <span class="badge bg-warning text-dark">
+  <i class="bi bi-clock me-1"></i>Bekliyor
+          </span>
+        </div>
+ }
+
+        <div class="card-body">
+         <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+    <div class="me-3">
+          <div class="text-center p-3 rounded" style="background: linear-gradient(135deg, var(--gym-accent), var(--gym-accent-dark)); min-width: 70px;">
+       <div class="fw-bold" style="font-size: 1.5rem; color: var(--gym-bg);">@startTime.ToString("dd")</div>
+  <div class="small" style="color: var(--gym-bg); opacity: 0.9;">@startTime.ToString("MMM")</div>
+    </div>
+   </div>
+ <div>
+        <h5 class="card-title mb-1 fw-bold">@item.Service?.Name</h5>
+ <p class="text-muted small mb-0">
+           <i class="bi bi-clock me-1"></i>@startTime.ToString("HH:mm") - @endTime.ToString("HH:mm")
+          </p>
+            </div>
+       </div>
+
+    <div class="mb-3">
+       <div class="d-flex align-items-center mb-2">
+             <i class="bi bi-person-badge me-2" style="color: var(--gym-primary); font-size: 1.1rem;"></i>
+           <span><strong>Eðitmen:</strong> @item.Trainer?.FullName</span>
+    </div>
+      <div class="d-flex align-items-center mb-2">
+              <i class="bi bi-hourglass-split me-2" style="color: var(--gym-info); font-size: 1.1rem;"></i>
+       <span><strong>Süre:</strong> @item.Service?.DurationMinutes dakika</span>
+        </div>
+             <div class="d-flex align-items-center">
+<i class="bi bi-currency-dollar me-2" style="color: var(--gym-warning); font-size: 1.1rem;"></i>
+          <span><strong>Ücret:</strong> @item.Service?.Price.ToString("C")</span>
+  </div>
+          </div>
+
+     @if (!string.IsNullOrEmpty(item.Notes))
+     {
+     <div class="alert alert-info py-2 px-3 small mb-3">
+ <i class="bi bi-info-circle me-1"></i>@item.Notes
+      </div>
+   }
+     </div>
+
+          <div class="card-footer bg-transparent border-0 text-center pb-3">
+             <div class="btn-group w-100" role="group">
+          <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">
+         <i class="bi bi-eye"></i> Detay
+       </a>
+         @if (item.Status == "Pending" || item.Status == "Approved")
+             {
+    <form asp-action="Cancel" asp-route-id="@item.Id" method="post" class="flex-grow-1"
+     onsubmit="return confirm('Randevuyu iptal etmek istediðinize emin misiniz?')">
+            <button type="submit" class="btn btn-outline-danger w-100">
+      <i class="bi bi-x-circle"></i> Ýptal
+              </button>
+         </form>
+}
+   </div>
+            </div>
+   </div>
+            </div>
+        }
     </div>
 }

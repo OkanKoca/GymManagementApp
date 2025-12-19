@@ -4,12 +4,14 @@
 }
 
 <div class="row justify-content-center py-5">
-    <div class="col-md-4">
-        <div class="card border-0 shadow">
-            <div class="card-body p-4">
+    <div class="col-md-5 col-lg-4">
+        <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, var(--gym-surface), var(--gym-surface-elevated));">
+            <div class="card-body p-5">
                 <div class="text-center mb-4">
-                    <i class="bi bi-box-arrow-in-right text-primary" style="font-size: 3rem;"></i>
-                    <h3 class="mt-2">Giriþ Yap</h3>
+                    <div class="icon-box mx-auto mb-3">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </div>
+                    <h3 class="fw-bold mb-2">Hoþ Geldiniz</h3>
                     <p class="text-muted">Hesabýnýza giriþ yapýn</p>
                 </div>
 
@@ -17,8 +19,8 @@
                     <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
+                    <div class="mb-4">
+                        <label asp-for="Email" class="form-label">E-posta</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                             <input asp-for="Email" class="form-control" type="email" placeholder="ornek@email.com" />
@@ -26,33 +28,45 @@
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label">Þifre</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                            <input asp-for="Password" class="form-control" type="password" placeholder="••••••" />
+                            <input asp-for="Password" class="form-control" type="password" placeholder="••••••••" />
                         </div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
                     </div>
 
-                    <div class="mb-3 form-check">
+                    <div class="mb-4 form-check">
                         <input asp-for="RememberMe" class="form-check-input" />
-                        <label asp-for="RememberMe" class="form-check-label"></label>
+                        <label asp-for="RememberMe" class="form-check-label">Beni Hatýrla</label>
                     </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-box-arrow-in-right"></i> Giriþ Yap
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Giriþ Yap
                         </button>
                     </div>
                 </form>
 
-                <hr class="my-4" />
-                <p class="text-center mb-0">
-                    Hesabýnýz yok mu?
-                    <a asp-action="Register" class="text-decoration-none fw-bold">Kayýt Ol</a>
-                </p>
+                <div class="text-center">
+                    <div class="position-relative my-4">
+                        <hr style="border-color: rgba(255, 255, 255, 0.1);" />
+                        <span class="position-absolute top-50 start-50 translate-middle px-3" style="background-color: var(--gym-surface);">veya</span>
+                    </div>
+                    <p class="mb-0">
+                        Hesabýnýz yok mu?
+                        <a asp-action="Register" class="text-decoration-none fw-bold" style="color: var(--gym-accent);">Kayýt Ol</a>
+                    </p>
+                </div>
             </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <p class="text-muted small">
+                <i class="bi bi-shield-check me-1" style="color: var(--gym-accent);"></i>
+                Verileriniz SSL ile güvenli þekilde þifrelenmektedir
+            </p>
         </div>
     </div>
 </div>
