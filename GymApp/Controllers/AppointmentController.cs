@@ -24,38 +24,38 @@ namespace GymApp.Controllers
         // Üyenin kendi randevularýný görüntüleme
         public async Task<IActionResult> Index()
         {
-         var userId = _userManager.GetUserId(User);
+            var userId = _userManager.GetUserId(User);
 
             // Sadece aktif randevularý göster (Pending ve Approved)
             var appointments = await _context.Appointments
       .Include(a => a.Trainer)
      .Include(a => a.Service)
 .Include(a => a.Member)
-            .Where(a => a.MemberId == userId && 
+            .Where(a => a.MemberId == userId &&
            (a.Status == "Pending" || a.Status == "Approved"))
         .OrderByDescending(a => a.StartAt)
             .ToListAsync();
 
- return View(appointments);
+            return View(appointments);
         }
 
         // Üyenin geçmiþ randevularýný görüntüleme
         public async Task<IActionResult> History()
-    {
+        {
             var userId = _userManager.GetUserId(User);
 
             // Tamamlanmýþ, iptal edilmiþ ve reddedilmiþ randevularý göster
-          var pastAppointments = await _context.Appointments
-.Include(a => a.Trainer)
-           .Include(a => a.Service)
-      .Include(a => a.Member)
-       .Where(a => a.MemberId == userId && 
-         (a.Status == "Completed" || a.Status == "Canceled" || a.Status == "Rejected"))
-            .OrderByDescending(a => a.StartAt)
-           .ToListAsync();
+            var pastAppointments = await _context.Appointments
+  .Include(a => a.Trainer)
+             .Include(a => a.Service)
+        .Include(a => a.Member)
+         .Where(a => a.MemberId == userId &&
+           (a.Status == "Completed" || a.Status == "Canceled" || a.Status == "Rejected"))
+              .OrderByDescending(a => a.StartAt)
+             .ToListAsync();
 
-       return View(pastAppointments);
-     }
+            return View(pastAppointments);
+        }
 
         // Admin için tüm randevularý görüntüleme
         [Authorize(Roles = "Admin")]
@@ -123,90 +123,90 @@ namespace GymApp.Controllers
                 var service = await _context.Services.FindAsync(model.ServiceId);
 
                 if (service == null)
-   {
+                {
                     ModelState.AddModelError("ServiceId", "Geçersiz hizmet seçimi.");
-         await LoadViewBags();
-   return View(model);
+                    await LoadViewBags();
+                    return View(model);
                 }
 
                 // Eðitmen-Hizmet iliþkisi kontrolü
-    var trainerCanProvideService = await _context.TrainerServices
- .AnyAsync(ts => ts.TrainerId == model.TrainerId && ts.ServiceId == model.ServiceId);
+                var trainerCanProvideService = await _context.TrainerServices
+             .AnyAsync(ts => ts.TrainerId == model.TrainerId && ts.ServiceId == model.ServiceId);
 
-     if (!trainerCanProvideService)
-   {
-           ModelState.AddModelError("ServiceId", "Seçilen eðitmen bu hizmeti sunmamaktadýr. Lütfen eðitmenin sunduðu hizmetlerden birini seçin.");
-   await LoadViewBags();
-    return View(model);
-   }
+                if (!trainerCanProvideService)
+                {
+                    ModelState.AddModelError("ServiceId", "Seçilen eðitmen bu hizmeti sunmamaktadýr. Lütfen eðitmenin sunduðu hizmetlerden birini seçin.");
+                    await LoadViewBags();
+                    return View(model);
+                }
 
-      // Türkiye saat dilimi
-   var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+                // Türkiye saat dilimi
+                var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
 
-     // Yerel saati oluþtur (Türkiye saati)
-  var localDateTime = model.AppointmentDate.Date.Add(model.AppointmentTime);
+                // Yerel saati oluþtur (Türkiye saati)
+                var localDateTime = model.AppointmentDate.Date.Add(model.AppointmentTime);
 
-   // UTC'ye çevir
-       var startAt = TimeZoneInfo.ConvertTimeToUtc(localDateTime, turkeyTimeZone);
-  var endAt = startAt.AddMinutes(service.DurationMinutes);
+                // UTC'ye çevir
+                var startAt = TimeZoneInfo.ConvertTimeToUtc(localDateTime, turkeyTimeZone);
+                var endAt = startAt.AddMinutes(service.DurationMinutes);
 
-           // Çakýþma kontrolü - ayný saatte randevu var mý?
-      var hasConflict = await _context.Appointments
-     .AnyAsync(a => a.TrainerId == model.TrainerId &&
-  a.Status != "Canceled" &&
-    a.Status != "Rejected" &&
-        ((startAt >= a.StartAt && startAt < a.EndAt) ||
-   (endAt > a.StartAt && endAt <= a.EndAt) ||
-            (startAt <= a.StartAt && endAt >= a.EndAt))
-    );
+                // Çakýþma kontrolü - ayný saatte randevu var mý?
+                var hasConflict = await _context.Appointments
+               .AnyAsync(a => a.TrainerId == model.TrainerId &&
+            a.Status != "Canceled" &&
+              a.Status != "Rejected" &&
+                  ((startAt >= a.StartAt && startAt < a.EndAt) ||
+             (endAt > a.StartAt && endAt <= a.EndAt) ||
+                      (startAt <= a.StartAt && endAt >= a.EndAt))
+              );
 
-    if (hasConflict)
-       {
-      ModelState.AddModelError("", "Seçilen saatte eðitmenin baþka bir randevusu bulunmaktadýr.");
-  await LoadViewBags();
-    return View(model);
- }
+                if (hasConflict)
+                {
+                    ModelState.AddModelError("", "Seçilen saatte eðitmenin baþka bir randevusu bulunmaktadýr.");
+                    await LoadViewBags();
+                    return View(model);
+                }
 
-   // Eðitmen müsaitlik kontrolü
-           var dayOfWeek = localDateTime.DayOfWeek;
-   var timeOfDay = model.AppointmentTime;
-      var endTimeOfDay = timeOfDay.Add(TimeSpan.FromMinutes(service.DurationMinutes));
+                // Eðitmen müsaitlik kontrolü
+                var dayOfWeek = localDateTime.DayOfWeek;
+                var timeOfDay = model.AppointmentTime;
+                var endTimeOfDay = timeOfDay.Add(TimeSpan.FromMinutes(service.DurationMinutes));
 
-   var isAvailable = await _context.TrainerAvailabilities
-   .AnyAsync(ta => ta.TrainerId == model.TrainerId &&
-  ta.Day == dayOfWeek &&
-  ta.From <= timeOfDay &&
-      ta.To >= endTimeOfDay);
+                var isAvailable = await _context.TrainerAvailabilities
+                .AnyAsync(ta => ta.TrainerId == model.TrainerId &&
+               ta.Day == dayOfWeek &&
+               ta.From <= timeOfDay &&
+                   ta.To >= endTimeOfDay);
 
-   if (!isAvailable)
-  {
-       ModelState.AddModelError("", "Eðitmen seçilen gün ve saatte müsait deðildir.");
-   await LoadViewBags();
-            return View(model);
-    }
+                if (!isAvailable)
+                {
+                    ModelState.AddModelError("", "Eðitmen seçilen gün ve saatte müsait deðildir.");
+                    await LoadViewBags();
+                    return View(model);
+                }
 
-    var appointment = new Appointment
-   {
-        MemberId = userId!,
-        TrainerId = model.TrainerId,
-         ServiceId = model.ServiceId,
-                StartAt = startAt,
-              EndAt = endAt,
-       Status = "Pending",
-      Notes = model.Notes,
-         CreatedAt = DateTime.UtcNow
-     };
+                var appointment = new Appointment
+                {
+                    MemberId = userId!,
+                    TrainerId = model.TrainerId,
+                    ServiceId = model.ServiceId,
+                    StartAt = startAt,
+                    EndAt = endAt,
+                    Status = "Pending",
+                    Notes = model.Notes,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-  _context.Appointments.Add(appointment);
-     await _context.SaveChangesAsync();
+                _context.Appointments.Add(appointment);
+                await _context.SaveChangesAsync();
 
- TempData["Success"] = "Randevu talebiniz oluþturuldu. Onay bekleniyor.";
-   return RedirectToAction(nameof(Index));
+                TempData["Success"] = "Randevu talebiniz oluþturuldu. Onay bekleniyor.";
+                return RedirectToAction(nameof(Index));
             }
 
-   await LoadViewBags();
-    return View(model);
-     }
+            await LoadViewBags();
+            return View(model);
+        }
 
         // Randevu Onaylama (Admin)
         [Authorize(Roles = "Admin")]

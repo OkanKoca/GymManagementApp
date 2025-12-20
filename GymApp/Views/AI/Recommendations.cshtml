@@ -25,7 +25,7 @@
                 <h5 class="mb-0"><i class="bi bi-clipboard-data me-2"></i>Bilgilerinizi Girin</h5>
             </div>
             <div class="card-body p-4">
-                <form asp-action="Recommendations" method="post">
+                <form asp-action="Recommendations" method="post" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-md-6 col-lg-3">
                             <label asp-for="Height" class="form-label fw-semibold">
@@ -112,6 +112,17 @@
                         <textarea asp-for="HealthConditions" class="form-control" rows="2"
                                   placeholder="Varsa saðlýk durumunuz (Örn: Diz problemi, diyabet vb.)"></textarea>
                     </div>
+
+                    <div class="mt-3">
+                        <label asp-for="UserPhoto" class="form-label fw-semibold">
+                            <i class="bi bi-image text-info me-1"></i>Fotoðraf (Opsiyonel)
+                        </label>
+                        <input asp-for="UserPhoto" class="form-control" type="file" accept="image/png,image/jpeg,image/webp" />
+                        <div class="form-text">
+                            Ýstersen fotoðraf yükle: AI önerilerine ek olarak “simülasyon” görseli oluþturulur.
+                        </div>
+                    </div>
+
 
                     <div class="mt-4 text-center">
                         <button type="submit" class="btn btn-success btn-lg px-5">
@@ -228,6 +239,29 @@
                         </div>
                     }
                 </div>
+
+                @if (!string.IsNullOrEmpty(Model.FutureImageError))
+                {
+                    <div class="alert alert-warning mt-4">
+                        <i class="bi bi-exclamation-triangle me-2"></i>@Model.FutureImageError
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.FutureImageDataUrl))
+                {
+                    <div class="card border-0 shadow mt-4">
+                        <div class="card-header bg-dark text-white">
+                            <h6 class="mb-0"><i class="bi bi-camera me-2"></i>Görsel Simülasyon</h6>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="@Model.FutureImageDataUrl" class="img-fluid rounded" alt="Future simulation" />
+                            <div class="text-muted small mt-2">
+                                Bu görsel bir simülasyondur; sonuçlar kiþiye göre deðiþebilir.
+                            </div>
+                        </div>
+                    </div>
+                }
+
 
                 <!-- Kaydet Butonu -->
                 <div class="text-center mt-4">

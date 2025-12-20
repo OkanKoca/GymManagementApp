@@ -44,5 +44,14 @@ namespace GymApp.ViewModels
         public string? ExerciseRecommendation { get; set; }
         public string? DietRecommendation { get; set; }
         public string? GeneralAdvice { get; set; }
+
+        // Opsiyonel foto
+        public IFormFile? UserPhoto { get; set; }
+
+        // Gemini’den dönen base64’i direkt UI’da göstermek için data URL
+        public string? FutureImageDataUrl { get; set; }
+
+        // opsiyonel hata mesajýný da göstermek için
+        public string? FutureImageError { get; set; }
     }
 }

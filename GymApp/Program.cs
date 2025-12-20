@@ -42,6 +42,7 @@ builder.Services.AddHttpClient();
 
 // AI Service - Google Gemini
 builder.Services.AddScoped<IAIService, GeminiService>();
+builder.Services.AddScoped<IGeminiImageService, GeminiImageService>();
 
 var app = builder.Build();
 
