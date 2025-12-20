@@ -361,6 +361,6 @@ MigrationBackup/
 
 appsettings.Development.json
 
-
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/GymApp/appsettings.Development.json
