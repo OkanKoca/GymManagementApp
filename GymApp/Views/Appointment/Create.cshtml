@@ -29,8 +29,8 @@
                                     </select>
                                     <span asp-validation-for="TrainerId" class="text-danger small"></span>
                                     <div id="trainerInfo" class="mt-3 d-none">
-                                        <div class="alert alert-light border">
-                                            <div id="trainerDetails"></div>
+                                        <div class="card border-info mb-0">
+                                            <div class="card-body p-2" id="trainerDetails"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -47,14 +47,16 @@
                                     </select>
                                     <span asp-validation-for="ServiceId" class="text-danger small"></span>
                                     <div id="serviceInfo" class="mt-3 d-none">
-                                        <div class="alert alert-light border">
-                                            <div id="serviceDetails"></div>
+                                        <div class="card border-success mb-0">
+                                            <div class="card-body p-2" id="serviceDetails"></div>
                                         </div>
                                     </div>
                                     <div id="noServiceWarning" class="mt-3 d-none">
-                                        <div class="alert alert-warning mb-0">
-                                            <i class="bi bi-exclamation-triangle me-1"></i>
-                                            <small>Bu eðitmenin sunduðu hizmet bulunmamaktadýr.</small>
+                                        <div class="card border-warning mb-0">
+                                            <div class="card-body p-2">
+                                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                                <small>Bu eðitmenin sunduðu hizmet bulunmamaktadýr.</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -81,17 +83,29 @@
                         </div>
                     </div>
 
-                    <!-- Müsaitlik Durumu -->
-                    <div id="availabilityInfo" class="mt-4 d-none">
-                        <div class="alert alert-info">
-                            <h6><i class="bi bi-info-circle me-2"></i>Eðitmen Müsaitliði</h6>
+                    <!-- Eðitmen Müsaitlik Bilgisi -->
+                    <div id="trainerAvailabilityCard" class="mt-4 d-none">
+                        <div class="card border-info">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="mb-0"><i class="bi bi-calendar-week me-2"></i>Eðitmen Müsaitlik Saatleri</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="trainerAvailabilityDetails"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seçilen Gün Müsaitlik Durumu -->
+                    <div id="availabilityInfo" class="mt-3 d-none">
+                        <div class="alert alert-info mb-0">
+                            <h6><i class="bi bi-info-circle me-2"></i>Seçilen Gün Ýçin Müsaitlik</h6>
                             <div id="availabilityDetails"></div>
                         </div>
                     </div>
 
                     <!-- Dolu Saatler Uyarýsý -->
                     <div id="busyTimesInfo" class="mt-3 d-none">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-warning mb-0">
                             <h6><i class="bi bi-exclamation-triangle me-2"></i>Bu Tarihteki Dolu Saatler</h6>
                             <div id="busyTimesDetails"></div>
                         </div>
@@ -166,118 +180,163 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-            $(document).ready(function () {
-             // Eðitmen seçildiðinde
-             $('#trainerSelect').change(function () {
-          var trainerId = $(this).val();
-               var serviceSelect = $('#serviceSelect');
+                $(document).ready(function () {
+           var dayNames = ['Pazar', 'Pazartesi', 'Salý', 'Çarþamba', 'Perþembe', 'Cuma', 'Cumartesi'];
+                    var currentTrainerData = null;
 
-                 // Hizmet seçimini sýfýrla
-                 serviceSelect.empty().append('<option value="">-- Hizmet Seçin --</option>');
-            $('#serviceInfo').addClass('d-none');
-                  $('#noServiceWarning').addClass('d-none');
+                    // Eðitmen seçildiðinde
+         $('#trainerSelect').change(function () {
+                   var trainerId = $(this).val();
+             var serviceSelect = $('#serviceSelect');
 
-               if (trainerId) {
-                   // Eðitmen bilgilerini al
-           $.get('/api/TrainersApi/' + trainerId, function (data) {
-            var html = '<strong>' + data.fullName + '</strong><br/>';
-                     html += '<small class="text-muted"><i class="bi bi-award me-1"></i>' + data.expertise + '</small><br/>';
+                 // Sýfýrla
+                serviceSelect.empty().append('<option value="">-- Hizmet Seçin --</option>');
+                $('#serviceInfo').addClass('d-none');
+             $('#noServiceWarning').addClass('d-none');
+              $('#trainerAvailabilityCard').addClass('d-none');
+            $('#availabilityInfo').addClass('d-none');
+                  $('#busyTimesInfo').addClass('d-none');
+             currentTrainerData = null;
+
+         if (trainerId) {
+          // Eðitmen bilgilerini al
+        $.get('/api/TrainersApi/' + trainerId, function (data) {
+            currentTrainerData = data;
+
+                    // Eðitmen detaylarý
+             var html = '<div class="d-flex align-items-center">';
+                   html += '<div class="me-3">';
+                if (data.photoUrl) {
+            html += '<img src="' + data.photoUrl + '" class="rounded-circle" style="width:50px;height:50px;object-fit:cover;" />';
+                  } else {
+           html += '<div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width:50px;height:50px;"><i class="bi bi-person text-white"></i></div>';
+                    }
+          html += '</div>';
+                html += '<div>';
+                html += '<strong>' + data.fullName + '</strong><br/>';
+                html += '<small class="text-muted"><i class="bi bi-award me-1"></i>' + data.expertise + '</small><br/>';
               html += '<small class="text-muted"><i class="bi bi-building me-1"></i>' + data.gym.name + '</small>';
-             $('#trainerDetails').html(html);
-              $('#trainerInfo').removeClass('d-none');
+                  if (data.experienceYears) {
+                 html += '<br/><small class="text-muted"><i class="bi bi-clock-history me-1"></i>' + data.experienceYears + ' yýl deneyim</small>';
+               }
+                   html += '</div></div>';
+            $('#trainerDetails').html(html);
+                 $('#trainerInfo').removeClass('d-none');
+
+                      // Müsaitlik bilgilerini göster
+           if (data.availabilities && data.availabilities.length > 0) {
+              var availHtml = '<div class="row">';
+                     data.availabilities.forEach(function (a) {
+              var dayName = dayNames[a.dayNumber] || a.day;
+              availHtml += '<div class="col-md-4 col-6 mb-2">';
+                  availHtml += '<span class="badge bg-success me-1">' + dayName + '</span>';
+             availHtml += '<small>' + a.from + ' - ' + a.to + '</small>';
+                availHtml += '</div>';
+                   });
+                   availHtml += '</div>';
+                 $('#trainerAvailabilityDetails').html(availHtml);
+                   $('#trainerAvailabilityCard').removeClass('d-none');
+                 } else {
+              $('#trainerAvailabilityDetails').html('<p class="text-muted mb-0">Müsaitlik bilgisi tanýmlanmamýþ.</p>');
+              $('#trainerAvailabilityCard').removeClass('d-none');
+                }
+
+        // Tarih seçiliyse müsaitliði kontrol et
+                 checkAvailability();
           });
 
-                 // Eðitmenin hizmetlerini al
-            $.get('/api/AppointmentsApi/GetTrainerServices/' + trainerId, function (services) {
-                     if (services && services.length > 0) {
-              serviceSelect.prop('disabled', false);
-                services.forEach(function (service) {
-                 serviceSelect.append(
-                $('<option></option>')
-          .val(service.id)
-         .text(service.name + ' (' + service.durationMinutes + ' dk - ' + service.price.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) + ')')
-           .data('service', service)
-                );
-                  });
-           } else {
-                   serviceSelect.prop('disabled', true);
-                   serviceSelect.empty().append('<option value="">-- Hizmet Bulunamadý --</option>');
-        $('#noServiceWarning').removeClass('d-none');
-            }
-            });
+                   // Eðitmenin hizmetlerini al
+           $.get('/api/AppointmentsApi/GetTrainerServices/' + trainerId, function (services) {
+         if (services && services.length > 0) {
+                      serviceSelect.prop('disabled', false);
+             services.forEach(function (service) {
+            serviceSelect.append(
+                        $('<option></option>')
+                .val(service.id)
+            .text(service.name + ' (' + service.durationMinutes + ' dk - ' + service.price.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) + ')')
+                      .data('service', service)
+             );
+               });
+            } else {
+                serviceSelect.prop('disabled', true);
+                      serviceSelect.empty().append('<option value="">-- Hizmet Bulunamadý --</option>');
+               $('#noServiceWarning').removeClass('d-none');
+               }
+              });
+            } else {
+                 serviceSelect.prop('disabled', true);
+                      serviceSelect.empty().append('<option value="">-- Önce Eðitmen Seçin --</option>');
+                   $('#trainerInfo').addClass('d-none');
+                   }
+        });
 
-              checkAvailability();
-           } else {
-                     serviceSelect.prop('disabled', true);
-                serviceSelect.empty().append('<option value="">-- Önce Eðitmen Seçin --</option>');
-             $('#trainerInfo').addClass('d-none');
-            }
-                });
-
-                    // Hizmet seçildiðinde
-                  $('#serviceSelect').change(function () {
-            var serviceId = $(this).val();
-                        if (serviceId) {
-            $.get('/api/ServicesApi/' + serviceId, function (data) {
-                 var html = '<strong>' + data.name + '</strong><br/>';
-              html += '<span class="badge bg-primary"><i class="bi bi-clock me-1"></i>' + data.durationMinutes + ' dk</span> ';
-                 html += '<span class="badge bg-success">' + data.price.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) + '</span>';
-           $('#serviceDetails').html(html);
-                   $('#serviceInfo').removeClass('d-none');
-                 });
-              } else {
-                  $('#serviceInfo').addClass('d-none');
-                        }
-             });
-
-                  // Tarih deðiþtiðinde
-                    $('#dateSelect').change(function () {
-         checkAvailability();
+            // Hizmet seçildiðinde
+                 $('#serviceSelect').change(function () {
+                var serviceId = $(this).val();
+          if (serviceId) {
+                 $.get('/api/ServicesApi/' + serviceId, function (data) {
+         var html = '<strong>' + data.name + '</strong><br/>';
+            if (data.description) {
+                    html += '<small class="text-muted">' + data.description + '</small><br/>';
+                }
+                    html += '<span class="badge bg-primary"><i class="bi bi-clock me-1"></i>' + data.durationMinutes + ' dk</span> ';
+                            html += '<span class="badge bg-success">' + data.price.toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' }) + '</span>';
+                    $('#serviceDetails').html(html);
+                            $('#serviceInfo').removeClass('d-none');
+                    });
+                        } else {
+                        $('#serviceInfo').addClass('d-none');
+                    }
                     });
 
-                    function checkAvailability() {
-             var trainerId = $('#trainerSelect').val();
+              // Tarih deðiþtiðinde
+              $('#dateSelect').change(function () {
+                checkAvailability();
+                    });
+
+              function checkAvailability() {
+                  var trainerId = $('#trainerSelect').val();
               var date = $('#dateSelect').val();
 
-                  if (trainerId && date) {
+                if (trainerId && date) {
                 $.get('@Url.Action("GetAvailableSlots", "Appointment")', { trainerId: trainerId, date: date }, function (data) {
-                     // Müsaitlik bilgisi
-             if (data.availability && data.availability.length > 0) {
-                 var html = '<ul class="mb-0 small">';
-                  var days = ['Pazar', 'Pazartesi', 'Salý', 'Çarþamba', 'Perþembe', 'Cuma', 'Cumartesi'];
-             var selectedDate = new Date(date);
-                      var dayName = days[selectedDate.getDay()];
+              var selectedDate = new Date(date);
+            var dayName = dayNames[selectedDate.getDay()];
 
-               data.availability.forEach(function (a) {
-                  html += '<li><strong>' + dayName + ':</strong> ' + a.from + ' - ' + a.to + '</li>';
-                     });
-              html += '</ul>';
-                $('#availabilityDetails').html(html);
-                     $('#availabilityInfo').removeClass('d-none');
-               } else {
-                  $('#availabilityDetails').html('<span class="text-danger">Eðitmen bu gün müsait deðil!</span>');
-                      $('#availabilityInfo').removeClass('d-none');
-               }
+                 // Müsaitlik bilgisi
+                 if (data.availability && data.availability.length > 0) {
+              var html = '<p class="mb-2"><strong>' + dayName + '</strong> günü için müsait saatler:</p>';
+                   html += '<ul class="mb-0">';
+                   data.availability.forEach(function (a) {
+              html += '<li><i class="bi bi-check-circle text-success me-1"></i>' + a.from + ' - ' + a.to + '</li>';
+                        });
+                 html += '</ul>';
+                   $('#availabilityDetails').html(html);
+               $('#availabilityInfo').removeClass('d-none').removeClass('alert-danger').addClass('alert-info');
+                     } else {
+                      $('#availabilityDetails').html('<p class="mb-0"><i class="bi bi-x-circle me-1"></i><strong>' + dayName + '</strong> günü eðitmen müsait deðil! Lütfen baþka bir gün seçin.</p>');
+                $('#availabilityInfo').removeClass('d-none').removeClass('alert-info').addClass('alert-danger');
+                }
 
-                  // Dolu saatler
-              if (data.existingAppointments && data.existingAppointments.length > 0) {
-                var busyHtml = '<ul class="mb-0 small">';
-              data.existingAppointments.forEach(function (a) {
-                var start = new Date(a.startAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-                 var end = new Date(a.endAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-         busyHtml += '<li class="text-danger">' + start + ' - ' + end + '</li>';
-                });
-                            busyHtml += '</ul>';
-                     $('#busyTimesDetails').html(busyHtml);
+                     // Dolu saatler
+          if (data.existingAppointments && data.existingAppointments.length > 0) {
+              var busyHtml = '<ul class="mb-0">';
+                  data.existingAppointments.forEach(function (a) {
+                 var start = new Date(a.startAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+               var end = new Date(a.endAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+                      busyHtml += '<li><i class="bi bi-x-circle text-danger me-1"></i>' + start + ' - ' + end + '</li>';
+             });
+           busyHtml += '</ul>';
+         $('#busyTimesDetails').html(busyHtml);
                 $('#busyTimesInfo').removeClass('d-none');
-              } else {
-               $('#busyTimesInfo').addClass('d-none');
-          }
-                });
+                     } else {
+                   $('#busyTimesInfo').addClass('d-none');
+                }
+                   });
            } else {
                    $('#availabilityInfo').addClass('d-none');
-                 $('#busyTimesInfo').addClass('d-none');
-         }
+                    $('#busyTimesInfo').addClass('d-none');
+                 }
                     }
                 });
     </script>

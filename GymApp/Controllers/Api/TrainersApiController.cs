@@ -28,11 +28,22 @@ namespace GymApp.Controllers.Api
                     t.Id,
                     t.FullName,
                     t.Expertise,
-                    GymName = t.Gym.Name,
-                    GymAddress = t.Gym.Address,
+                    t.Bio,
+                    t.ExperienceYears,
+                    t.Phone,
+                    t.Email,
+                    t.PhotoUrl,
+                    Gym = new
+                    {
+                        t.Gym.Id,
+                        t.Gym.Name,
+                        t.Gym.Address,
+                        t.Gym.WorkingHours
+                    },
                     Availabilities = t.Availabilities.Select(a => new
                     {
                         Day = a.Day.ToString(),
+                        DayNumber = (int)a.Day,
                         From = a.From.ToString(@"hh\:mm"),
                         To = a.To.ToString(@"hh\:mm")
                     })
@@ -47,65 +58,84 @@ namespace GymApp.Controllers.Api
         public async Task<ActionResult<object>> GetTrainer(int id)
         {
             var trainer = await _context.Trainers
-            .Include(t => t.Gym)
-        .Include(t => t.Availabilities)
-             .Where(t => t.Id == id)
-        .Select(t => new
+       .Include(t => t.Gym)
+    .Include(t => t.Availabilities)
+      .Include(t => t.TrainerServices)
+     .ThenInclude(ts => ts.Service)
+        .Where(t => t.Id == id)
+           .Select(t => new
+            {
+                t.Id,
+                t.FullName,
+                t.Expertise,
+                t.Bio,
+                t.ExperienceYears,
+                t.Phone,
+                t.Email,
+                t.PhotoUrl,
+     Gym = new
+          {
+   t.Gym.Id,
+        t.Gym.Name,
+        t.Gym.Address,
+           t.Gym.WorkingHours
+   },
+                Availabilities = t.Availabilities.Select(a => new
         {
-            t.Id,
-            t.FullName,
-            t.Expertise,
-            Gym = new
-            {
-                t.Gym.Id,
-                t.Gym.Name,
-                t.Gym.Address,
-                t.Gym.WorkingHours
-            },
-            Availabilities = t.Availabilities.Select(a => new
-            {
-                Day = a.Day.ToString(),
-                From = a.From.ToString(@"hh\:mm"),
-                To = a.To.ToString(@"hh\:mm")
-            })
+           Day = a.Day.ToString(),
+  DayNumber = (int)a.Day,
+  From = a.From.ToString(@"hh\:mm"),
+       To = a.To.ToString(@"hh\:mm")
+    }),
+     Services = t.TrainerServices.Select(ts => new
+  {
+  ts.Service.Id,
+      ts.Service.Name,
+           ts.Service.DurationMinutes,
+       ts.Service.Price
+   })
         })
-         .FirstOrDefaultAsync();
+     .FirstOrDefaultAsync();
 
-            if (trainer == null)
-            {
-                return NotFound(new { message = "Antrenör bulunamadý." });
-            }
+      if (trainer == null)
+{
+     return NotFound(new { message = "Antrenör bulunamadý." });
+   }
 
-            return Ok(trainer);
+    return Ok(trainer);
         }
 
         // GET: api/TrainersApi/bydate?date=2024-01-15 - Belirli bir tarihte uygun antrenörler
         [HttpGet("bydate")]
         public async Task<ActionResult<IEnumerable<object>>> GetTrainersByDate([FromQuery] DateTime date)
         {
-            var dayOfWeek = date.DayOfWeek;
+          var dayOfWeek = date.DayOfWeek;
 
-            var trainers = await _context.Trainers
-                 .Include(t => t.Gym)
-                 .Include(t => t.Availabilities)
-             .Where(t => t.Availabilities.Any(a => a.Day == dayOfWeek))
-                .Select(t => new
-                {
-                    t.Id,
-                    t.FullName,
-                    t.Expertise,
-                    GymName = t.Gym.Name,
-                    AvailableHours = t.Availabilities
-               .Where(a => a.Day == dayOfWeek)
-                       .Select(a => new
-                       {
-                           From = a.From.ToString(@"hh\:mm"),
-                           To = a.To.ToString(@"hh\:mm")
-                       })
-                })
-               .ToListAsync();
+    var trainers = await _context.Trainers
+   .Include(t => t.Gym)
+  .Include(t => t.Availabilities)
+     .Where(t => t.Availabilities.Any(a => a.Day == dayOfWeek))
+ .Select(t => new
+          {
+ t.Id,
+     t.FullName,
+      t.Expertise,
+     Gym = new
+        {
+       t.Gym.Id,
+           t.Gym.Name
+      },
+    AvailableHours = t.Availabilities
+.Where(a => a.Day == dayOfWeek)
+     .Select(a => new
+      {
+  From = a.From.ToString(@"hh\:mm"),
+       To = a.To.ToString(@"hh\:mm")
+   })
+      })
+     .ToListAsync();
 
-            return Ok(trainers);
-        }
+     return Ok(trainers);
+ }
     }
 }

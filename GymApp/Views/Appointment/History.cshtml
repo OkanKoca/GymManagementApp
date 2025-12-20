@@ -27,20 +27,20 @@ else
 {
     <div class="row mb-3">
         <div class="col">
-            <div class="card bg-light">
+            <div class="card" style="background: var(--gym-surface-elevated, #23272f); color: var(--gym-bg, #fff); border: none;">
                 <div class="card-body py-2">
                     <div class="row text-center">
                         <div class="col-md-4">
-                            <span class="badge bg-info me-1">@Model.Count(a => a.Status == "Completed")</span>
-                            <small>Tamamlanan</small>
+                            <span class="badge bg-info text-dark me-1" style="font-size:1.1rem; min-width:2.5rem;">@Model.Count(a => a.Status == "Completed")</span>
+                            <small class="fw-bold">Tamamlanan</small>
                         </div>
                         <div class="col-md-4">
-                            <span class="badge bg-secondary me-1">@Model.Count(a => a.Status == "Canceled")</span>
-                            <small>Ýptal Edilen</small>
+                            <span class="badge bg-secondary text-light me-1" style="font-size:1.1rem; min-width:2.5rem;">@Model.Count(a => a.Status == "Canceled")</span>
+                            <small class="fw-bold">Ýptal Edilen</small>
                         </div>
                         <div class="col-md-4">
-                            <span class="badge bg-danger me-1">@Model.Count(a => a.Status == "Rejected")</span>
-                            <small>Reddedilen</small>
+                            <span class="badge bg-danger text-light me-1" style="font-size:1.1rem; min-width:2.5rem;">@Model.Count(a => a.Status == "Rejected")</span>
+                            <small class="fw-bold">Reddedilen</small>
                         </div>
                     </div>
                 </div>

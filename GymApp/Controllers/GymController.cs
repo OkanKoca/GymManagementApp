@@ -30,6 +30,7 @@ namespace GymApp.Controllers
         {
             // Navigation property'leri ModelState'den çıkar
             ModelState.Remove("Trainers");
+            ModelState.Remove("GymServices");
 
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Add(gym);
@@ -53,6 +54,7 @@ namespace GymApp.Controllers
         {
             // Navigation property'leri ModelState'den çıkar
             ModelState.Remove("Trainers");
+            ModelState.Remove("GymServices");
 
             if (!ModelState.IsValid) return View(gym);
             _db.Gyms.Update(gym);
@@ -64,30 +66,83 @@ namespace GymApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-            var gym = _db.Gyms.Include(g => g.Trainers).FirstOrDefault(g => g.Id == id);
+            var gym = _db.Gyms
+                .Include(g => g.Trainers)
+                .ThenInclude(t => t.Appointments)
+                .Include(g => g.GymServices)
+                .ThenInclude(gs => gs.Service)
+                .FirstOrDefault(g => g.Id == id);
+
             if (gym == null) return NotFound();
+
+            // İlişkili verileri ViewBag'e aktar
+            ViewBag.TrainerCount = gym.Trainers?.Count ?? 0;
+            ViewBag.GymServiceCount = gym.GymServices?.Count ?? 0;
+
+            // Eğitmenlere ait toplam randevu sayısı
+            var totalAppointments = gym.Trainers?.Sum(t => t.Appointments?.Count ?? 0) ?? 0;
+            ViewBag.TotalAppointmentCount = totalAppointments;
+            ViewBag.HasRelatedData = ViewBag.TrainerCount > 0 || ViewBag.GymServiceCount > 0;
+
             return View(gym);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id, bool confirmCascade = false)
         {
-            var gym = _db.Gyms.Find(id);
+            var gym = _db.Gyms
+                .Include(g => g.Trainers)
+                .ThenInclude(t => t.Appointments)
+                .Include(g => g.Trainers)
+                .ThenInclude(t => t.Availabilities)
+                .Include(g => g.Trainers)
+                .ThenInclude(t => t.TrainerServices)
+                .Include(g => g.GymServices)
+                .FirstOrDefault(g => g.Id == id);
+
             if (gym == null) return NotFound();
 
-            // İlişkili eğitmen kontrolü
-            var hasTrainers = _db.Trainers.Any(t => t.GymId == id);
-            if (hasTrainers)
+            var hasRelatedData = (gym.Trainers?.Any() ?? false) || (gym.GymServices?.Any() ?? false);
+
+            // İlişkili veri varsa ve onay verilmemişse geri dön
+            if (hasRelatedData && !confirmCascade)
             {
-                TempData["Error"] = "Bu salonda kayıtlı eğitmenler bulunduğu için silinemez.";
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "İlişkili veriler bulunduğu için silme onayı gereklidir.";
+                return RedirectToAction("Delete", new { id });
+            }
+
+            // Eğitmenlerin ilişkili verilerini sil
+            if (gym.Trainers?.Any() ?? false)
+            {
+                foreach (var trainer in gym.Trainers)
+                {
+                    if (trainer.Appointments?.Any() ?? false)
+                    {
+                        _db.Appointments.RemoveRange(trainer.Appointments);
+                    }
+                    if (trainer.Availabilities?.Any() ?? false)
+                    {
+                        _db.TrainerAvailabilities.RemoveRange(trainer.Availabilities);
+                    }
+                    if (trainer.TrainerServices?.Any() ?? false)
+                    {
+                        _db.TrainerServices.RemoveRange(trainer.TrainerServices);
+                    }
+                }
+                _db.Trainers.RemoveRange(gym.Trainers);
+            }
+
+            // İlişkili salon-hizmet bağlantılarını sil
+            if (gym.GymServices?.Any() ?? false)
+            {
+                _db.GymServices.RemoveRange(gym.GymServices);
             }
 
             _db.Gyms.Remove(gym);
             _db.SaveChanges();
-            TempData["Success"] = "Spor salonu başarıyla silindi.";
+            TempData["Success"] = "Spor salonu ve ilişkili tüm veriler başarıyla silindi.";
             return RedirectToAction(nameof(Index));
         }
     }

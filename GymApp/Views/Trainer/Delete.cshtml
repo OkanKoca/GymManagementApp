@@ -1,6 +1,9 @@
 @model GymApp.Models.Trainer
 @{
     ViewData["Title"] = "Eðitmen Sil";
+    var appointmentCount = (int)(ViewBag.AppointmentCount ?? 0);
+    var availabilityCount = (int)(ViewBag.AvailabilityCount ?? 0);
+    var hasRelatedData = (bool)(ViewBag.HasRelatedData ?? false);
 }
 
 <div class="row justify-content-center">
@@ -36,16 +39,57 @@
                         }
                     </dd>
                 </dl>
-                <div class="alert alert-warning">
-                    <i class="bi bi-info-circle me-2"></i>Bu iþlem geri alýnamaz!
-                </div>
+
+                @if (hasRelatedData)
+                {
+                    <div class="card border-danger mb-3">
+                        <div class="card-header bg-danger text-white">
+                            <h6 class="mb-0"><i class="bi bi-exclamation-octagon me-2"></i>Dikkat! Ýliþkili Veriler Bulundu</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2">Bu eðitmeni sildiðinizde aþaðýdaki veriler de <strong>kalýcý olarak silinecektir</strong>:</p>
+                            <ul class="mb-0">
+                                @if (appointmentCount > 0)
+                                {
+                                    <li><strong>@appointmentCount adet randevu</strong> silinecek</li>
+                                }
+                                @if (availabilityCount > 0)
+                                {
+                                    <li><strong>@availabilityCount adet müsaitlik kaydý</strong> silinecek</li>
+                                }
+                                @if (Model.TrainerServices?.Any() ?? false)
+                                {
+                                    <li><strong>@Model.TrainerServices.Count hizmet iliþkisi</strong> kaldýrýlacak</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card border-warning mb-3">
+                        <div class="card-body">
+                            <i class="bi bi-info-circle me-2"></i>Bu iþlem geri alýnamaz!
+                        </div>
+                    </div>
+                }
             </div>
             <div class="card-footer">
                 <form asp-action="Delete" method="post">
                     <input type="hidden" asp-for="Id" />
-                    <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-trash me-1"></i> Evet, Sil
-                    </button>
+                    @if (hasRelatedData)
+                    {
+                        <input type="hidden" name="confirmCascade" value="true" />
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Bu iþlem @appointmentCount randevuyu da silecektir. Devam etmek istediðinize emin misiniz?')">
+                            <i class="bi bi-trash me-1"></i> Evet, Tümünü Sil
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-1"></i> Evet, Sil
+                        </button>
+                    }
                     <a asp-action="Index" class="btn btn-secondary">
                         <i class="bi bi-x-circle me-1"></i> Ýptal
                     </a>

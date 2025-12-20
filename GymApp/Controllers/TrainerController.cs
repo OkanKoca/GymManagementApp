@@ -141,30 +141,66 @@ namespace GymApp.Controllers
                 .Include(x => x.Gym)
                 .Include(x => x.TrainerServices)
                     .ThenInclude(ts => ts.Service)
+                .Include(x => x.Appointments)
+                    .ThenInclude(a => a.Member)
+                .Include(x => x.Appointments)
+                    .ThenInclude(a => a.Service)
+                .Include(x => x.Availabilities)
                 .FirstOrDefault(x => x.Id == id);
+
             if (t == null) return NotFound();
+
+            // İlişkili verileri ViewBag'e aktar
+            ViewBag.AppointmentCount = t.Appointments?.Count ?? 0;
+            ViewBag.AvailabilityCount = t.Availabilities?.Count ?? 0;
+            ViewBag.HasRelatedData = ViewBag.AppointmentCount > 0;
+
             return View(t);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id, bool confirmCascade = false)
         {
-            var t = _db.Trainers.Find(id);
+            var t = _db.Trainers
+                .Include(x => x.Appointments)
+                .Include(x => x.TrainerServices)
+                .Include(x => x.Availabilities)
+                .FirstOrDefault(x => x.Id == id);
+
             if (t == null) return NotFound();
 
-            // İlişkili verileri kontrol et
-            var hasAppointments = _db.Appointments.Any(a => a.TrainerId == id);
-            if (hasAppointments)
+            var hasAppointments = t.Appointments?.Any() ?? false;
+
+            // İlişkili randevu varsa ve onay verilmemişse geri dön
+            if (hasAppointments && !confirmCascade)
             {
-                TempData["Error"] = "Bu eğitmenin randevuları bulunduğu için silinemez.";
-                return RedirectToAction("Index");
+                TempData["Error"] = "İlişkili randevular bulunduğu için silme onayı gereklidir.";
+                return RedirectToAction("Delete", new { id });
+            }
+
+            // İlişkili randevuları sil
+            if (t.Appointments?.Any() ?? false)
+            {
+                _db.Appointments.RemoveRange(t.Appointments);
+            }
+
+            // İlişkili müsaitlikleri sil
+            if (t.Availabilities?.Any() ?? false)
+            {
+                _db.TrainerAvailabilities.RemoveRange(t.Availabilities);
+            }
+
+            // İlişkili hizmet bağlantılarını sil
+            if (t.TrainerServices?.Any() ?? false)
+            {
+                _db.TrainerServices.RemoveRange(t.TrainerServices);
             }
 
             _db.Trainers.Remove(t);
             _db.SaveChanges();
-            TempData["Success"] = "Eğitmen başarıyla silindi.";
+            TempData["Success"] = "Eğitmen ve ilişkili tüm veriler başarıyla silindi.";
             return RedirectToAction("Index");
         }
     }

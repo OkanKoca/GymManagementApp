@@ -23,19 +23,33 @@ namespace GymApp.Controllers
             var gym = await _db.Gyms
            .Include(g => g.GymServices)
            .ThenInclude(gs => gs.Service)
-    .FirstOrDefaultAsync(g => g.Id == gymId);
+            .FirstOrDefaultAsync(g => g.Id == gymId);
 
             if (gym == null)
             {
                 return NotFound();
             }
 
-            ViewBag.Gym = gym;
-            ViewBag.AvailableServices = await _db.Services
-                       .Where(s => s.IsActive && !gym.GymServices.Any(gs => gs.ServiceId == s.Id))
-              .ToListAsync();
+            // Önce mevcut hizmet ID'lerini belleðe al
+            var existingServiceIds = gym.GymServices
+                .Where(gs => gs.Service != null)
+                .Select(gs => gs.ServiceId)
+                .ToList();
 
-            return View(gym.GymServices.ToList());
+            // Sonra bu listeyi kullanarak sorgu yap
+            var availableServices = await _db.Services
+                .Where(s => s.IsActive && !existingServiceIds.Contains(s.Id))
+                .ToListAsync();
+
+            ViewBag.Gym = gym;
+            ViewBag.AvailableServices = availableServices;
+
+            // Service'i null olmayan GymServices'larý döndür
+            var validGymServices = gym.GymServices
+                .Where(gs => gs.Service != null)
+                .ToList();
+
+            return View(validGymServices);
         }
 
         // Salona hizmet ekleme

@@ -7,8 +7,8 @@
     <div class="col-lg-10">
         <!-- Baþlýk -->
         <div class="text-center mb-4">
- <h2 class="fw-bold"><i class="bi bi-robot text-success me-2"></i>AI Fitness Asistaný</h2>
-      <p class="text-muted">Kiþiselleþtirilmiþ egzersiz ve beslenme önerileri</p>
+            <h2 class="fw-bold"><i class="bi bi-robot text-success me-2"></i>AI Fitness Asistaný</h2>
+            <p class="text-muted">Kiþiselleþtirilmiþ egzersiz ve beslenme önerileri</p>
         </div>
 
         @if (TempData["Success"] != null)
@@ -49,200 +49,200 @@
                         </div>
                         <div class="col-md-6 col-lg-3">
                             <label asp-for="Age" class="form-label fw-semibold">
-        <i class="bi bi-calendar-event text-primary me-1"></i>Yaþ
-  </label>
-     <input asp-for="Age" class="form-control" type="number" placeholder="25" />
-               <span asp-validation-for="Age" class="text-danger small"></span>
-     </div>
-    <div class="col-md-6 col-lg-3">
- <label asp-for="Gender" class="form-label fw-semibold">
-      <i class="bi bi-gender-ambiguous text-primary me-1"></i>Cinsiyet
-          </label>
-            <select asp-for="Gender" class="form-select">
-      <option value="">Seçin...</option>
-    <option value="Erkek">Erkek</option>
-              <option value="Kadýn">Kadýn</option>
-     </select>
-       </div>
-                </div>
+                                <i class="bi bi-calendar-event text-primary me-1"></i>Yaþ
+                            </label>
+                            <input asp-for="Age" class="form-control" type="number" placeholder="25" />
+                            <span asp-validation-for="Age" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <label asp-for="Gender" class="form-label fw-semibold">
+                                <i class="bi bi-gender-ambiguous text-primary me-1"></i>Cinsiyet
+                            </label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">Seçin...</option>
+                                <option value="Erkek">Erkek</option>
+                                <option value="Kadýn">Kadýn</option>
+                            </select>
+                        </div>
+                    </div>
 
-      <div class="row g-3 mt-2">
-     <div class="col-md-4">
-      <label asp-for="Goal" class="form-label fw-semibold">
-      <i class="bi bi-bullseye text-success me-1"></i>Hedefiniz
- </label>
-       <select asp-for="Goal" class="form-select">
-    <option value="">Seçin...</option>
-              <option value="Kilo vermek">?? Kilo vermek</option>
-        <option value="Kas yapmak">?? Kas yapmak</option>
-   <option value="Fit kalmak">?? Fit kalmak</option>
-           <option value="Güçlenmek">? Güçlenmek</option>
-      <option value="Kilo almak">?? Kilo almak</option>
-            </select>
-           </div>
-       <div class="col-md-4">
-    <label asp-for="ActivityLevel" class="form-label fw-semibold">
-      <i class="bi bi-activity text-warning me-1"></i>Aktivite Seviyesi
-          </label>
-              <select asp-for="ActivityLevel" class="form-select">
-          <option value="">Seçin...</option>
-        <option value="Sedanter">?? Sedanter</option>
-   <option value="Hafif Aktif">?? Hafif Aktif</option>
-         <option value="Aktif">?? Aktif</option>
-   <option value="Çok Aktif">??? Çok Aktif</option>
-              </select>
-                </div>
-        <div class="col-md-4">
- <label asp-for="BodyType" class="form-label fw-semibold">
-        <i class="bi bi-person-bounding-box text-info me-1"></i>Vücut Tipi
-       </label>
-                <select asp-for="BodyType" class="form-select">
-      <option value="">Otomatik Tahmin</option>
-  <option value="Ektomorf">Ektomorf (Ýnce)</option>
-          <option value="Mezomorf">Mezomorf (Atletik)</option>
-            <option value="Endomorf">Endomorf (Geniþ)</option>
-      </select>
-             </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            <label asp-for="Goal" class="form-label fw-semibold">
+                                <i class="bi bi-bullseye text-success me-1"></i>Hedefiniz
+                            </label>
+                            <select asp-for="Goal" class="form-select">
+                                <option value="">Seçin...</option>
+                                <option value="Kilo vermek">Kilo vermek</option>
+                                <option value="Kas yapmak"> Kas yapmak</option>
+                                <option value="Fit kalmak"> Fit kalmak</option>
+                                <option value="Güçlenmek"> Güçlenmek</option>
+                                <option value="Kilo almak">Kilo almak</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ActivityLevel" class="form-label fw-semibold">
+                                <i class="bi bi-activity text-warning me-1"></i>Aktivite Seviyesi
+                            </label>
+                            <select asp-for="ActivityLevel" class="form-select">
+                                <option value="">Seçin...</option>
+                                <option value="Sedanter">Sedanter</option>
+                                <option value="Hafif Aktif">Hafif Aktif</option>
+                                <option value="Aktif">Aktif</option>
+                                <option value="Çok Aktif">Çok Aktif</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="BodyType" class="form-label fw-semibold">
+                                <i class="bi bi-person-bounding-box text-info me-1"></i>Vücut Tipi
+                            </label>
+                            <select asp-for="BodyType" class="form-select">
+                                <option value="">Otomatik Tahmin</option>
+                                <option value="Ektomorf">Ektomorf (Ýnce)</option>
+                                <option value="Mezomorf">Mezomorf (Atletik)</option>
+                                <option value="Endomorf">Endomorf (Geniþ)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label asp-for="HealthConditions" class="form-label fw-semibold">
+                            <i class="bi bi-heart-pulse text-danger me-1"></i>Saðlýk Durumu (Opsiyonel)
+                        </label>
+                        <textarea asp-for="HealthConditions" class="form-control" rows="2"
+                                  placeholder="Varsa saðlýk durumunuz (Örn: Diz problemi, diyabet vb.)"></textarea>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <button type="submit" class="btn btn-success btn-lg px-5">
+                            <i class="bi bi-magic me-2"></i>AI'dan Öneri Al
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-   <div class="mt-3">
-      <label asp-for="HealthConditions" class="form-label fw-semibold">
- <i class="bi bi-heart-pulse text-danger me-1"></i>Saðlýk Durumu (Opsiyonel)
-  </label>
-        <textarea asp-for="HealthConditions" class="form-control" rows="2"
-         placeholder="Varsa saðlýk durumunuz (Örn: Diz problemi, diyabet vb.)"></textarea>
-      </div>
-
-          <div class="mt-4 text-center">
-                  <button type="submit" class="btn btn-success btn-lg px-5">
-       <i class="bi bi-magic me-2"></i>AI'dan Öneri Al
-      </button>
-  </div>
-        </form>
-</div>
-        </div>
-
- @if (Model.BMI.HasValue)
+        @if (Model.BMI.HasValue)
         {
             var bmiColor = Model.BMI.Value < 18.5 ? "warning" : Model.BMI.Value < 25 ? "success" : Model.BMI.Value < 30 ? "warning" : "danger";
-  var hasError = Model.ExerciseRecommendation?.StartsWith("??") == true;
+            var hasError = Model.ExerciseRecommendation?.StartsWith("??") == true;
 
-    <!-- Sonuçlar -->
+            <!-- Sonuçlar -->
             <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3">
-       <div class="card border-0 shadow-sm text-center bg-@bmiColor bg-opacity-10">
-               <div class="card-body py-3">
-     <i class="bi bi-speedometer2 text-@bmiColor fs-4"></i>
-  <div class="fw-bold fs-4 text-@bmiColor">@Model.BMI.Value.ToString("F1")</div>
-    <small class="text-muted">BMI - @Model.BMICategory</small>
-       </div>
-      </div>
-   </div>
-       @if (Model.BodyType != null)
-    {
-        <div class="col-6 col-md-3">
-      <div class="card border-0 shadow-sm text-center bg-info bg-opacity-10">
-                <div class="card-body py-3">
-       <i class="bi bi-person-bounding-box text-info fs-4"></i>
-  <div class="fw-bold fs-5 text-info">@Model.BodyType</div>
-           <small class="text-muted">Vücut Tipi</small>
-            </div>
-      </div>
-         </div>
-      }
-    @if (Model.TDEE.HasValue)
-          {
-     <div class="col-6 col-md-3">
-         <div class="card border-0 shadow-sm text-center bg-primary bg-opacity-10">
-          <div class="card-body py-3">
-     <i class="bi bi-fire text-primary fs-4"></i>
- <div class="fw-bold fs-5 text-primary">@Model.TDEE.Value.ToString("N0")</div>
-          <small class="text-muted">Günlük kcal</small>
-            </div>
-          </div>
-          </div>
-          }
-        @if (Model.TargetCalories.HasValue && Model.TargetCalories != Model.TDEE)
-      {
-         <div class="col-6 col-md-3">
-     <div class="card border-0 shadow-sm text-center bg-success bg-opacity-10">
-           <div class="card-body py-3">
-      <i class="bi bi-bullseye text-success fs-4"></i>
-              <div class="fw-bold fs-5 text-success">@Model.TargetCalories.Value.ToString("N0")</div>
-  <small class="text-muted">Hedef kcal</small>
-       </div>
-            </div>
+                <div class="col-6 col-md-3">
+                    <div class="card border-0 shadow-sm text-center bg-@bmiColor bg-opacity-10">
+                        <div class="card-body py-3">
+                            <i class="bi bi-speedometer2 text-@bmiColor fs-4"></i>
+                            <div class="fw-bold fs-4 text-@bmiColor">@Model.BMI.Value.ToString("F1")</div>
+                            <small class="text-muted">BMI - @Model.BMICategory</small>
+                        </div>
                     </div>
-       }
-        </div>
+                </div>
+                @if (Model.BodyType != null)
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="card border-0 shadow-sm text-center bg-info bg-opacity-10">
+                            <div class="card-body py-3">
+                                <i class="bi bi-person-bounding-box text-info fs-4"></i>
+                                <div class="fw-bold fs-5 text-info">@Model.BodyType</div>
+                                <small class="text-muted">Vücut Tipi</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.TDEE.HasValue)
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="card border-0 shadow-sm text-center bg-primary bg-opacity-10">
+                            <div class="card-body py-3">
+                                <i class="bi bi-fire text-primary fs-4"></i>
+                                <div class="fw-bold fs-5 text-primary">@Model.TDEE.Value.ToString("N0")</div>
+                                <small class="text-muted">Günlük kcal</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.TargetCalories.HasValue && Model.TargetCalories != Model.TDEE)
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="card border-0 shadow-sm text-center bg-success bg-opacity-10">
+                            <div class="card-body py-3">
+                                <i class="bi bi-bullseye text-success fs-4"></i>
+                                <div class="fw-bold fs-5 text-success">@Model.TargetCalories.Value.ToString("N0")</div>
+                                <small class="text-muted">Hedef kcal</small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
-       @if (hasError)
+            @if (hasError)
             {
-     <div class="alert alert-warning">
-    <h6><i class="bi bi-exclamation-triangle me-2"></i>AI Servisi</h6>
-      <p class="mb-1">@Model.ExerciseRecommendation</p>
-            <p class="mb-0 small">@Model.DietRecommendation</p>
-         </div>
+                <div class="alert alert-warning">
+                    <h6><i class="bi bi-exclamation-triangle me-2"></i>AI Servisi</h6>
+                    <p class="mb-1">@Model.ExerciseRecommendation</p>
+                    <p class="mb-0 small">@Model.DietRecommendation</p>
+                </div>
             }
-  else
-        {
-      <!-- AI Önerileri -->
-    <div class="row g-4">
-        @if (!string.IsNullOrEmpty(Model.ExerciseRecommendation))
-         {
-            <div class="col-lg-4">
-            <div class="card h-100 border-0 shadow">
-               <div class="card-header bg-primary text-white">
-  <h6 class="mb-0"><i class="bi bi-activity me-2"></i>Egzersiz</h6>
-   </div>
-    <div class="card-body">
-        <div style="white-space: pre-line; font-size: 0.9rem;">@Model.ExerciseRecommendation</div>
-    </div>
-           </div>
-             </div>
-           }
-@if (!string.IsNullOrEmpty(Model.DietRecommendation))
-               {
-            <div class="col-lg-4">
-         <div class="card h-100 border-0 shadow">
-          <div class="card-header bg-success text-white">
-               <h6 class="mb-0"><i class="bi bi-egg-fried me-2"></i>Beslenme</h6>
-           </div>
-       <div class="card-body">
-          <div style="white-space: pre-line; font-size: 0.9rem;">@Model.DietRecommendation</div>
-        </div>
-       </div>
-   </div>
-    }
-        @if (!string.IsNullOrEmpty(Model.GeneralAdvice))
-        {
-             <div class="col-lg-4">
-   <div class="card h-100 border-0 shadow">
-    <div class="card-header bg-info text-white">
-     <h6 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Tavsiyeler</h6>
-     </div>
-           <div class="card-body">
-    <div style="white-space: pre-line; font-size: 0.9rem;">@Model.GeneralAdvice</div>
-  </div>
-              </div>
-      </div>
-  }
-        </div>
+            else
+            {
+                <!-- AI Önerileri -->
+                <div class="row g-4">
+                    @if (!string.IsNullOrEmpty(Model.ExerciseRecommendation))
+                    {
+                        <div class="col-lg-4">
+                            <div class="card h-100 border-0 shadow">
+                                <div class="card-header bg-primary text-white">
+                                    <h6 class="mb-0"><i class="bi bi-activity me-2"></i>Egzersiz</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div style="white-space: pre-line; font-size: 0.9rem;">@Model.ExerciseRecommendation</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.DietRecommendation))
+                    {
+                        <div class="col-lg-4">
+                            <div class="card h-100 border-0 shadow">
+                                <div class="card-header bg-success text-white">
+                                    <h6 class="mb-0"><i class="bi bi-egg-fried me-2"></i>Beslenme</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div style="white-space: pre-line; font-size: 0.9rem;">@Model.DietRecommendation</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.GeneralAdvice))
+                    {
+                        <div class="col-lg-4">
+                            <div class="card h-100 border-0 shadow">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0"><i class="bi bi-lightbulb me-2"></i>Tavsiyeler</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div style="white-space: pre-line; font-size: 0.9rem;">@Model.GeneralAdvice</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
 
-      <!-- Kaydet Butonu -->
-     <div class="text-center mt-4">
-                <form asp-action="SaveToProfile" method="post" class="d-inline">
-                 <input type="hidden" asp-for="Height" />
-    <input type="hidden" asp-for="Weight" />
-            <input type="hidden" asp-for="Age" />
-        <input type="hidden" asp-for="Gender" />
-            <input type="hidden" asp-for="BodyType" />
-     <input type="hidden" asp-for="Goal" />
-       <button type="submit" class="btn btn-outline-primary">
-     <i class="bi bi-person-check me-1"></i>Profilime Kaydet
-     </button>
-               </form>
-     </div>
+                <!-- Kaydet Butonu -->
+                <div class="text-center mt-4">
+                    <form asp-action="SaveToProfile" method="post" class="d-inline">
+                        <input type="hidden" asp-for="Height" />
+                        <input type="hidden" asp-for="Weight" />
+                        <input type="hidden" asp-for="Age" />
+                        <input type="hidden" asp-for="Gender" />
+                        <input type="hidden" asp-for="BodyType" />
+                        <input type="hidden" asp-for="Goal" />
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="bi bi-person-check me-1"></i>Profilime Kaydet
+                        </button>
+                    </form>
+                </div>
             }
         }
     </div>

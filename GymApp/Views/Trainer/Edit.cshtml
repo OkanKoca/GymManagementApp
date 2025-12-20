@@ -5,126 +5,126 @@
 
 <div class="row justify-content-center">
     <div class="col-md-8">
-      <div class="card border-0 shadow-lg">
-   <div class="card-header bg-primary text-white py-3">
-       <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>@ViewData["Title"]</h5>
-    </div>
-   <div class="card-body p-4">
-    <form asp-action="Edit" method="post">
-        <input type="hidden" asp-for="Id" />
-       <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0"><i class="bi bi-pencil me-2"></i>@ViewData["Title"]</h5>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-         <div class="row g-3">
-         <div class="col-md-6">
- <label asp-for="FullName" class="form-label fw-semibold"></label>
-           <input asp-for="FullName" class="form-control" />
- <span asp-validation-for="FullName" class="text-danger small"></span>
-     </div>
-               <div class="col-md-6">
-          <label asp-for="Expertise" class="form-label fw-semibold"></label>
-  <input asp-for="Expertise" class="form-control" />
-          <span asp-validation-for="Expertise" class="text-danger small"></span>
-           </div>
-   </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label fw-semibold"></label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Expertise" class="form-label fw-semibold"></label>
+                            <input asp-for="Expertise" class="form-control" />
+                            <span asp-validation-for="Expertise" class="text-danger small"></span>
+                        </div>
+                    </div>
 
- <div class="row g-3 mt-2">
-       <div class="col-md-6">
-     <label asp-for="GymId" class="form-label fw-semibold">Spor Salonu</label>
-  <select asp-for="GymId" class="form-select" asp-items="@(new SelectList(Model.Gyms, "Id", "Name"))">
-      <option value="">-- Seçiniz --</option>
-       </select>
- <span asp-validation-for="GymId" class="text-danger small"></span>
-       </div>
-      <div class="col-md-6">
-  <label asp-for="ExperienceYears" class="form-label fw-semibold"></label>
-       <div class="input-group">
- <input asp-for="ExperienceYears" class="form-control" type="number" min="0" max="50" />
-      <span class="input-group-text">yýl</span>
-          </div>
-      <span asp-validation-for="ExperienceYears" class="text-danger small"></span>
-    </div>
-  </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label asp-for="GymId" class="form-label fw-semibold">Spor Salonu</label>
+                            <select asp-for="GymId" class="form-select" asp-items="@(new SelectList(Model.Gyms, "Id", "Name"))">
+                                <option value="">-- Seçiniz --</option>
+                            </select>
+                            <span asp-validation-for="GymId" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ExperienceYears" class="form-label fw-semibold"></label>
+                            <div class="input-group">
+                                <input asp-for="ExperienceYears" class="form-control" type="number" min="0" max="50" />
+                                <span class="input-group-text">yýl</span>
+                            </div>
+                            <span asp-validation-for="ExperienceYears" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-      <div class="row g-3 mt-2">
-   <div class="col-md-6">
-           <label asp-for="Email" class="form-label fw-semibold"></label>
- <input asp-for="Email" class="form-control" type="email" />
-        <span asp-validation-for="Email" class="text-danger small"></span>
-   </div>
-    <div class="col-md-6">
-    <label asp-for="Phone" class="form-label fw-semibold"></label>
-   <input asp-for="Phone" class="form-control" type="tel" />
-  <span asp-validation-for="Phone" class="text-danger small"></span>
-   </div>
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label fw-semibold"></label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label fw-semibold"></label>
+                            <input asp-for="Phone" class="form-control" type="tel" />
+                            <span asp-validation-for="Phone" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label asp-for="Bio" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Bio" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Bio" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-3">
+                        <label asp-for="PhotoUrl" class="form-label fw-semibold"></label>
+                        <input asp-for="PhotoUrl" class="form-control" />
+                        <small class="text-muted">Fotoðraf URL'si (opsiyonel)</small>
+                        <span asp-validation-for="PhotoUrl" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-list-check me-1"></i>Sunduðu Hizmetler
+                        </label>
+                        <div class="card">
+                            <div class="card-body">
+                                @if (Model.AvailableServices.Any())
+                                {
+                                    <div class="row">
+                                        @foreach (var service in Model.AvailableServices)
+                                        {
+                                            <div class="col-md-6 col-lg-4 mb-2">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox"
+                                                           name="SelectedServiceIds"
+                                                           value="@service.Id"
+                                                           id="service_@service.Id"
+                                                           @(Model.SelectedServiceIds.Contains(service.Id) ? "checked" : "") />
+                                                    <label class="form-check-label" for="service_@service.Id">
+                                                        <span class="fw-medium">@service.Name</span>
+                                                        <br />
+                                                        <small class="text-muted">
+                                                            <i class="bi bi-tag me-1"></i>@service.ServiceType |
+                                                            <i class="bi bi-clock me-1"></i>@service.DurationMinutes dk |
+                                                            <i class="bi bi-currency-lira me-1"></i>@service.Price.ToString("N0")
+                                                        </small>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <p class="text-muted mb-0">
+                                        <i class="bi bi-info-circle me-1"></i>Henüz tanýmlý hizmet bulunmamaktadýr.
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                        <small class="text-muted">Eðitmenin verebileceði hizmetleri seçiniz</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Ýptal
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-save me-1"></i> Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-
-          <div class="mt-3">
-           <label asp-for="Bio" class="form-label fw-semibold"></label>
-    <textarea asp-for="Bio" class="form-control" rows="3"></textarea>
- <span asp-validation-for="Bio" class="text-danger small"></span>
-</div>
-
-  <div class="mt-3">
-   <label asp-for="PhotoUrl" class="form-label fw-semibold"></label>
-   <input asp-for="PhotoUrl" class="form-control" />
-           <small class="text-muted">Fotoðraf URL'si (opsiyonel)</small>
- <span asp-validation-for="PhotoUrl" class="text-danger small"></span>
-           </div>
-
-      <div class="mt-4">
-     <label class="form-label fw-semibold">
-  <i class="bi bi-list-check me-1"></i>Sunduðu Hizmetler
-      </label>
-  <div class="card">
-        <div class="card-body">
- @if (Model.AvailableServices.Any())
-  {
-     <div class="row">
-                @foreach (var service in Model.AvailableServices)
- {
-   <div class="col-md-6 col-lg-4 mb-2">
-  <div class="form-check">
-  <input class="form-check-input" type="checkbox"
-     name="SelectedServiceIds"
- value="@service.Id"
- id="service_@service.Id"
-        @(Model.SelectedServiceIds.Contains(service.Id) ? "checked" : "") />
-       <label class="form-check-label" for="service_@service.Id">
-  <span class="fw-medium">@service.Name</span>
-  <br />
-   <small class="text-muted">
-             <i class="bi bi-tag me-1"></i>@service.ServiceType |
-           <i class="bi bi-clock me-1"></i>@service.DurationMinutes dk |
-        <i class="bi bi-currency-lira me-1"></i>@service.Price.ToString("N0")
-   </small>
-       </label>
-       </div>
- </div>
-          }
-  </div>
-          }
-      else
-{
-    <p class="text-muted mb-0">
-       <i class="bi bi-info-circle me-1"></i>Henüz tanýmlý hizmet bulunmamaktadýr.
-         </p>
-     }
-             </div>
-       </div>
-          <small class="text-muted">Eðitmenin verebileceði hizmetleri seçiniz</small>
-    </div>
-
- <div class="d-flex justify-content-between mt-4 pt-3 border-top">
-           <a asp-action="Index" class="btn btn-outline-secondary">
-          <i class="bi bi-arrow-left me-1"></i> Ýptal
-          </a>
-    <button type="submit" class="btn btn-success">
-  <i class="bi bi-save me-1"></i> Kaydet
-         </button>
-         </div>
-     </form>
-    </div>
- </div>
     </div>
 </div>
 

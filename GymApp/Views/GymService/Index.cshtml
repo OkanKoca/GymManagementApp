@@ -32,6 +32,7 @@
 {
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         @TempData["Error"]
+        @TempData["Error"]
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 }
@@ -118,7 +119,7 @@ else
                                     @if (!string.IsNullOrEmpty(item.Service?.Description))
                                     {
                                         <br />
-                            
+
                                         <small class="text-muted">@item.Service.Description</small>
                                     }
                                 </td>
