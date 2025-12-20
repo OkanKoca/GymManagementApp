@@ -19,6 +19,22 @@
                     <dd class="col-sm-8">@Model.Expertise</dd>
                     <dt class="col-sm-4">Salon</dt>
                     <dd class="col-sm-8">@Model.Gym?.Name</dd>
+                    <dt class="col-sm-4">Sunduðu Hizmetler</dt>
+                    <dd class="col-sm-8">
+                        @if (Model.TrainerServices != null && Model.TrainerServices.Any())
+                        {
+                            <div class="d-flex flex-wrap gap-1">
+                                @foreach (var ts in Model.TrainerServices)
+                                {
+                                    <span class="badge bg-info">@ts.Service?.Name</span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Hizmet atanmamýþ</span>
+                        }
+                    </dd>
                 </dl>
                 <div class="alert alert-warning">
                     <i class="bi bi-info-circle me-2"></i>Bu iþlem geri alýnamaz!

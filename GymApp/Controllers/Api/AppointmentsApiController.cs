@@ -160,5 +160,26 @@ namespace GymApp.Controllers.Api
 
             return Ok(appointments);
         }
+
+        // GET: api/AppointmentsApi/GetTrainerServices/{trainerId} - Eðitmenin sunduðu hizmetleri getir
+        [HttpGet("GetTrainerServices/{trainerId}")]
+     public async Task<ActionResult<IEnumerable<object>>> GetTrainerServices(int trainerId)
+        {
+       var services = await _context.TrainerServices
+ .Include(ts => ts.Service)
+.Where(ts => ts.TrainerId == trainerId && ts.Service.IsActive)
+        .Select(ts => new
+       {
+       ts.Service.Id,
+    ts.Service.Name,
+      ts.Service.Description,
+        ts.Service.ServiceType,
+                  ts.Service.DurationMinutes,
+    ts.Service.Price
+            })
+   .ToListAsync();
+
+  return Ok(services);
+        }
     }
 }

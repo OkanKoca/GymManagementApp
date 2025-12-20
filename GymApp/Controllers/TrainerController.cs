@@ -1,5 +1,6 @@
 ﻿using GymApp.Data;
 using GymApp.Models;
+using GymApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ namespace GymApp.Controllers
             var trainers = _db.Trainers
                 .Include(t => t.Gym)
                 .Include(t => t.Availabilities)
+                .Include(t => t.TrainerServices)
+                    .ThenInclude(ts => ts.Service)
                 .ToList();
             return View(trainers);
         }
@@ -27,26 +30,48 @@ namespace GymApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-            ViewBag.Gyms = _db.Gyms.ToList();
-            return View();
+            var viewModel = new TrainerFormViewModel
+            {
+                Gyms = _db.Gyms.ToList(),
+                AvailableServices = _db.Services.Where(s => s.IsActive).ToList()
+            };
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Trainer t)
+        public IActionResult Create(TrainerFormViewModel viewModel)
         {
             // Navigation property'leri ModelState'den çıkar
-            ModelState.Remove("Gym");
+            ModelState.Remove("Gyms");
+            ModelState.Remove("AvailableServices");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Gyms = _db.Gyms.ToList();
-                return View(t);
+                viewModel.Gyms = _db.Gyms.ToList();
+                viewModel.AvailableServices = _db.Services.Where(s => s.IsActive).ToList();
+                return View(viewModel);
             }
 
-            _db.Trainers.Add(t);
+            var trainer = viewModel.ToTrainer();
+            _db.Trainers.Add(trainer);
             _db.SaveChanges();
+
+            // Seçilen hizmetleri ekle
+            if (viewModel.SelectedServiceIds != null && viewModel.SelectedServiceIds.Any())
+            {
+                foreach (var serviceId in viewModel.SelectedServiceIds)
+                {
+                    _db.TrainerServices.Add(new TrainerService
+                    {
+                        TrainerId = trainer.Id,
+                        ServiceId = serviceId
+                    });
+                }
+                _db.SaveChanges();
+            }
+
             TempData["Success"] = "Eğitmen başarıyla eklendi.";
             return RedirectToAction("Index");
         }
@@ -55,28 +80,55 @@ namespace GymApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Edit(int id)
         {
-            var t = _db.Trainers.Find(id);
-            if (t == null) return NotFound();
+            var trainer = _db.Trainers
+                .Include(t => t.TrainerServices)
+                .FirstOrDefault(t => t.Id == id);
 
-            ViewBag.Gyms = _db.Gyms.ToList();
-            return View(t);
+            if (trainer == null) return NotFound();
+
+            var viewModel = TrainerFormViewModel.FromTrainer(trainer);
+            viewModel.Gyms = _db.Gyms.ToList();
+            viewModel.AvailableServices = _db.Services.Where(s => s.IsActive).ToList();
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Trainer t)
+        public IActionResult Edit(TrainerFormViewModel viewModel)
         {
             // Navigation property'leri ModelState'den çıkar
-            ModelState.Remove("Gym");
+            ModelState.Remove("Gyms");
+            ModelState.Remove("AvailableServices");
 
             if (!ModelState.IsValid)
             {
-                ViewBag.Gyms = _db.Gyms.ToList();
-                return View(t);
+                viewModel.Gyms = _db.Gyms.ToList();
+                viewModel.AvailableServices = _db.Services.Where(s => s.IsActive).ToList();
+                return View(viewModel);
             }
 
-            _db.Trainers.Update(t);
+            var trainer = viewModel.ToTrainer();
+            _db.Trainers.Update(trainer);
+
+            // Mevcut hizmet ilişkilerini sil
+            var existingServices = _db.TrainerServices.Where(ts => ts.TrainerId == trainer.Id);
+            _db.TrainerServices.RemoveRange(existingServices);
+
+            // Yeni hizmet ilişkilerini ekle
+            if (viewModel.SelectedServiceIds != null && viewModel.SelectedServiceIds.Any())
+            {
+                foreach (var serviceId in viewModel.SelectedServiceIds)
+                {
+                    _db.TrainerServices.Add(new TrainerService
+                    {
+                        TrainerId = trainer.Id,
+                        ServiceId = serviceId
+                    });
+                }
+            }
+
             _db.SaveChanges();
             TempData["Success"] = "Eğitmen başarıyla güncellendi.";
             return RedirectToAction("Index");
@@ -85,7 +137,11 @@ namespace GymApp.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-            var t = _db.Trainers.Include(x => x.Gym).FirstOrDefault(x => x.Id == id);
+            var t = _db.Trainers
+                .Include(x => x.Gym)
+                .Include(x => x.TrainerServices)
+                    .ThenInclude(ts => ts.Service)
+                .FirstOrDefault(x => x.Id == id);
             if (t == null) return NotFound();
             return View(t);
         }
