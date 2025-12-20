@@ -54,7 +54,6 @@ namespace GymApp.Controllers
             // 2) Foto geldiyse görsel simülasyon
             if (result.UserPhoto != null && result.UserPhoto.Length > 0)
             {
-                // Basic guardrails (projede abuse olmasýn)
                 const long maxBytes = 3 * 1024 * 1024; // 3MB
                 if (result.UserPhoto.Length > maxBytes)
                 {
@@ -77,7 +76,6 @@ namespace GymApp.Controllers
                     bytes = ms.ToArray();
                 }
 
-                // prompt: “geleceði kesin gösterme” yerine “simülasyon / konsept” dili
                 var imagePrompt = BuildFutureImagePrompt(result);
 
                 var (dataUrl, error) = await _imageService.GenerateFutureImageAsync(bytes, contentType, imagePrompt);
