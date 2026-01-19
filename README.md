@@ -1,43 +1,41 @@
 # 🏋️‍♂️ Gym Management Web Application
 
-## 📌 Proje Tanıtımı
+## 📌 Project Introduction
 
-Bu uygulama, spor salonları için üyelik, randevu ve eğitmen yönetimini dijital ortama taşıyan bir web sistemidir. ASP.NET Core MVC teknolojisiyle geliştirilen bu sistem; salon yöneticilerinin, üyelerin ve eğitmenlerin tüm işlemlerini kolaylıkla takip edebilmesini sağlar.
+This application is a web system that digitizes membership, appointment, and trainer management for gyms. Developed with ASP.NET Core MVC, this system allows gym managers, members, and trainers to easily track all operations.
 
-Proje kapsamında kullanıcılar:
-- Üye olarak sisteme kayıt olabilir,
-- Eğitmenleri ve hizmetleri görüntüleyebilir,
-- Müsait eğitmenlere uygun saatlerde randevu alabilir,
-- Yapay zekâ destekli egzersiz ve diyet önerileri alabilirler.
+Within the scope of the project, users can:
+- Register to the system as a member,
+- View trainers and services,
+- Make appointments with available trainers at suitable times,
+- Get AI-powered exercise and diet recommendations.
 
 ---
 
-## 🔧 Kullanılan Teknolojiler
+## 🔧 Technologies Used
 
 - **Backend:** ASP.NET Core MVC (C#), Entity Framework Core, LINQ
 - **Frontend:** HTML5, CSS3, Bootstrap 5, jQuery
-- **Veritabanı:** PostgreSQL (Code-First Migrations)
-- **Kimlik Doğrulama:** ASP.NET Identity (Admin ve Member rolleri)
-- **Yapay Zekâ Entegrasyonu:** Google GenAI (Gemini API) – Öneri Sistemi
-- **Versiyon Kontrol:** Git & GitHub
+- **Database:** PostgreSQL (Code-First Migrations)
+- **Authentication:** ASP.NET Identity (Admin and Member roles)
+- **AI Integration:** Google GenAI (Gemini API) – Recommendation System
+- **Version Control:** Git & GitHub
 
 ---
 
-## 👥 Rol ve Yetkilendirme
+## 👥 Roles and Authorization
 
-| Rol     | Yetkiler |
-|---------|----------|
-| **Admin** | Eğitmen/Spor salonu/hizmet ekleme, randevu onaylama, tüm sistem kontrolü |
-| **Üye**   | Kayıt olma, eğitmen/hizmet inceleme, randevu alma, AI öneri görüntüleme |
+| Role     | Permissions |
+|---------|-------------|
+| **Admin** | Adding trainers/gyms/services, approving appointments, full system control |
+| **Member** | Registering, viewing trainers/services, making appointments, viewing AI recommendations |
 
 ---
 
-## 🤖 Yapay Zekâ Modülü
+## 🤖 Artificial Intelligence Module
 
-- Kullanıcı; boy, kilo, vücut tipi gibi verilerini girerek Google Gemini API’sine bağlanır.
+- The user connects to the Google Gemini API by entering data such as height, weight, and body type.
 
-- AI öneri sayfasında kişiye özel fitness + beslenme planları ve dönüşüm görselleri görüntülenir.
+- On the AI recommendation page, personalized fitness + nutrition plans and transformation images are displayed.
 
-- Kullanılan model: gemini-2.5-flash-image 
-
-
+- Model used: gemini-2.5-flash-image
